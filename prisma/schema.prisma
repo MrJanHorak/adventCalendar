@@ -1,0 +1,80 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  password      String
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  calendars     Calendar[]
+  openedDoors   OpenedDoor[]
+}
+
+model Calendar {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  shareId     String   @unique @default(cuid())
+  userId      String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  entries     CalendarEntry[]
+  openedDoors OpenedDoor[]
+
+  @@index([userId])
+  @@index([shareId])
+}
+
+model CalendarEntry {
+  id         String   @id @default(cuid())
+  day        Int      // 1-25
+  title      String
+  content    String   @db.Text
+  imageUrl   String?
+  type       EntryType @default(TEXT)
+  calendarId String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  calendar   Calendar @relation(fields: [calendarId], references: [id], onDelete: Cascade)
+
+  @@unique([calendarId, day])
+  @@index([calendarId])
+}
+
+model OpenedDoor {
+  id         String   @id @default(cuid())
+  day        Int      // 1-25
+  userId     String
+  calendarId String
+  openedAt   DateTime @default(now())
+
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  calendar   Calendar @relation(fields: [calendarId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, calendarId, day])
+  @@index([userId])
+  @@index([calendarId])
+}
+
+enum EntryType {
+  TEXT
+  POEM
+  IMAGE
+}

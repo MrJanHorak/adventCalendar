@@ -1,65 +1,166 @@
-import Image from "next/image";
+import Link from "next/link"
+import { auth } from "@/lib/auth"
 
-export default function Home() {
+export default async function Home() {
+  const session = await auth()
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="min-h-screen bg-gradient-to-br from-red-50 via-white to-green-50">
+      {/* Snowflakes decoration */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        <div className="snowflake">❄</div>
+        <div className="snowflake">❅</div>
+        <div className="snowflake">❆</div>
+      </div>
+
+      {/* Navigation */}
+      <nav className="bg-white/80 backdrop-blur-sm border-b border-red-100 sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <div className="flex items-center space-x-2">
+              <span className="text-3xl">🎄</span>
+              <span className="text-2xl font-bold text-red-600">Advent Calendar</span>
+            </div>
+            <div className="flex items-center space-x-4">
+              {session ? (
+                <>
+                  <Link
+                    href="/dashboard"
+                    className="text-gray-700 hover:text-red-600 font-medium transition"
+                  >
+                    Dashboard
+                  </Link>
+                  <form action="/api/auth/signout" method="POST">
+                    <button className="bg-red-500 text-white px-6 py-2 rounded-full hover:bg-red-600 transition font-medium">
+                      Sign Out
+                    </button>
+                  </form>
+                </>
+              ) : (
+                <>
+                  <Link
+                    href="/auth/signin"
+                    className="text-gray-700 hover:text-red-600 font-medium transition"
+                  >
+                    Sign In
+                  </Link>
+                  <Link
+                    href="/auth/signup"
+                    className="bg-gradient-to-r from-red-500 to-green-500 text-white px-6 py-2 rounded-full hover:from-red-600 hover:to-green-600 transition font-medium"
+                  >
+                    Sign Up
+                  </Link>
+                </>
+              )}
+            </div>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </nav>
+
+      {/* Hero Section */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <div className="text-center space-y-8">
+          <h1 className="text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-600 via-green-600 to-red-600 animate-gradient">
+            Create Your Magical
+            <br />
+            Advent Calendar
+          </h1>
+          
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            Spread joy this holiday season! Create personalized advent calendars with
+            pictures, poems, and special messages for your loved ones.
+          </p>
+
+          <div className="flex justify-center space-x-4">
+            <Link
+              href={session ? "/dashboard" : "/auth/signup"}
+              className="bg-gradient-to-r from-red-500 to-green-500 text-white px-8 py-4 rounded-full text-lg font-semibold hover:from-red-600 hover:to-green-600 transition transform hover:scale-105 shadow-lg"
+            >
+              {session ? "Go to Dashboard" : "Get Started Free"}
+            </Link>
+            <Link
+              href="#features"
+              className="bg-white text-gray-700 px-8 py-4 rounded-full text-lg font-semibold hover:bg-gray-50 transition border-2 border-gray-200"
+            >
+              Learn More
+            </Link>
+          </div>
+        </div>
+
+        {/* Features */}
+        <div id="features" className="mt-32 grid md:grid-cols-3 gap-8">
+          <div className="bg-white p-8 rounded-2xl shadow-lg border-2 border-red-100 hover:border-red-300 transition">
+            <div className="text-5xl mb-4">🎁</div>
+            <h3 className="text-2xl font-bold text-gray-800 mb-3">25 Days of Joy</h3>
+            <p className="text-gray-600">
+              Create 25 unique entries filled with pictures, poems, or heartfelt messages.
+              Each day reveals a new surprise!
+            </p>
+          </div>
+
+          <div className="bg-white p-8 rounded-2xl shadow-lg border-2 border-green-100 hover:border-green-300 transition">
+            <div className="text-5xl mb-4">🔗</div>
+            <h3 className="text-2xl font-bold text-gray-800 mb-3">Share with Love</h3>
+            <p className="text-gray-600">
+              Generate a unique share link for your calendar. Send it to family, friends,
+              or that special someone!
+            </p>
+          </div>
+
+          <div className="bg-white p-8 rounded-2xl shadow-lg border-2 border-red-100 hover:border-red-300 transition">
+            <div className="text-5xl mb-4">📅</div>
+            <h3 className="text-2xl font-bold text-gray-800 mb-3">Daily Surprises</h3>
+            <p className="text-gray-600">
+              Each door opens only on its special day in December. Track which doors have
+              been opened!
+            </p>
+          </div>
+        </div>
+
+        {/* How it Works */}
+        <div className="mt-32 bg-white rounded-3xl shadow-2xl p-12 border-4 border-green-200">
+          <h2 className="text-4xl font-bold text-center text-gray-800 mb-12">
+            How It Works
+          </h2>
+          <div className="grid md:grid-cols-4 gap-8">
+            <div className="text-center">
+              <div className="bg-red-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-red-600">
+                1
+              </div>
+              <h4 className="font-semibold text-lg mb-2">Sign Up</h4>
+              <p className="text-gray-600">Create your free account in seconds</p>
+            </div>
+            <div className="text-center">
+              <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-green-600">
+                2
+              </div>
+              <h4 className="font-semibold text-lg mb-2">Create Calendar</h4>
+              <p className="text-gray-600">Add 25 days of special content</p>
+            </div>
+            <div className="text-center">
+              <div className="bg-red-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-red-600">
+                3
+              </div>
+              <h4 className="font-semibold text-lg mb-2">Share Link</h4>
+              <p className="text-gray-600">Send your unique calendar URL</p>
+            </div>
+            <div className="text-center">
+              <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-green-600">
+                4
+              </div>
+              <h4 className="font-semibold text-lg mb-2">Spread Joy</h4>
+              <p className="text-gray-600">Recipients open doors each day</p>
+            </div>
+          </div>
         </div>
       </main>
+
+      {/* Footer */}
+      <footer className="bg-white border-t border-gray-200 mt-32">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center text-gray-600">
+          <p>Made with ❤️ for the holiday season</p>
+        </div>
+      </footer>
     </div>
-  );
+  )
 }

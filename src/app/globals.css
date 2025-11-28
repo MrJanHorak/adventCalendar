@@ -24,3 +24,58 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Snowflake animations */
+.snowflake {
+  position: absolute;
+  top: -10%;
+  z-index: 1;
+  user-select: none;
+  cursor: default;
+  animation: snowfall 10s linear infinite;
+  color: #ddd;
+  font-size: 1.5em;
+}
+
+.snowflake:nth-child(1) {
+  left: 10%;
+  animation-delay: 0s;
+}
+
+.snowflake:nth-child(2) {
+  left: 50%;
+  animation-delay: 5s;
+}
+
+.snowflake:nth-child(3) {
+  left: 80%;
+  animation-delay: 2s;
+}
+
+@keyframes snowfall {
+  0% {
+    top: -10%;
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0.3;
+  }
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient 3s ease infinite;
+}
