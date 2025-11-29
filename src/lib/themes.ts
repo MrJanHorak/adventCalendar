@@ -80,7 +80,7 @@ export const themePresets: ThemePreset[] = [
 ];
 
 export function getThemePreset(themeId: string): ThemePreset | undefined {
-  return themePresets.find(theme => theme.id === themeId);
+  return themePresets.find((theme) => theme.id === themeId);
 }
 
 export function getThemeStyles(theme: ThemePreset | null) {
@@ -95,17 +95,21 @@ export function getThemeStyles(theme: ThemePreset | null) {
   if (theme.backgroundPattern && theme.backgroundPattern !== 'none') {
     switch (theme.backgroundPattern) {
       case 'snowflakes':
-        baseStyles.backgroundImage = 'url("data:image/svg+xml,%3Csvg width=\'100\' height=\'100\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Ctext x=\'10\' y=\'30\' font-size=\'20\' fill=\'%23cbd5e1\' opacity=\'0.4\'%3E❄%3C/text%3E%3Ctext x=\'60\' y=\'70\' font-size=\'16\' fill=\'%23cbd5e1\' opacity=\'0.3\'%3E❅%3C/text%3E%3Ctext x=\'80\' y=\'20\' font-size=\'14\' fill=\'%23cbd5e1\' opacity=\'0.35\'%3E❆%3C/text%3E%3C/svg%3E")';
+        baseStyles.backgroundImage =
+          "url(\"data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Ctext x='10' y='30' font-size='20' fill='%23cbd5e1' opacity='0.4'%3E❄%3C/text%3E%3Ctext x='60' y='70' font-size='16' fill='%23cbd5e1' opacity='0.3'%3E❅%3C/text%3E%3Ctext x='80' y='20' font-size='14' fill='%23cbd5e1' opacity='0.35'%3E❆%3C/text%3E%3C/svg%3E\")";
         break;
       case 'stars':
-        baseStyles.backgroundImage = 'url("data:image/svg+xml,%3Csvg width=\'100\' height=\'100\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Ctext x=\'15\' y=\'35\' font-size=\'18\' fill=\'%23fbbf24\' opacity=\'0.4\'%3E⭐%3C/text%3E%3Ctext x=\'65\' y=\'75\' font-size=\'14\' fill=\'%23fbbf24\' opacity=\'0.35\'%3E✨%3C/text%3E%3Ctext x=\'85\' y=\'25\' font-size=\'12\' fill=\'%23fbbf24\' opacity=\'0.3\'%3E⭐%3C/text%3E%3Ctext x=\'40\' y=\'55\' font-size=\'10\' fill=\'%23fbbf24\' opacity=\'0.25\'%3E✨%3C/text%3E%3C/svg%3E")';
+        baseStyles.backgroundImage =
+          "url(\"data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Ctext x='15' y='35' font-size='18' fill='%23fbbf24' opacity='0.4'%3E⭐%3C/text%3E%3Ctext x='65' y='75' font-size='14' fill='%23fbbf24' opacity='0.35'%3E✨%3C/text%3E%3Ctext x='85' y='25' font-size='12' fill='%23fbbf24' opacity='0.3'%3E⭐%3C/text%3E%3Ctext x='40' y='55' font-size='10' fill='%23fbbf24' opacity='0.25'%3E✨%3C/text%3E%3C/svg%3E\")";
         break;
       case 'woodgrain':
-        baseStyles.backgroundImage = 'linear-gradient(90deg, rgba(92,77,66,0.05) 25%, transparent 25%, transparent 50%, rgba(92,77,66,0.05) 50%, rgba(92,77,66,0.05) 75%, transparent 75%, transparent)';
+        baseStyles.backgroundImage =
+          'linear-gradient(90deg, rgba(92,77,66,0.05) 25%, transparent 25%, transparent 50%, rgba(92,77,66,0.05) 50%, rgba(92,77,66,0.05) 75%, transparent 75%, transparent)';
         baseStyles.backgroundSize = '40px 40px';
         break;
       case 'dots':
-        baseStyles.backgroundImage = 'radial-gradient(circle, rgba(15,23,42,0.1) 1px, transparent 1px)';
+        baseStyles.backgroundImage =
+          'radial-gradient(circle, rgba(15,23,42,0.1) 1px, transparent 1px)';
         baseStyles.backgroundSize = '20px 20px';
         break;
       case 'stripes':

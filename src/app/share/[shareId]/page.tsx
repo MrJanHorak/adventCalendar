@@ -266,7 +266,7 @@ export default function SharedCalendar({
       }}
     >
       {/* Snowflakes - conditionally rendered */}
-      {(calendar.snowflakesEnabled !== false) && (
+      {calendar.snowflakesEnabled !== false && (
         <div className='fixed inset-0 pointer-events-none overflow-hidden'>
           <div className='snowflake'>❄</div>
           <div className='snowflake'>❅</div>
@@ -342,7 +342,10 @@ export default function SharedCalendar({
                     : canOpen && hasEntry
                     ? calendar.primaryColor || '#dc2626'
                     : 'rgba(255, 255, 255, 0.8)',
-                  color: isOpened || (canOpen && hasEntry) ? '#ffffff' : calendar.textColor || '#9ca3af',
+                  color:
+                    isOpened || (canOpen && hasEntry)
+                      ? '#ffffff'
+                      : calendar.textColor || '#9ca3af',
                   borderColor: calendar.primaryColor || '#dc2626',
                 }}
                 className={`aspect-square rounded-2xl font-bold text-2xl transition-all transform hover:scale-105 shadow-lg border-2 ${

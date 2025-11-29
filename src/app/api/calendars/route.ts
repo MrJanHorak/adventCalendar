@@ -39,8 +39,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { 
-      title, 
+    const {
+      title,
       description,
       theme,
       backgroundColor,
@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
       secondaryColor,
       textColor,
       snowflakesEnabled,
-      customDecoration
+      customDecoration,
     } = await req.json();
 
     if (!title) {

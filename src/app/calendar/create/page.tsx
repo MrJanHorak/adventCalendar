@@ -19,13 +19,13 @@ export default function CreateCalendar() {
     setLoading(true);
 
     try {
-      const theme = themePresets.find(t => t.id === selectedTheme);
-      
+      const theme = themePresets.find((t) => t.id === selectedTheme);
+
       const response = await fetch('/api/calendars', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          title, 
+        body: JSON.stringify({
+          title,
           description,
           theme: theme?.id,
           backgroundColor: theme?.backgroundColor,

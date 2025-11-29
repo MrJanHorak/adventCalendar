@@ -1,11 +1,13 @@
 # Calendar Theme & Styling Features
 
 ## Overview
+
 The advent calendar now supports comprehensive theming and styling options at the calendar level, allowing you to customize the overall look and feel of your shared calendar pages.
 
 ## Features Added
 
 ### 1. Theme Presets
+
 Six pre-built holiday themes to choose from:
 
 - **Classic Christmas**: Traditional red and green with snowflakes
@@ -18,13 +20,16 @@ Six pre-built holiday themes to choose from:
 ### 2. Customizable Theme Elements
 
 #### Colors
+
 - **Background Color**: Set the main page background color
 - **Text Color**: Control all text colors on the calendar
 - **Primary Color**: Used for unopened calendar doors (accent color)
 - **Secondary Color**: Used for opened/completed doors
 
 #### Background Patterns
+
 Choose from decorative patterns:
+
 - None (solid color)
 - Snowflakes (subtle winter pattern)
 - Stars (holiday star pattern)
@@ -33,18 +38,23 @@ Choose from decorative patterns:
 - Diagonal Stripes (candy cane style)
 
 #### Effects
+
 - **Animated Snowflakes**: Toggle falling snowflakes animation on/off
 
 ### 3. Where to Customize
 
 #### During Calendar Creation
+
 When creating a new calendar (`/calendar/create`):
+
 1. Enter calendar title and description
 2. Select a theme preset from the grid
 3. Click "Create Calendar"
 
 #### After Calendar Creation
+
 When editing a calendar (`/calendar/[id]/edit`):
+
 1. Click the "🎨 Calendar Theme & Styling" section to expand
 2. Choose a preset or customize colors individually
 3. Select a background pattern
@@ -54,7 +64,9 @@ When editing a calendar (`/calendar/[id]/edit`):
 ### 4. How It Works
 
 #### Database Schema
+
 New fields added to the `Calendar` model:
+
 ```prisma
 theme               String?  @default("classic")
 backgroundColor     String?  @default("#f9fafb")
@@ -67,6 +79,7 @@ customDecoration    String?
 ```
 
 #### Theme Application
+
 - Themes are applied to the public share page (`/share/[shareId]`)
 - The entire page background, text colors, and door colors reflect your theme
 - Both viewer and owner preview modes respect theme settings
@@ -75,6 +88,7 @@ customDecoration    String?
 ### 5. Theme Presets Library
 
 Located in `/src/lib/themes.ts`:
+
 - `themePresets`: Array of all available theme configurations
 - `getThemePreset()`: Retrieve a specific theme by ID
 - `getThemeStyles()`: Convert theme to CSS styles with background patterns
@@ -82,7 +96,9 @@ Located in `/src/lib/themes.ts`:
 ## API Updates
 
 ### Create Calendar
+
 `POST /api/calendars`
+
 ```json
 {
   "title": "My Calendar",
@@ -98,7 +114,9 @@ Located in `/src/lib/themes.ts`:
 ```
 
 ### Update Calendar Theme
+
 `PATCH /api/calendars/[id]`
+
 ```json
 {
   "theme": "festive-gold",
@@ -114,10 +132,12 @@ Located in `/src/lib/themes.ts`:
 ## UI Components
 
 ### Create Page
+
 - Grid of theme preset cards with visual color previews
 - Preset selection updates calendar theme on creation
 
 ### Edit Page
+
 - Collapsible theme editor section
 - Preset selector with descriptions
 - Color pickers for all theme colors (with hex input)
@@ -126,6 +146,7 @@ Located in `/src/lib/themes.ts`:
 - Save button to persist changes
 
 ### Share Page
+
 - Applies theme background color and pattern to entire page
 - Uses theme colors for calendar title and text
 - Door buttons use primary/secondary colors for unopened/opened states
@@ -143,6 +164,7 @@ Located in `/src/lib/themes.ts`:
 ## Combining with Entry Formatting
 
 Theme settings work alongside entry-level formatting:
+
 - **Theme**: Controls the overall page appearance (background, doors, text)
 - **Entry Formatting**: Controls individual entry content (fonts, borders, shadows)
 - Both systems are independent and complementary
@@ -151,6 +173,7 @@ Theme settings work alongside entry-level formatting:
 ## Future Enhancements
 
 Potential additions:
+
 - Custom CSS injection field
 - More background patterns (geometric, holiday-specific)
 - Gradient backgrounds

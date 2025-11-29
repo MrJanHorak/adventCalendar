@@ -298,17 +298,21 @@ export default function EditCalendar({
   if (themeData.backgroundPattern && themeData.backgroundPattern !== 'none') {
     switch (themeData.backgroundPattern) {
       case 'snowflakes':
-        themeStyles.backgroundImage = 'url("data:image/svg+xml,%3Csvg width=\'100\' height=\'100\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Ctext x=\'10\' y=\'30\' font-size=\'20\' fill=\'%23cbd5e1\' opacity=\'0.4\'%3E❄%3C/text%3E%3Ctext x=\'60\' y=\'70\' font-size=\'16\' fill=\'%23cbd5e1\' opacity=\'0.3\'%3E❅%3C/text%3E%3Ctext x=\'80\' y=\'20\' font-size=\'14\' fill=\'%23cbd5e1\' opacity=\'0.35\'%3E❆%3C/text%3E%3C/svg%3E")';
+        themeStyles.backgroundImage =
+          "url(\"data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Ctext x='10' y='30' font-size='20' fill='%23cbd5e1' opacity='0.4'%3E❄%3C/text%3E%3Ctext x='60' y='70' font-size='16' fill='%23cbd5e1' opacity='0.3'%3E❅%3C/text%3E%3Ctext x='80' y='20' font-size='14' fill='%23cbd5e1' opacity='0.35'%3E❆%3C/text%3E%3C/svg%3E\")";
         break;
       case 'stars':
-        themeStyles.backgroundImage = 'url("data:image/svg+xml,%3Csvg width=\'100\' height=\'100\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Ctext x=\'15\' y=\'35\' font-size=\'18\' fill=\'%23fbbf24\' opacity=\'0.4\'%3E⭐%3C/text%3E%3Ctext x=\'65\' y=\'75\' font-size=\'14\' fill=\'%23fbbf24\' opacity=\'0.35\'%3E✨%3C/text%3E%3Ctext x=\'85\' y=\'25\' font-size=\'12\' fill=\'%23fbbf24\' opacity=\'0.3\'%3E⭐%3C/text%3E%3Ctext x=\'40\' y=\'55\' font-size=\'10\' fill=\'%23fbbf24\' opacity=\'0.25\'%3E✨%3C/text%3E%3C/svg%3E")';
+        themeStyles.backgroundImage =
+          "url(\"data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Ctext x='15' y='35' font-size='18' fill='%23fbbf24' opacity='0.4'%3E⭐%3C/text%3E%3Ctext x='65' y='75' font-size='14' fill='%23fbbf24' opacity='0.35'%3E✨%3C/text%3E%3Ctext x='85' y='25' font-size='12' fill='%23fbbf24' opacity='0.3'%3E⭐%3C/text%3E%3Ctext x='40' y='55' font-size='10' fill='%23fbbf24' opacity='0.25'%3E✨%3C/text%3E%3C/svg%3E\")";
         break;
       case 'woodgrain':
-        themeStyles.backgroundImage = 'linear-gradient(90deg, rgba(92,77,66,0.05) 25%, transparent 25%, transparent 50%, rgba(92,77,66,0.05) 50%, rgba(92,77,66,0.05) 75%, transparent 75%, transparent)';
+        themeStyles.backgroundImage =
+          'linear-gradient(90deg, rgba(92,77,66,0.05) 25%, transparent 25%, transparent 50%, rgba(92,77,66,0.05) 50%, rgba(92,77,66,0.05) 75%, transparent 75%, transparent)';
         themeStyles.backgroundSize = '40px 40px';
         break;
       case 'dots':
-        themeStyles.backgroundImage = 'radial-gradient(circle, rgba(15,23,42,0.1) 1px, transparent 1px)';
+        themeStyles.backgroundImage =
+          'radial-gradient(circle, rgba(15,23,42,0.1) 1px, transparent 1px)';
         themeStyles.backgroundSize = '20px 20px';
         break;
       case 'stripes':
@@ -687,7 +691,9 @@ export default function EditCalendar({
                         <option value='Times New Roman'>Times New Roman</option>
                         <option value='monospace'>Monospace</option>
                         <option value='Courier New'>Courier New</option>
-                        <option value='Brush Script MT, cursive'>Cursive</option>
+                        <option value='Brush Script MT, cursive'>
+                          Cursive
+                        </option>
                         <option value='Comic Sans MS'>Comic Sans</option>
                         <option value='Arial'>Arial</option>
                         <option value='Verdana'>Verdana</option>
