@@ -235,13 +235,22 @@ export default function EditCalendar({
     const dataToSave = {
       ...formData,
       content: formData.content.trim() || null,
-      imageUrl: showImageField && formData.imageUrl.trim() ? formData.imageUrl.trim() : null,
+      imageUrl:
+        showImageField && formData.imageUrl.trim()
+          ? formData.imageUrl.trim()
+          : null,
       videoUrl:
         showVideoField && formData.videoUrl.trim()
           ? convertToEmbedUrl(formData.videoUrl.trim())
           : null,
-      linkUrl: showLinkField && formData.linkUrl.trim() ? formData.linkUrl.trim() : null,
-      linkText: showLinkField && formData.linkText.trim() ? formData.linkText.trim() : null,
+      linkUrl:
+        showLinkField && formData.linkUrl.trim()
+          ? formData.linkUrl.trim()
+          : null,
+      linkText:
+        showLinkField && formData.linkText.trim()
+          ? formData.linkText.trim()
+          : null,
     };
 
     try {

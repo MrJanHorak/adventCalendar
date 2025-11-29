@@ -57,7 +57,9 @@ export async function POST(
 
     if (!hasContent && !hasImage && !hasVideo && !hasLink) {
       return NextResponse.json(
-        { error: 'Provide at least one of text, imageUrl, videoUrl, or linkUrl' },
+        {
+          error: 'Provide at least one of text, imageUrl, videoUrl, or linkUrl',
+        },
         { status: 400 }
       );
     }
