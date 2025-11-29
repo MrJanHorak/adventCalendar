@@ -51,17 +51,27 @@ export async function PATCH(
     if (content !== undefined) updateData.content = content;
     if (imageUrl !== undefined) updateData.imageUrl = imageUrl;
     if (type !== undefined) updateData.type = type;
-    if (fontFamily !== undefined && fontFamily !== '') updateData.fontFamily = fontFamily;
-    if (fontSize !== undefined && fontSize !== '') updateData.fontSize = fontSize;
-    if (textColor !== undefined && textColor !== '') updateData.textColor = textColor;
-    if (backgroundColor !== undefined && backgroundColor !== '') updateData.backgroundColor = backgroundColor;
-    if (textAlign !== undefined && textAlign !== '') updateData.textAlign = textAlign;
-    if (borderColor !== undefined && borderColor !== '') updateData.borderColor = borderColor;
-    if (borderWidth !== undefined && borderWidth !== '') updateData.borderWidth = borderWidth;
-    if (borderStyle !== undefined && borderStyle !== '') updateData.borderStyle = borderStyle;
-    if (borderRadius !== undefined && borderRadius !== '') updateData.borderRadius = borderRadius;
+    if (fontFamily !== undefined && fontFamily !== '')
+      updateData.fontFamily = fontFamily;
+    if (fontSize !== undefined && fontSize !== '')
+      updateData.fontSize = fontSize;
+    if (textColor !== undefined && textColor !== '')
+      updateData.textColor = textColor;
+    if (backgroundColor !== undefined && backgroundColor !== '')
+      updateData.backgroundColor = backgroundColor;
+    if (textAlign !== undefined && textAlign !== '')
+      updateData.textAlign = textAlign;
+    if (borderColor !== undefined && borderColor !== '')
+      updateData.borderColor = borderColor;
+    if (borderWidth !== undefined && borderWidth !== '')
+      updateData.borderWidth = borderWidth;
+    if (borderStyle !== undefined && borderStyle !== '')
+      updateData.borderStyle = borderStyle;
+    if (borderRadius !== undefined && borderRadius !== '')
+      updateData.borderRadius = borderRadius;
     if (padding !== undefined && padding !== '') updateData.padding = padding;
-    if (boxShadow !== undefined && boxShadow !== '') updateData.boxShadow = boxShadow;
+    if (boxShadow !== undefined && boxShadow !== '')
+      updateData.boxShadow = boxShadow;
 
     const updatedEntry = await prisma.calendarEntry.update({
       where: { id: entryId },
@@ -73,7 +83,10 @@ export async function PATCH(
     console.error('Error updating entry:', error);
     console.error('Update data was:', JSON.stringify(updateData, null, 2));
     return NextResponse.json(
-      { error: 'Something went wrong', details: error instanceof Error ? error.message : String(error) },
+      {
+        error: 'Something went wrong',
+        details: error instanceof Error ? error.message : String(error),
+      },
       { status: 500 }
     );
   }

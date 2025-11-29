@@ -527,7 +527,7 @@ export default function EditCalendar({
                   <h4 className='text-sm font-semibold text-gray-700 mb-3'>
                     🎨 Container Styling
                   </h4>
-                  
+
                   <div className='grid grid-cols-2 gap-3'>
                     <div>
                       <label className='block text-xs font-medium text-gray-600 mb-1'>
@@ -536,7 +536,10 @@ export default function EditCalendar({
                       <select
                         value={formData.borderStyle}
                         onChange={(e) =>
-                          setFormData({ ...formData, borderStyle: e.target.value })
+                          setFormData({
+                            ...formData,
+                            borderStyle: e.target.value,
+                          })
                         }
                         className='w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:border-red-400 focus:outline-none'
                       >
@@ -555,7 +558,10 @@ export default function EditCalendar({
                       <select
                         value={formData.borderWidth}
                         onChange={(e) =>
-                          setFormData({ ...formData, borderWidth: e.target.value })
+                          setFormData({
+                            ...formData,
+                            borderWidth: e.target.value,
+                          })
                         }
                         className='w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:border-red-400 focus:outline-none'
                       >
@@ -577,7 +583,10 @@ export default function EditCalendar({
                           type='color'
                           value={formData.borderColor || '#000000'}
                           onChange={(e) =>
-                            setFormData({ ...formData, borderColor: e.target.value })
+                            setFormData({
+                              ...formData,
+                              borderColor: e.target.value,
+                            })
                           }
                           className='h-10 w-16 border border-gray-300 rounded cursor-pointer'
                         />
@@ -585,7 +594,10 @@ export default function EditCalendar({
                           type='text'
                           value={formData.borderColor || ''}
                           onChange={(e) =>
-                            setFormData({ ...formData, borderColor: e.target.value })
+                            setFormData({
+                              ...formData,
+                              borderColor: e.target.value,
+                            })
                           }
                           placeholder='#000000'
                           className='flex-1 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:border-red-400 focus:outline-none'
@@ -600,7 +612,10 @@ export default function EditCalendar({
                       <select
                         value={formData.borderRadius}
                         onChange={(e) =>
-                          setFormData({ ...formData, borderRadius: e.target.value })
+                          setFormData({
+                            ...formData,
+                            borderRadius: e.target.value,
+                          })
                         }
                         className='w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:border-red-400 focus:outline-none'
                       >
@@ -641,19 +656,38 @@ export default function EditCalendar({
                       <select
                         value={formData.boxShadow}
                         onChange={(e) =>
-                          setFormData({ ...formData, boxShadow: e.target.value })
+                          setFormData({
+                            ...formData,
+                            boxShadow: e.target.value,
+                          })
                         }
                         className='w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:border-red-400 focus:outline-none'
                       >
                         <option value='none'>None</option>
-                        <option value='0 1px 3px rgba(0,0,0,0.1)'>Subtle</option>
-                        <option value='0 2px 8px rgba(0,0,0,0.15)'>Light</option>
-                        <option value='0 4px 12px rgba(0,0,0,0.2)'>Medium</option>
-                        <option value='0 8px 24px rgba(0,0,0,0.25)'>Strong</option>
-                        <option value='0 12px 32px rgba(0,0,0,0.3)'>Very Strong</option>
-                        <option value='0 4px 12px rgba(255,0,0,0.3)'>Red Glow</option>
-                        <option value='0 4px 12px rgba(0,255,0,0.3)'>Green Glow</option>
-                        <option value='0 4px 12px rgba(255,215,0,0.5)'>Gold Glow</option>
+                        <option value='0 1px 3px rgba(0,0,0,0.1)'>
+                          Subtle
+                        </option>
+                        <option value='0 2px 8px rgba(0,0,0,0.15)'>
+                          Light
+                        </option>
+                        <option value='0 4px 12px rgba(0,0,0,0.2)'>
+                          Medium
+                        </option>
+                        <option value='0 8px 24px rgba(0,0,0,0.25)'>
+                          Strong
+                        </option>
+                        <option value='0 12px 32px rgba(0,0,0,0.3)'>
+                          Very Strong
+                        </option>
+                        <option value='0 4px 12px rgba(255,0,0,0.3)'>
+                          Red Glow
+                        </option>
+                        <option value='0 4px 12px rgba(0,255,0,0.3)'>
+                          Green Glow
+                        </option>
+                        <option value='0 4px 12px rgba(255,215,0,0.5)'>
+                          Gold Glow
+                        </option>
                       </select>
                     </div>
                   </div>
