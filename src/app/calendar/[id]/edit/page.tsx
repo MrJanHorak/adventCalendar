@@ -345,7 +345,8 @@ export default function EditCalendar({
         snowflakesEnabled: preset.snowflakesEnabled,
         buttonStyle: preset.buttonStyle || 'gradient',
         buttonPrimaryColor: preset.buttonPrimaryColor || preset.primaryColor,
-        buttonSecondaryColor: preset.buttonSecondaryColor || preset.secondaryColor,
+        buttonSecondaryColor:
+          preset.buttonSecondaryColor || preset.secondaryColor,
       });
     }
   };
@@ -688,7 +689,9 @@ export default function EditCalendar({
                           }`}
                         >
                           <div className='text-2xl mb-1'>{style.emoji}</div>
-                          <div className='text-xs font-medium'>{style.label}</div>
+                          <div className='text-xs font-medium'>
+                            {style.label}
+                          </div>
                         </button>
                       ))}
                     </div>
@@ -716,7 +719,8 @@ export default function EditCalendar({
                     <div>
                       <label className='block text-sm font-medium text-gray-700 mb-2'>
                         Button Secondary Color
-                        {themeData.buttonStyle === 'gradient' && ' (Gradient End)'}
+                        {themeData.buttonStyle === 'gradient' &&
+                          ' (Gradient End)'}
                       </label>
                       <input
                         type='color'
