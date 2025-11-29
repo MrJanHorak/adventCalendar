@@ -25,13 +25,21 @@ model User {
 }
 
 model Calendar {
-  id          String   @id @default(cuid())
-  title       String
-  description String?
-  shareId     String   @unique @default(cuid())
-  userId      String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id                  String   @id @default(cuid())
+  title               String
+  description         String?
+  shareId             String   @unique @default(cuid())
+  userId              String
+  theme               String?  @default("classic")
+  backgroundColor     String?  @default("#f9fafb")
+  backgroundPattern   String?  @default("none")
+  primaryColor        String?  @default("#dc2626")
+  secondaryColor      String?  @default("#16a34a")
+  textColor           String?  @default("#111827")
+  snowflakesEnabled   Boolean  @default(true)
+  customDecoration    String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
 
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   entries     CalendarEntry[]

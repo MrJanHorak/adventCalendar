@@ -56,7 +56,18 @@ export async function PATCH(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { title, description } = await req.json();
+    const { 
+      title, 
+      description,
+      theme,
+      backgroundColor,
+      backgroundPattern,
+      primaryColor,
+      secondaryColor,
+      textColor,
+      snowflakesEnabled,
+      customDecoration
+    } = await req.json();
 
     const calendar = await prisma.calendar.findUnique({
       where: { id },
@@ -73,9 +84,22 @@ export async function PATCH(
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
+    const updateData: Record<string, unknown> = {};
+    
+    if (title !== undefined && title !== '') updateData.title = title;
+    if (description !== undefined) updateData.description = description;
+    if (theme !== undefined && theme !== '') updateData.theme = theme;
+    if (backgroundColor !== undefined && backgroundColor !== '') updateData.backgroundColor = backgroundColor;
+    if (backgroundPattern !== undefined && backgroundPattern !== '') updateData.backgroundPattern = backgroundPattern;
+    if (primaryColor !== undefined && primaryColor !== '') updateData.primaryColor = primaryColor;
+    if (secondaryColor !== undefined && secondaryColor !== '') updateData.secondaryColor = secondaryColor;
+    if (textColor !== undefined && textColor !== '') updateData.textColor = textColor;
+    if (snowflakesEnabled !== undefined) updateData.snowflakesEnabled = snowflakesEnabled;
+    if (customDecoration !== undefined && customDecoration !== '') updateData.customDecoration = customDecoration;
+
     const updatedCalendar = await prisma.calendar.update({
       where: { id },
-      data: { title, description },
+      data: updateData,
     });
 
     return NextResponse.json(updatedCalendar);

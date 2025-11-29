@@ -3,11 +3,13 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { themePresets } from '@/lib/themes';
 
 export default function CreateCalendar() {
   const router = useRouter();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [selectedTheme, setSelectedTheme] = useState('classic');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -17,10 +19,22 @@ export default function CreateCalendar() {
     setLoading(true);
 
     try {
+      const theme = themePresets.find(t => t.id === selectedTheme);
+      
       const response = await fetch('/api/calendars', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, description }),
+        body: JSON.stringify({ 
+          title, 
+          description,
+          theme: theme?.id,
+          backgroundColor: theme?.backgroundColor,
+          backgroundPattern: theme?.backgroundPattern,
+          primaryColor: theme?.primaryColor,
+          secondaryColor: theme?.secondaryColor,
+          textColor: theme?.textColor,
+          snowflakesEnabled: theme?.snowflakesEnabled,
+        }),
       });
 
       const data = await response.json();
@@ -103,6 +117,57 @@ export default function CreateCalendar() {
                 placeholder='Add a special message or description'
                 className='w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-red-400 focus:outline-none transition resize-none'
               />
+            </div>
+
+            <div>
+              <label className='block text-sm font-medium text-gray-700 mb-3'>
+                Choose a Theme
+              </label>
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+                {themePresets.map((theme) => (
+                  <button
+                    key={theme.id}
+                    type='button'
+                    onClick={() => setSelectedTheme(theme.id)}
+                    className={`p-4 rounded-lg border-2 text-left transition ${
+                      selectedTheme === theme.id
+                        ? 'border-red-500 bg-red-50'
+                        : 'border-gray-200 hover:border-gray-300 bg-white'
+                    }`}
+                  >
+                    <div className='flex items-start justify-between'>
+                      <div>
+                        <h3 className='font-semibold text-gray-800 mb-1'>
+                          {theme.name}
+                        </h3>
+                        <p className='text-sm text-gray-600'>
+                          {theme.description}
+                        </p>
+                      </div>
+                      {selectedTheme === theme.id && (
+                        <span className='text-red-500 text-xl'>✓</span>
+                      )}
+                    </div>
+                    <div className='flex gap-2 mt-3'>
+                      <div
+                        className='w-8 h-8 rounded border'
+                        style={{ backgroundColor: theme.primaryColor }}
+                        title='Primary Color'
+                      />
+                      <div
+                        className='w-8 h-8 rounded border'
+                        style={{ backgroundColor: theme.secondaryColor }}
+                        title='Secondary Color'
+                      />
+                      <div
+                        className='w-8 h-8 rounded border'
+                        style={{ backgroundColor: theme.backgroundColor }}
+                        title='Background'
+                      />
+                    </div>
+                  </button>
+                ))}
+              </div>
             </div>
 
             <div className='flex space-x-4'>

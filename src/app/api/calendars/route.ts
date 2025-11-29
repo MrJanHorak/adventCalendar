@@ -39,7 +39,18 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { title, description } = await req.json();
+    const { 
+      title, 
+      description,
+      theme,
+      backgroundColor,
+      backgroundPattern,
+      primaryColor,
+      secondaryColor,
+      textColor,
+      snowflakesEnabled,
+      customDecoration
+    } = await req.json();
 
     if (!title) {
       return NextResponse.json({ error: 'Title is required' }, { status: 400 });
@@ -50,6 +61,14 @@ export async function POST(req: NextRequest) {
         title,
         description,
         userId: session.user.id,
+        ...(theme !== undefined && { theme }),
+        ...(backgroundColor !== undefined && { backgroundColor }),
+        ...(backgroundPattern !== undefined && { backgroundPattern }),
+        ...(primaryColor !== undefined && { primaryColor }),
+        ...(secondaryColor !== undefined && { secondaryColor }),
+        ...(textColor !== undefined && { textColor }),
+        ...(snowflakesEnabled !== undefined && { snowflakesEnabled }),
+        ...(customDecoration !== undefined && { customDecoration }),
       },
     });
 

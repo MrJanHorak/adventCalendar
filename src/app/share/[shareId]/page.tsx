@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import { getThemeStyles } from '@/lib/themes';
 
 type EntryType = 'TEXT' | 'POEM' | 'IMAGE';
 
@@ -37,6 +38,14 @@ interface Calendar {
     id: string;
     name: string | null;
   };
+  theme?: string;
+  backgroundColor?: string;
+  backgroundPattern?: string;
+  primaryColor?: string;
+  secondaryColor?: string;
+  textColor?: string;
+  snowflakesEnabled?: boolean;
+  customDecoration?: string;
 }
 
 interface OpenedDoor {
@@ -231,14 +240,39 @@ export default function SharedCalendar({
     ? calendar.entries.find((e) => e.day === selectedDay)
     : null;
 
+  // Get theme styles
+  const themeStyles = getThemeStyles(
+    calendar.theme
+      ? {
+          id: calendar.theme,
+          name: '',
+          description: '',
+          backgroundColor: calendar.backgroundColor || '#f9fafb',
+          backgroundPattern: calendar.backgroundPattern || 'none',
+          primaryColor: calendar.primaryColor || '#dc2626',
+          secondaryColor: calendar.secondaryColor || '#16a34a',
+          textColor: calendar.textColor || '#111827',
+          snowflakesEnabled: calendar.snowflakesEnabled !== false,
+        }
+      : null
+  );
+
   return (
-    <div className='min-h-screen bg-gradient-to-br from-red-50 via-white to-green-50'>
-      {/* Snowflakes */}
-      <div className='fixed inset-0 pointer-events-none overflow-hidden'>
-        <div className='snowflake'>❄</div>
-        <div className='snowflake'>❅</div>
-        <div className='snowflake'>❆</div>
-      </div>
+    <div
+      className='min-h-screen'
+      style={{
+        ...themeStyles,
+        minHeight: '100vh',
+      }}
+    >
+      {/* Snowflakes - conditionally rendered */}
+      {(calendar.snowflakesEnabled !== false) && (
+        <div className='fixed inset-0 pointer-events-none overflow-hidden'>
+          <div className='snowflake'>❄</div>
+          <div className='snowflake'>❅</div>
+          <div className='snowflake'>❆</div>
+        </div>
+      )}
 
       {/* Navigation */}
       <nav className='bg-white/80 backdrop-blur-sm border-b border-red-100'>
@@ -256,14 +290,26 @@ export default function SharedCalendar({
 
       <main className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-10'>
         <div className='text-center mb-12'>
-          <h1 className='text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-green-600 mb-4'>
+          <h1
+            className='text-5xl font-bold mb-4'
+            style={{
+              color: calendar.textColor || '#111827',
+            }}
+          >
             {calendar.title}
           </h1>
           {calendar.description && (
-            <p className='text-xl text-gray-600 mb-2'>{calendar.description}</p>
+            <p
+              className='text-xl mb-2'
+              style={{ color: calendar.textColor || '#4b5563' }}
+            >
+              {calendar.description}
+            </p>
           )}
           {calendar.user.name && (
-            <p className='text-gray-500'>Created by {calendar.user.name}</p>
+            <p style={{ color: calendar.textColor || '#6b7280' }}>
+              Created by {calendar.user.name}
+            </p>
           )}
           {ownerPreview && isOwner && (
             <div className='mt-4 inline-block bg-blue-100 border-2 border-blue-300 text-blue-700 px-6 py-3 rounded-lg font-semibold'>
@@ -290,12 +336,19 @@ export default function SharedCalendar({
                 key={day}
                 onClick={() => handleDayClick(day)}
                 disabled={!hasEntry || (!canOpen && !isOpened)}
-                className={`aspect-square rounded-2xl font-bold text-2xl transition-all transform hover:scale-105 shadow-lg ${
-                  isOpened
-                    ? 'bg-gradient-to-br from-green-400 to-green-600 text-white'
+                style={{
+                  backgroundColor: isOpened
+                    ? calendar.secondaryColor || '#16a34a'
                     : canOpen && hasEntry
-                    ? 'bg-gradient-to-br from-red-400 to-red-600 text-white hover:from-red-500 hover:to-red-700 cursor-pointer animate-pulse'
-                    : 'bg-white border-2 border-gray-300 text-gray-400 cursor-not-allowed'
+                    ? calendar.primaryColor || '#dc2626'
+                    : 'rgba(255, 255, 255, 0.8)',
+                  color: isOpened || (canOpen && hasEntry) ? '#ffffff' : calendar.textColor || '#9ca3af',
+                  borderColor: calendar.primaryColor || '#dc2626',
+                }}
+                className={`aspect-square rounded-2xl font-bold text-2xl transition-all transform hover:scale-105 shadow-lg border-2 ${
+                  !hasEntry || (!canOpen && !isOpened)
+                    ? 'opacity-50 cursor-not-allowed'
+                    : ''
                 }`}
               >
                 {day}

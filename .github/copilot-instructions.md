@@ -11,6 +11,8 @@ Full-stack holiday advent calendar website with user authentication and personal
 - [x] Setup database and authentication
 - [x] Create calendar features
 - [x] Build UI components
+- [x] Add entry text and container formatting
+- [x] Add calendar-level theme customization
 - [x] Test and compile project
 
 ## Technology Stack
@@ -26,9 +28,13 @@ Full-stack holiday advent calendar website with user authentication and personal
 - User authentication (login/register)
 - Create personalized advent calendars with 25 entries
 - Support for pictures, poems, and text entries
+- Entry-level text and container formatting (fonts, colors, borders, shadows)
+- Calendar-level theme customization with 6 pre-built themes
+- Background patterns and colors
 - Date-restricted door opening (December 1-25)
 - Track which doors users have opened
 - Shareable URLs for calendars
+- Owner preview mode to test all doors
 - Holiday themed UI with animations
 
 ## Setup Instructions

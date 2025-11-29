@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { themePresets, getThemePreset } from '@/lib/themes';
 
 type EntryType = 'TEXT' | 'POEM' | 'IMAGE';
 
@@ -32,6 +33,14 @@ interface Calendar {
   description: string | null;
   shareId: string;
   entries: CalendarEntry[];
+  theme?: string;
+  backgroundColor?: string;
+  backgroundPattern?: string;
+  primaryColor?: string;
+  secondaryColor?: string;
+  textColor?: string;
+  snowflakesEnabled?: boolean;
+  customDecoration?: string;
 }
 
 export default function EditCalendar({
@@ -46,6 +55,16 @@ export default function EditCalendar({
   const [calendar, setCalendar] = useState<Calendar | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
+  const [showThemeEditor, setShowThemeEditor] = useState(false);
+  const [themeData, setThemeData] = useState({
+    theme: 'classic',
+    backgroundColor: '#f9fafb',
+    backgroundPattern: 'none',
+    primaryColor: '#dc2626',
+    secondaryColor: '#16a34a',
+    textColor: '#111827',
+    snowflakesEnabled: true,
+  });
   const [formData, setFormData] = useState({
     title: '',
     content: '',
@@ -77,6 +96,16 @@ export default function EditCalendar({
         if (response.ok) {
           const data = await response.json();
           setCalendar(data);
+          // Load theme data
+          setThemeData({
+            theme: data.theme || 'classic',
+            backgroundColor: data.backgroundColor || '#f9fafb',
+            backgroundPattern: data.backgroundPattern || 'none',
+            primaryColor: data.primaryColor || '#dc2626',
+            secondaryColor: data.secondaryColor || '#16a34a',
+            textColor: data.textColor || '#111827',
+            snowflakesEnabled: data.snowflakesEnabled !== false,
+          });
         } else {
           router.push('/dashboard');
         }
@@ -212,6 +241,41 @@ export default function EditCalendar({
     }
   };
 
+  const handleApplyPreset = (presetId: string) => {
+    const preset = getThemePreset(presetId);
+    if (preset) {
+      setThemeData({
+        theme: preset.id,
+        backgroundColor: preset.backgroundColor,
+        backgroundPattern: preset.backgroundPattern,
+        primaryColor: preset.primaryColor,
+        secondaryColor: preset.secondaryColor,
+        textColor: preset.textColor,
+        snowflakesEnabled: preset.snowflakesEnabled,
+      });
+    }
+  };
+
+  const handleSaveTheme = async () => {
+    if (!resolvedParams) return;
+
+    try {
+      const response = await fetch(`/api/calendars/${resolvedParams.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(themeData),
+      });
+
+      if (response.ok) {
+        await fetchCalendar();
+        alert('Theme saved successfully!');
+      }
+    } catch (error) {
+      console.error('Error saving theme:', error);
+      alert('Failed to save theme');
+    }
+  };
+
   if (loading) {
     return (
       <div className='min-h-screen flex items-center justify-center bg-gradient-to-br from-red-50 via-white to-green-50'>
@@ -224,8 +288,38 @@ export default function EditCalendar({
     return null;
   }
 
+  // Get theme styles for edit page
+  const themeStyles = {
+    backgroundColor: themeData.backgroundColor,
+    color: themeData.textColor,
+  };
+
+  // Add background pattern styles
+  if (themeData.backgroundPattern && themeData.backgroundPattern !== 'none') {
+    switch (themeData.backgroundPattern) {
+      case 'snowflakes':
+        themeStyles.backgroundImage = 'url("data:image/svg+xml,%3Csvg width=\'100\' height=\'100\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Ctext x=\'10\' y=\'30\' font-size=\'20\' fill=\'%23cbd5e1\' opacity=\'0.4\'%3E❄%3C/text%3E%3Ctext x=\'60\' y=\'70\' font-size=\'16\' fill=\'%23cbd5e1\' opacity=\'0.3\'%3E❅%3C/text%3E%3Ctext x=\'80\' y=\'20\' font-size=\'14\' fill=\'%23cbd5e1\' opacity=\'0.35\'%3E❆%3C/text%3E%3C/svg%3E")';
+        break;
+      case 'stars':
+        themeStyles.backgroundImage = 'url("data:image/svg+xml,%3Csvg width=\'100\' height=\'100\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Ctext x=\'15\' y=\'35\' font-size=\'18\' fill=\'%23fbbf24\' opacity=\'0.4\'%3E⭐%3C/text%3E%3Ctext x=\'65\' y=\'75\' font-size=\'14\' fill=\'%23fbbf24\' opacity=\'0.35\'%3E✨%3C/text%3E%3Ctext x=\'85\' y=\'25\' font-size=\'12\' fill=\'%23fbbf24\' opacity=\'0.3\'%3E⭐%3C/text%3E%3Ctext x=\'40\' y=\'55\' font-size=\'10\' fill=\'%23fbbf24\' opacity=\'0.25\'%3E✨%3C/text%3E%3C/svg%3E")';
+        break;
+      case 'woodgrain':
+        themeStyles.backgroundImage = 'linear-gradient(90deg, rgba(92,77,66,0.05) 25%, transparent 25%, transparent 50%, rgba(92,77,66,0.05) 50%, rgba(92,77,66,0.05) 75%, transparent 75%, transparent)';
+        themeStyles.backgroundSize = '40px 40px';
+        break;
+      case 'dots':
+        themeStyles.backgroundImage = 'radial-gradient(circle, rgba(15,23,42,0.1) 1px, transparent 1px)';
+        themeStyles.backgroundSize = '20px 20px';
+        break;
+      case 'stripes':
+        themeStyles.backgroundImage = `linear-gradient(45deg, ${themeData.primaryColor}15 25%, transparent 25%, transparent 50%, ${themeData.primaryColor}15 50%, ${themeData.primaryColor}15 75%, transparent 75%, transparent)`;
+        themeStyles.backgroundSize = '40px 40px';
+        break;
+    }
+  }
+
   return (
-    <div className='min-h-screen bg-gradient-to-br from-red-50 via-white to-green-50'>
+    <div className='min-h-screen' style={themeStyles}>
       {/* Navigation */}
       <nav className='bg-white/80 backdrop-blur-sm border-b border-red-100'>
         <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
@@ -276,6 +370,194 @@ export default function EditCalendar({
               Save an entry before previewing to see changes reflected.
             </p>
           </div>
+        </div>
+
+        {/* Theme Customization Section */}
+        <div className='mb-8 bg-white rounded-2xl shadow-lg p-6 border-2 border-purple-200'>
+          <button
+            onClick={() => setShowThemeEditor(!showThemeEditor)}
+            className='w-full flex items-center justify-between text-left'
+          >
+            <div>
+              <h2 className='text-2xl font-bold text-gray-800'>
+                🎨 Calendar Theme & Styling
+              </h2>
+              <p className='text-sm text-gray-600 mt-1'>
+                Customize the overall look and feel of your calendar
+              </p>
+            </div>
+            <span className='text-2xl text-purple-600'>
+              {showThemeEditor ? '▼' : '▶'}
+            </span>
+          </button>
+
+          {showThemeEditor && (
+            <div className='mt-6 space-y-6'>
+              {/* Theme Presets */}
+              <div>
+                <label className='block text-sm font-medium text-gray-700 mb-3'>
+                  Choose a Theme Preset
+                </label>
+                <div className='grid grid-cols-1 md:grid-cols-3 gap-3'>
+                  {themePresets.map((preset) => (
+                    <button
+                      key={preset.id}
+                      type='button'
+                      onClick={() => handleApplyPreset(preset.id)}
+                      className={`p-4 rounded-lg border-2 text-left transition ${
+                        themeData.theme === preset.id
+                          ? 'border-purple-500 bg-purple-50'
+                          : 'border-gray-200 hover:border-gray-300'
+                      }`}
+                    >
+                      <h3 className='font-semibold text-gray-800 mb-1'>
+                        {preset.name}
+                      </h3>
+                      <p className='text-xs text-gray-600 mb-2'>
+                        {preset.description}
+                      </p>
+                      <div className='flex gap-2'>
+                        <div
+                          className='w-6 h-6 rounded border'
+                          style={{ backgroundColor: preset.primaryColor }}
+                        />
+                        <div
+                          className='w-6 h-6 rounded border'
+                          style={{ backgroundColor: preset.secondaryColor }}
+                        />
+                        <div
+                          className='w-6 h-6 rounded border'
+                          style={{ backgroundColor: preset.backgroundColor }}
+                        />
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Custom Colors */}
+              <div className='grid md:grid-cols-2 gap-4'>
+                <div>
+                  <label className='block text-sm font-medium text-gray-700 mb-2'>
+                    Background Color
+                  </label>
+                  <input
+                    type='color'
+                    value={themeData.backgroundColor}
+                    onChange={(e) =>
+                      setThemeData({
+                        ...themeData,
+                        backgroundColor: e.target.value,
+                      })
+                    }
+                    className='h-12 w-full rounded border-2 border-gray-200 cursor-pointer'
+                  />
+                </div>
+
+                <div>
+                  <label className='block text-sm font-medium text-gray-700 mb-2'>
+                    Text Color
+                  </label>
+                  <input
+                    type='color'
+                    value={themeData.textColor}
+                    onChange={(e) =>
+                      setThemeData({ ...themeData, textColor: e.target.value })
+                    }
+                    className='h-12 w-full rounded border-2 border-gray-200 cursor-pointer'
+                  />
+                </div>
+
+                <div>
+                  <label className='block text-sm font-medium text-gray-700 mb-2'>
+                    Primary Color (Accent)
+                  </label>
+                  <input
+                    type='color'
+                    value={themeData.primaryColor}
+                    onChange={(e) =>
+                      setThemeData({
+                        ...themeData,
+                        primaryColor: e.target.value,
+                      })
+                    }
+                    className='h-12 w-full rounded border-2 border-gray-200 cursor-pointer'
+                  />
+                </div>
+
+                <div>
+                  <label className='block text-sm font-medium text-gray-700 mb-2'>
+                    Secondary Color
+                  </label>
+                  <input
+                    type='color'
+                    value={themeData.secondaryColor}
+                    onChange={(e) =>
+                      setThemeData({
+                        ...themeData,
+                        secondaryColor: e.target.value,
+                      })
+                    }
+                    className='h-12 w-full rounded border-2 border-gray-200 cursor-pointer'
+                  />
+                </div>
+              </div>
+
+              {/* Background Pattern */}
+              <div>
+                <label className='block text-sm font-medium text-gray-700 mb-2'>
+                  Background Pattern
+                </label>
+                <select
+                  value={themeData.backgroundPattern}
+                  onChange={(e) =>
+                    setThemeData({
+                      ...themeData,
+                      backgroundPattern: e.target.value,
+                    })
+                  }
+                  className='w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-purple-400 focus:outline-none'
+                >
+                  <option value='none'>None</option>
+                  <option value='snowflakes'>Snowflakes</option>
+                  <option value='stars'>Stars</option>
+                  <option value='woodgrain'>Woodgrain</option>
+                  <option value='dots'>Dots</option>
+                  <option value='stripes'>Diagonal Stripes</option>
+                </select>
+              </div>
+
+              {/* Snowflakes Toggle */}
+              <div>
+                <label className='flex items-center gap-3 cursor-pointer'>
+                  <input
+                    type='checkbox'
+                    checked={themeData.snowflakesEnabled}
+                    onChange={(e) =>
+                      setThemeData({
+                        ...themeData,
+                        snowflakesEnabled: e.target.checked,
+                      })
+                    }
+                    className='w-5 h-5 rounded border-2 border-gray-300 text-purple-600 focus:ring-purple-500'
+                  />
+                  <span className='text-sm font-medium text-gray-700'>
+                    Enable Animated Snowflakes
+                  </span>
+                </label>
+              </div>
+
+              {/* Save Button */}
+              <div className='pt-4 border-t'>
+                <button
+                  onClick={handleSaveTheme}
+                  className='w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 rounded-lg font-semibold hover:from-purple-600 hover:to-pink-600 transition'
+                >
+                  💾 Save Theme Settings
+                </button>
+              </div>
+            </div>
+          )}
         </div>
 
         <div className='grid md:grid-cols-2 gap-8'>
@@ -405,7 +687,7 @@ export default function EditCalendar({
                         <option value='Times New Roman'>Times New Roman</option>
                         <option value='monospace'>Monospace</option>
                         <option value='Courier New'>Courier New</option>
-                        <option value='cursive'>Cursive</option>
+                        <option value='Brush Script MT, cursive'>Cursive</option>
                         <option value='Comic Sans MS'>Comic Sans</option>
                         <option value='Arial'>Arial</option>
                         <option value='Verdana'>Verdana</option>
@@ -438,62 +720,34 @@ export default function EditCalendar({
                       <label className='block text-xs font-medium text-gray-600 mb-1'>
                         Text Color
                       </label>
-                      <div className='flex gap-2'>
-                        <input
-                          type='color'
-                          value={formData.textColor}
-                          onChange={(e) =>
-                            setFormData({
-                              ...formData,
-                              textColor: e.target.value,
-                            })
-                          }
-                          className='h-10 w-16 border border-gray-300 rounded cursor-pointer'
-                        />
-                        <input
-                          type='text'
-                          value={formData.textColor}
-                          onChange={(e) =>
-                            setFormData({
-                              ...formData,
-                              textColor: e.target.value,
-                            })
-                          }
-                          placeholder='#000000'
-                          className='flex-1 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:border-red-400 focus:outline-none'
-                        />
-                      </div>
+                      <input
+                        type='color'
+                        value={formData.textColor}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            textColor: e.target.value,
+                          })
+                        }
+                        className='h-12 w-full border border-gray-300 rounded cursor-pointer'
+                      />
                     </div>
 
                     <div>
                       <label className='block text-xs font-medium text-gray-600 mb-1'>
                         Background Color
                       </label>
-                      <div className='flex gap-2'>
-                        <input
-                          type='color'
-                          value={formData.backgroundColor || '#ffffff'}
-                          onChange={(e) =>
-                            setFormData({
-                              ...formData,
-                              backgroundColor: e.target.value,
-                            })
-                          }
-                          className='h-10 w-16 border border-gray-300 rounded cursor-pointer'
-                        />
-                        <input
-                          type='text'
-                          value={formData.backgroundColor || ''}
-                          onChange={(e) =>
-                            setFormData({
-                              ...formData,
-                              backgroundColor: e.target.value,
-                            })
-                          }
-                          placeholder='None'
-                          className='flex-1 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:border-red-400 focus:outline-none'
-                        />
-                      </div>
+                      <input
+                        type='color'
+                        value={formData.backgroundColor || '#ffffff'}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            backgroundColor: e.target.value,
+                          })
+                        }
+                        className='h-12 w-full border border-gray-300 rounded cursor-pointer'
+                      />
                     </div>
 
                     <div className='col-span-2'>
