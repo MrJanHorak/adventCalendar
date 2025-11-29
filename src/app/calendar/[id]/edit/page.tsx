@@ -4,8 +4,9 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { themePresets, getThemePreset } from '@/lib/themes';
+import { convertToEmbedUrl } from '@/lib/videoUtils';
 
-type EntryType = 'TEXT' | 'POEM' | 'IMAGE';
+type EntryType = 'TEXT' | 'POEM' | 'IMAGE' | 'VIDEO';
 
 interface CalendarEntry {
   id: string;
@@ -13,6 +14,7 @@ interface CalendarEntry {
   title: string;
   content: string;
   imageUrl: string | null;
+  videoUrl: string | null;
   type: EntryType;
   fontFamily?: string;
   fontSize?: string;
@@ -69,6 +71,7 @@ export default function EditCalendar({
     title: '',
     content: '',
     imageUrl: '',
+    videoUrl: '',
     type: 'TEXT' as EntryType,
     fontFamily: 'Inter',
     fontSize: '16px',
@@ -144,6 +147,7 @@ export default function EditCalendar({
         title: entry.title,
         content: entry.content,
         imageUrl: entry.imageUrl || '',
+        videoUrl: entry.videoUrl || '',
         type: entry.type,
         fontFamily: entry.fontFamily || 'Inter',
         fontSize: entry.fontSize || '16px',
@@ -162,6 +166,7 @@ export default function EditCalendar({
         title: '',
         content: '',
         imageUrl: '',
+        videoUrl: '',
         type: 'TEXT',
         fontFamily: 'Inter',
         fontSize: '16px',
@@ -184,6 +189,15 @@ export default function EditCalendar({
 
     const existingEntry = calendar.entries.find((e) => e.day === selectedDay);
 
+    // Prepare data with converted video URL
+    const dataToSave = {
+      ...formData,
+      videoUrl:
+        formData.type === 'VIDEO' && formData.videoUrl
+          ? convertToEmbedUrl(formData.videoUrl)
+          : formData.videoUrl,
+    };
+
     try {
       if (existingEntry) {
         // Update existing entry
@@ -192,7 +206,7 @@ export default function EditCalendar({
           {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(formData),
+            body: JSON.stringify(dataToSave),
           }
         );
         if (response.ok) {
@@ -206,7 +220,7 @@ export default function EditCalendar({
           {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ day: selectedDay, ...formData }),
+            body: JSON.stringify({ day: selectedDay, ...dataToSave }),
           }
         );
         if (response.ok) {
@@ -289,7 +303,7 @@ export default function EditCalendar({
   }
 
   // Get theme styles for edit page
-  const themeStyles = {
+  const themeStyles: React.CSSProperties = {
     backgroundColor: themeData.backgroundColor,
     color: themeData.textColor,
   };
@@ -617,6 +631,7 @@ export default function EditCalendar({
                     <option value='TEXT'>Text</option>
                     <option value='POEM'>Poem</option>
                     <option value='IMAGE'>Image</option>
+                    <option value='VIDEO'>Video</option>
                   </select>
                 </div>
 
@@ -967,6 +982,26 @@ export default function EditCalendar({
                       placeholder='https://example.com/image.jpg'
                       className='w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-red-400 focus:outline-none'
                     />
+                  </div>
+                )}
+
+                {formData.type === 'VIDEO' && (
+                  <div>
+                    <label className='block text-sm font-medium text-gray-700 mb-2'>
+                      Video URL
+                    </label>
+                    <input
+                      type='url'
+                      value={formData.videoUrl}
+                      onChange={(e) =>
+                        setFormData({ ...formData, videoUrl: e.target.value })
+                      }
+                      placeholder='https://www.youtube.com/watch?v=... or https://vimeo.com/...'
+                      className='w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-red-400 focus:outline-none'
+                    />
+                    <p className='text-xs text-gray-500 mt-1'>
+                      Enter a YouTube or Vimeo URL. It will be automatically converted to an embed URL.
+                    </p>
                   </div>
                 )}
 

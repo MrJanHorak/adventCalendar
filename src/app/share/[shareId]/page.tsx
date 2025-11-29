@@ -5,7 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { getThemeStyles } from '@/lib/themes';
 
-type EntryType = 'TEXT' | 'POEM' | 'IMAGE';
+type EntryType = 'TEXT' | 'POEM' | 'IMAGE' | 'VIDEO';
 
 interface CalendarEntry {
   id: string;
@@ -13,6 +13,7 @@ interface CalendarEntry {
   title: string;
   content: string;
   imageUrl: string | null;
+  videoUrl: string | null;
   type: EntryType;
   fontFamily?: string;
   fontSize?: string;
@@ -384,6 +385,20 @@ export default function SharedCalendar({
                     alt={selectedEntry.title}
                     className='w-full h-auto'
                   />
+                </div>
+              )}
+
+              {selectedEntry.type === 'VIDEO' && selectedEntry.videoUrl && (
+                <div className='mb-6 rounded-xl overflow-hidden'>
+                  <div className='aspect-video'>
+                    <iframe
+                      src={selectedEntry.videoUrl}
+                      title={selectedEntry.title}
+                      className='w-full h-full'
+                      allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+                      allowFullScreen
+                    />
+                  </div>
                 </div>
               )}
 

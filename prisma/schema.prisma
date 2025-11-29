@@ -55,6 +55,7 @@ model CalendarEntry {
   title           String
   content         String   @db.Text
   imageUrl        String?
+  videoUrl        String?
   type            EntryType @default(TEXT)
   fontFamily      String?  @default("Inter")
   fontSize        String?  @default("16px")
@@ -96,4 +97,5 @@ enum EntryType {
   TEXT
   POEM
   IMAGE
+  VIDEO
 }

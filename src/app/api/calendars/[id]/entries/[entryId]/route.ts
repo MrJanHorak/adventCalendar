@@ -18,6 +18,7 @@ export async function PATCH(
       title,
       content,
       imageUrl,
+      videoUrl,
       type,
       fontFamily,
       fontSize,
@@ -50,6 +51,7 @@ export async function PATCH(
     if (title !== undefined) updateData.title = title;
     if (content !== undefined) updateData.content = content;
     if (imageUrl !== undefined) updateData.imageUrl = imageUrl;
+    if (videoUrl !== undefined) updateData.videoUrl = videoUrl;
     if (type !== undefined) updateData.type = type;
     if (fontFamily !== undefined && fontFamily !== '')
       updateData.fontFamily = fontFamily;
@@ -81,7 +83,6 @@ export async function PATCH(
     return NextResponse.json(updatedEntry);
   } catch (error) {
     console.error('Error updating entry:', error);
-    console.error('Update data was:', JSON.stringify(updateData, null, 2));
     return NextResponse.json(
       {
         error: 'Something went wrong',
