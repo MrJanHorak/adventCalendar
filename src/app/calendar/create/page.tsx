@@ -34,6 +34,9 @@ export default function CreateCalendar() {
           secondaryColor: theme?.secondaryColor,
           textColor: theme?.textColor,
           snowflakesEnabled: theme?.snowflakesEnabled,
+          buttonStyle: theme?.buttonStyle,
+          buttonPrimaryColor: theme?.buttonPrimaryColor,
+          buttonSecondaryColor: theme?.buttonSecondaryColor,
         }),
       });
 

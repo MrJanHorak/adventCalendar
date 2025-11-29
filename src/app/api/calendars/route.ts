@@ -50,6 +50,9 @@ export async function POST(req: NextRequest) {
       textColor,
       snowflakesEnabled,
       customDecoration,
+      buttonStyle,
+      buttonPrimaryColor,
+      buttonSecondaryColor,
     } = await req.json();
 
     if (!title) {
@@ -69,6 +72,9 @@ export async function POST(req: NextRequest) {
         ...(textColor !== undefined && { textColor }),
         ...(snowflakesEnabled !== undefined && { snowflakesEnabled }),
         ...(customDecoration !== undefined && { customDecoration }),
+        ...(buttonStyle !== undefined && { buttonStyle }),
+        ...(buttonPrimaryColor !== undefined && { buttonPrimaryColor }),
+        ...(buttonSecondaryColor !== undefined && { buttonSecondaryColor }),
       },
     });
 

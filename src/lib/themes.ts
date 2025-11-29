@@ -8,6 +8,9 @@ export interface ThemePreset {
   secondaryColor: string;
   textColor: string;
   snowflakesEnabled: boolean;
+  buttonStyle?: 'gradient' | 'solid' | 'outline';
+  buttonPrimaryColor?: string;
+  buttonSecondaryColor?: string;
 }
 
 export const themePresets: ThemePreset[] = [
@@ -21,6 +24,9 @@ export const themePresets: ThemePreset[] = [
     secondaryColor: '#16a34a',
     textColor: '#111827',
     snowflakesEnabled: true,
+    buttonStyle: 'gradient',
+    buttonPrimaryColor: '#dc2626',
+    buttonSecondaryColor: '#16a34a',
   },
   {
     id: 'winter-wonderland',
@@ -32,6 +38,9 @@ export const themePresets: ThemePreset[] = [
     secondaryColor: '#60a5fa',
     textColor: '#1e3a8a',
     snowflakesEnabled: true,
+    buttonStyle: 'gradient',
+    buttonPrimaryColor: '#3b82f6',
+    buttonSecondaryColor: '#60a5fa',
   },
   {
     id: 'festive-gold',
@@ -43,6 +52,9 @@ export const themePresets: ThemePreset[] = [
     secondaryColor: '#15803d',
     textColor: '#713f12',
     snowflakesEnabled: false,
+    buttonStyle: 'solid',
+    buttonPrimaryColor: '#eab308',
+    buttonSecondaryColor: '#15803d',
   },
   {
     id: 'cozy-cabin',
@@ -54,6 +66,9 @@ export const themePresets: ThemePreset[] = [
     secondaryColor: '#92400e',
     textColor: '#451a03',
     snowflakesEnabled: false,
+    buttonStyle: 'solid',
+    buttonPrimaryColor: '#b91c1c',
+    buttonSecondaryColor: '#92400e',
   },
   {
     id: 'modern-minimal',
@@ -65,6 +80,9 @@ export const themePresets: ThemePreset[] = [
     secondaryColor: '#475569',
     textColor: '#1e293b',
     snowflakesEnabled: false,
+    buttonStyle: 'outline',
+    buttonPrimaryColor: '#0f172a',
+    buttonSecondaryColor: '#475569',
   },
   {
     id: 'candy-cane',
@@ -76,6 +94,9 @@ export const themePresets: ThemePreset[] = [
     secondaryColor: '#fb7185',
     textColor: '#881337',
     snowflakesEnabled: true,
+    buttonStyle: 'gradient',
+    buttonPrimaryColor: '#f43f5e',
+    buttonSecondaryColor: '#fb7185',
   },
 ];
 
@@ -120,4 +141,39 @@ export function getThemeStyles(theme: ThemePreset | null) {
   }
 
   return baseStyles;
+}
+
+export function getButtonStyles(
+  buttonStyle: string | null | undefined,
+  primaryColor: string,
+  secondaryColor: string
+): React.CSSProperties {
+  const style = buttonStyle || 'gradient';
+
+  switch (style) {
+    case 'gradient':
+      return {
+        backgroundImage: `linear-gradient(to right, ${primaryColor}, ${secondaryColor})`,
+        color: '#ffffff',
+        border: 'none',
+      };
+    case 'solid':
+      return {
+        backgroundColor: primaryColor,
+        color: '#ffffff',
+        border: 'none',
+      };
+    case 'outline':
+      return {
+        backgroundColor: 'transparent',
+        color: primaryColor,
+        border: `2px solid ${primaryColor}`,
+      };
+    default:
+      return {
+        backgroundImage: `linear-gradient(to right, ${primaryColor}, ${secondaryColor})`,
+        color: '#ffffff',
+        border: 'none',
+      };
+  }
 }

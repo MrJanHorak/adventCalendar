@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { themePresets, getThemePreset } from '@/lib/themes';
+import { themePresets, getThemePreset, getButtonStyles } from '@/lib/themes';
 import { convertToEmbedUrl } from '@/lib/videoUtils';
 import HelpModal from '@/components/HelpModal';
 
@@ -49,6 +49,9 @@ interface Calendar {
   textColor?: string;
   snowflakesEnabled?: boolean;
   customDecoration?: string;
+  buttonStyle?: string;
+  buttonPrimaryColor?: string;
+  buttonSecondaryColor?: string;
 }
 
 export default function EditCalendar({
@@ -74,6 +77,9 @@ export default function EditCalendar({
     secondaryColor: '#16a34a',
     textColor: '#111827',
     snowflakesEnabled: true,
+    buttonStyle: 'gradient',
+    buttonPrimaryColor: '#dc2626',
+    buttonSecondaryColor: '#16a34a',
   });
   const [formData, setFormData] = useState({
     title: '',
@@ -122,6 +128,9 @@ export default function EditCalendar({
             secondaryColor: data.secondaryColor || '#16a34a',
             textColor: data.textColor || '#111827',
             snowflakesEnabled: data.snowflakesEnabled !== false,
+            buttonStyle: data.buttonStyle || 'gradient',
+            buttonPrimaryColor: data.buttonPrimaryColor || '#dc2626',
+            buttonSecondaryColor: data.buttonSecondaryColor || '#16a34a',
           });
         } else {
           router.push('/dashboard');
@@ -334,6 +343,9 @@ export default function EditCalendar({
         secondaryColor: preset.secondaryColor,
         textColor: preset.textColor,
         snowflakesEnabled: preset.snowflakesEnabled,
+        buttonStyle: preset.buttonStyle || 'gradient',
+        buttonPrimaryColor: preset.buttonPrimaryColor || preset.primaryColor,
+        buttonSecondaryColor: preset.buttonSecondaryColor || preset.secondaryColor,
       });
     }
   };
@@ -642,6 +654,105 @@ export default function EditCalendar({
                 </label>
               </div>
 
+              {/* Button Style Section */}
+              <div className='border-t-2 border-gray-200 pt-6'>
+                <h3 className='text-lg font-semibold text-gray-800 mb-4'>
+                  🔘 Button Styling
+                </h3>
+
+                <div className='space-y-4'>
+                  {/* Button Style Type */}
+                  <div>
+                    <label className='block text-sm font-medium text-gray-700 mb-2'>
+                      Button Style
+                    </label>
+                    <div className='grid grid-cols-3 gap-3'>
+                      {[
+                        { value: 'gradient', label: 'Gradient', emoji: '🌈' },
+                        { value: 'solid', label: 'Solid', emoji: '⬛' },
+                        { value: 'outline', label: 'Outline', emoji: '⬜' },
+                      ].map((style) => (
+                        <button
+                          key={style.value}
+                          type='button'
+                          onClick={() =>
+                            setThemeData({
+                              ...themeData,
+                              buttonStyle: style.value,
+                            })
+                          }
+                          className={`p-3 rounded-lg border-2 text-center transition ${
+                            themeData.buttonStyle === style.value
+                              ? 'border-purple-500 bg-purple-50'
+                              : 'border-gray-200 hover:border-gray-300'
+                          }`}
+                        >
+                          <div className='text-2xl mb-1'>{style.emoji}</div>
+                          <div className='text-xs font-medium'>{style.label}</div>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Button Colors */}
+                  <div className='grid md:grid-cols-2 gap-4'>
+                    <div>
+                      <label className='block text-sm font-medium text-gray-700 mb-2'>
+                        Button Primary Color
+                      </label>
+                      <input
+                        type='color'
+                        value={themeData.buttonPrimaryColor}
+                        onChange={(e) =>
+                          setThemeData({
+                            ...themeData,
+                            buttonPrimaryColor: e.target.value,
+                          })
+                        }
+                        className='h-12 w-full rounded border-2 border-gray-200 cursor-pointer'
+                      />
+                    </div>
+
+                    <div>
+                      <label className='block text-sm font-medium text-gray-700 mb-2'>
+                        Button Secondary Color
+                        {themeData.buttonStyle === 'gradient' && ' (Gradient End)'}
+                      </label>
+                      <input
+                        type='color'
+                        value={themeData.buttonSecondaryColor}
+                        onChange={(e) =>
+                          setThemeData({
+                            ...themeData,
+                            buttonSecondaryColor: e.target.value,
+                          })
+                        }
+                        className='h-12 w-full rounded border-2 border-gray-200 cursor-pointer'
+                        disabled={themeData.buttonStyle === 'outline'}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Button Preview */}
+                  <div className='bg-gray-50 p-4 rounded-lg'>
+                    <p className='text-sm font-medium text-gray-700 mb-3'>
+                      Button Preview:
+                    </p>
+                    <button
+                      type='button'
+                      style={getButtonStyles(
+                        themeData.buttonStyle,
+                        themeData.buttonPrimaryColor,
+                        themeData.buttonSecondaryColor
+                      )}
+                      className='px-6 py-3 rounded-lg font-semibold transition hover:opacity-90'
+                    >
+                      Sample Button
+                    </button>
+                  </div>
+                </div>
+              </div>
+
               {/* Save Button */}
               <div className='pt-4 border-t'>
                 <button
@@ -853,40 +964,48 @@ export default function EditCalendar({
                   <label className='block text-sm font-medium text-gray-700 mb-2'>
                     Content
                   </label>
-                  <textarea
-                    value={formData.content}
-                    onChange={(e) =>
-                      setFormData({ ...formData, content: e.target.value })
-                    }
-                    rows={6}
-                    placeholder='Enter your message, poem, or description'
-                    className='w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-red-400 focus:outline-none resize-none'
+                  <div
+                    className='w-full border-2 border-gray-200 rounded-lg overflow-hidden'
                     style={{
-                      fontFamily: formData.fontFamily,
-                      fontSize: formData.fontSize,
-                      color: formData.textColor,
-                      backgroundColor:
-                        formData.backgroundColor || 'transparent',
-                      textAlign: formData.textAlign as any,
                       borderColor: formData.borderColor || '#e5e7eb',
                       borderWidth: formData.borderWidth,
                       borderStyle: formData.borderStyle as any,
                       borderRadius: formData.borderRadius,
-                      padding: formData.padding,
                       boxShadow: formData.boxShadow,
+                      backgroundColor:
+                        formData.backgroundColor || 'transparent',
                       display: 'flex',
-                      alignItems:
+                      flexDirection: 'column',
+                      justifyContent:
                         formData.verticalAlign === 'top'
                           ? 'flex-start'
                           : formData.verticalAlign === 'bottom'
                           ? 'flex-end'
                           : 'center',
-                      ...(formData.isPoem && {
-                        fontStyle: 'italic',
-                        lineHeight: '1.75',
-                      }),
+                      minHeight: '250px',
                     }}
-                  />
+                  >
+                    <textarea
+                      value={formData.content}
+                      onChange={(e) =>
+                        setFormData({ ...formData, content: e.target.value })
+                      }
+                      placeholder='Enter your message, poem, or description'
+                      className='w-full bg-transparent focus:outline-none resize-none border-0'
+                      style={{
+                        fontFamily: formData.fontFamily,
+                        fontSize: formData.fontSize,
+                        color: formData.textColor,
+                        textAlign: formData.textAlign as any,
+                        padding: formData.padding,
+                        outline: 'none',
+                        ...(formData.isPoem && {
+                          fontStyle: 'italic',
+                          lineHeight: '1.75',
+                        }),
+                      }}
+                    />
+                  </div>
                 </div>
 
                 {/* Formatting Options */}

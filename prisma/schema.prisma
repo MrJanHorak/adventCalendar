@@ -38,6 +38,9 @@ model Calendar {
   textColor           String?  @default("#111827")
   snowflakesEnabled   Boolean  @default(true)
   customDecoration    String?
+  buttonStyle         String?  @default("gradient")
+  buttonPrimaryColor  String?  @default("#dc2626")
+  buttonSecondaryColor String? @default("#16a34a")
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
 

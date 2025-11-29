@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { getThemeStyles } from '@/lib/themes';
+import { getThemeStyles, getButtonStyles } from '@/lib/themes';
 
 type EntryType = 'TEXT' | 'POEM' | 'IMAGE' | 'VIDEO';
 
@@ -51,6 +51,9 @@ interface Calendar {
   textColor?: string;
   snowflakesEnabled?: boolean;
   customDecoration?: string;
+  buttonStyle?: string;
+  buttonPrimaryColor?: string;
+  buttonSecondaryColor?: string;
 }
 
 interface OpenedDoor {
@@ -230,7 +233,10 @@ export default function SharedCalendar({
           <div className='text-2xl text-red-600 mb-4'>{error}</div>
           <Link
             href='/'
-            className='inline-block bg-gradient-to-r from-red-500 to-green-500 text-white px-8 py-3 rounded-full hover:from-red-600 hover:to-green-600 transition font-semibold'
+            className='inline-block text-white px-8 py-3 rounded-full hover:opacity-90 transition font-semibold'
+            style={{
+              background: 'linear-gradient(to right, #dc2626, #16a34a)',
+            }}
           >
             Go Home
           </Link>
@@ -240,6 +246,13 @@ export default function SharedCalendar({
   }
 
   if (!calendar) return null;
+
+  // Get button styles based on calendar settings
+  const buttonStyles = getButtonStyles(
+    calendar.buttonStyle || 'gradient',
+    calendar.buttonPrimaryColor || calendar.primaryColor || '#dc2626',
+    calendar.buttonSecondaryColor || calendar.secondaryColor || '#16a34a'
+  );
 
   const selectedEntry = selectedDay
     ? calendar.entries.find((e) => e.day === selectedDay)
@@ -457,7 +470,8 @@ export default function SharedCalendar({
                     href={selectedEntry.linkUrl}
                     target='_blank'
                     rel='noopener noreferrer'
-                    className='inline-block w-full text-center bg-gradient-to-r from-purple-500 to-blue-500 text-white px-6 py-4 rounded-xl hover:from-purple-600 hover:to-blue-600 transition font-semibold text-lg shadow-lg'
+                    style={buttonStyles}
+                    className='inline-block w-full text-center text-white px-6 py-4 rounded-xl hover:opacity-90 transition font-semibold text-lg shadow-lg'
                   >
                     🔗 {selectedEntry.linkText || 'Visit Link'}
                   </a>
@@ -476,7 +490,8 @@ export default function SharedCalendar({
 
               <button
                 onClick={() => setSelectedDay(null)}
-                className='mt-8 w-full bg-gradient-to-r from-red-500 to-green-500 text-white py-4 rounded-full hover:from-red-600 hover:to-green-600 transition font-semibold text-lg'
+                style={buttonStyles}
+                className='mt-8 w-full text-white py-4 rounded-full hover:opacity-90 transition font-semibold text-lg'
               >
                 Close
               </button>

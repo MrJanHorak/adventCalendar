@@ -67,6 +67,9 @@ export async function PATCH(
       textColor,
       snowflakesEnabled,
       customDecoration,
+      buttonStyle,
+      buttonPrimaryColor,
+      buttonSecondaryColor,
     } = await req.json();
 
     const calendar = await prisma.calendar.findUnique({
@@ -103,6 +106,12 @@ export async function PATCH(
       updateData.snowflakesEnabled = snowflakesEnabled;
     if (customDecoration !== undefined && customDecoration !== '')
       updateData.customDecoration = customDecoration;
+    if (buttonStyle !== undefined && buttonStyle !== '')
+      updateData.buttonStyle = buttonStyle;
+    if (buttonPrimaryColor !== undefined && buttonPrimaryColor !== '')
+      updateData.buttonPrimaryColor = buttonPrimaryColor;
+    if (buttonSecondaryColor !== undefined && buttonSecondaryColor !== '')
+      updateData.buttonSecondaryColor = buttonSecondaryColor;
 
     const updatedCalendar = await prisma.calendar.update({
       where: { id },
