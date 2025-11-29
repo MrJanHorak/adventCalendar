@@ -76,20 +76,53 @@ export default async function Dashboard() {
         </div>
 
         {calendars.length === 0 ? (
-          <div className='bg-white rounded-2xl shadow-lg p-12 text-center border-2 border-gray-100'>
-            <div className='text-6xl mb-4'>🎁</div>
-            <h2 className='text-2xl font-bold text-gray-800 mb-3'>
-              No calendars yet
-            </h2>
-            <p className='text-gray-600 mb-6'>
-              Create your first advent calendar and start spreading holiday joy!
-            </p>
-            <Link
-              href='/calendar/create'
-              className='inline-block bg-gradient-to-r from-red-500 to-green-500 text-white px-8 py-3 rounded-full hover:from-red-600 hover:to-green-600 transition font-semibold'
-            >
-              Create Your First Calendar
-            </Link>
+          <div className='space-y-8'>
+            <div className='bg-white rounded-2xl shadow-lg p-12 text-center border-2 border-gray-100'>
+              <div className='text-6xl mb-4'>🎁</div>
+              <h2 className='text-2xl font-bold text-gray-800 mb-3'>
+                No calendars yet
+              </h2>
+              <p className='text-gray-600 mb-6'>
+                Create your first advent calendar and start spreading holiday
+                joy!
+              </p>
+              <Link
+                href='/calendar/create'
+                className='inline-block bg-gradient-to-r from-red-500 to-green-500 text-white px-8 py-3 rounded-full hover:from-red-600 hover:to-green-600 transition font-semibold'
+              >
+                Create Your First Calendar
+              </Link>
+            </div>
+
+            {/* Quick Start Guide */}
+            <div className='bg-gradient-to-r from-red-50 to-green-50 rounded-2xl p-8 border-2 border-red-200'>
+              <h2 className='text-2xl font-bold text-gray-800 mb-6 text-center'>
+                🚀 Quick Start Guide
+              </h2>
+              <div className='grid md:grid-cols-3 gap-6'>
+                <div className='bg-white p-6 rounded-xl shadow-sm'>
+                  <div className='text-4xl mb-3'>1️⃣</div>
+                  <h3 className='font-bold text-lg mb-2'>Create Calendar</h3>
+                  <p className='text-sm text-gray-600'>
+                    Give it a name and choose a festive theme
+                  </p>
+                </div>
+                <div className='bg-white p-6 rounded-xl shadow-sm'>
+                  <div className='text-4xl mb-3'>2️⃣</div>
+                  <h3 className='font-bold text-lg mb-2'>Add 25 Days</h3>
+                  <p className='text-sm text-gray-600'>
+                    Fill each door with text, images, poems, or videos
+                  </p>
+                </div>
+                <div className='bg-white p-6 rounded-xl shadow-sm'>
+                  <div className='text-4xl mb-3'>3️⃣</div>
+                  <h3 className='font-bold text-lg mb-2'>Share & Enjoy</h3>
+                  <p className='text-sm text-gray-600'>
+                    Send the link and watch the magic unfold daily!
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         ) : (
           <div className='grid md:grid-cols-2 lg:grid-cols-3 gap-6'>

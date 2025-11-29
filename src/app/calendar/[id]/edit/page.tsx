@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { themePresets, getThemePreset } from '@/lib/themes';
 import { convertToEmbedUrl } from '@/lib/videoUtils';
+import HelpModal from '@/components/HelpModal';
 
 type EntryType = 'TEXT' | 'POEM' | 'IMAGE' | 'VIDEO';
 
@@ -58,6 +59,8 @@ export default function EditCalendar({
   const [loading, setLoading] = useState(true);
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
   const [showThemeEditor, setShowThemeEditor] = useState(false);
+  const [showHelp, setShowHelp] = useState(false);
+  const [showQuickTips, setShowQuickTips] = useState(false);
   const [themeData, setThemeData] = useState({
     theme: 'classic',
     backgroundColor: '#f9fafb',
@@ -338,6 +341,8 @@ export default function EditCalendar({
 
   return (
     <div className='min-h-screen' style={themeStyles}>
+      <HelpModal isOpen={showHelp} onClose={() => setShowHelp(false)} />
+
       {/* Navigation */}
       <nav className='bg-white/80 backdrop-blur-sm border-b border-red-100'>
         <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
@@ -348,6 +353,13 @@ export default function EditCalendar({
                 Advent Calendar
               </span>
             </Link>
+            <button
+              onClick={() => setShowHelp(true)}
+              className='flex items-center gap-2 text-gray-700 hover:text-red-600 font-medium transition'
+            >
+              <span className='text-xl'>❓</span>
+              <span>Help</span>
+            </button>
           </div>
         </div>
       </nav>
@@ -573,6 +585,84 @@ export default function EditCalendar({
                 >
                   💾 Save Theme Settings
                 </button>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Quick Tips Section */}
+        <div className='mb-8 bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl shadow-lg p-6 border-2 border-blue-200'>
+          <button
+            onClick={() => setShowQuickTips(!showQuickTips)}
+            className='w-full flex items-center justify-between text-left'
+          >
+            <div>
+              <h2 className='text-2xl font-bold text-gray-800'>
+                💡 Quick Tips & Help
+              </h2>
+              <p className='text-sm text-gray-600 mt-1'>
+                Learn how to add images, videos, and more
+              </p>
+            </div>
+            <span className='text-2xl text-blue-600'>
+              {showQuickTips ? '▼' : '▶'}
+            </span>
+          </button>
+
+          {showQuickTips && (
+            <div className='mt-6 grid md:grid-cols-2 gap-4'>
+              <div className='bg-white p-4 rounded-lg shadow-sm border border-blue-100'>
+                <h3 className='font-bold text-lg mb-2 flex items-center gap-2'>
+                  <span>🖼️</span> Adding Images
+                </h3>
+                <ol className='text-sm text-gray-700 space-y-1 list-decimal list-inside'>
+                  <li>
+                    Upload your image to{' '}
+                    <a
+                      href='https://imgur.com/upload'
+                      target='_blank'
+                      rel='noopener'
+                      className='text-blue-600 hover:underline'
+                    >
+                      Imgur
+                    </a>
+                  </li>
+                  <li>Right-click → "Copy image address"</li>
+                  <li>Paste the URL (should end in .jpg or .png)</li>
+                </ol>
+              </div>
+
+              <div className='bg-white p-4 rounded-lg shadow-sm border border-purple-100'>
+                <h3 className='font-bold text-lg mb-2 flex items-center gap-2'>
+                  <span>🎥</span> Adding Videos
+                </h3>
+                <ol className='text-sm text-gray-700 space-y-1 list-decimal list-inside'>
+                  <li>Find your video on YouTube or Vimeo</li>
+                  <li>Copy the URL from the address bar</li>
+                  <li>Paste it - we'll convert it automatically!</li>
+                </ol>
+              </div>
+
+              <div className='bg-white p-4 rounded-lg shadow-sm border border-green-100'>
+                <h3 className='font-bold text-lg mb-2 flex items-center gap-2'>
+                  <span>🎨</span> Formatting Tips
+                </h3>
+                <ul className='text-sm text-gray-700 space-y-1 list-disc list-inside'>
+                  <li>Use POEM type for automatic italics</li>
+                  <li>Customize each entry's colors independently</li>
+                  <li>Try different border styles for variety</li>
+                </ul>
+              </div>
+
+              <div className='bg-white p-4 rounded-lg shadow-sm border border-red-100'>
+                <h3 className='font-bold text-lg mb-2 flex items-center gap-2'>
+                  <span>👀</span> Preview & Test
+                </h3>
+                <ul className='text-sm text-gray-700 space-y-1 list-disc list-inside'>
+                  <li>Use "Owner Preview" to test all doors</li>
+                  <li>Check how it looks on mobile too</li>
+                  <li>Save before previewing to see changes</li>
+                </ul>
               </div>
             </div>
           )}
@@ -969,9 +1059,17 @@ export default function EditCalendar({
                 </div>
 
                 {formData.type === 'IMAGE' && (
-                  <div>
-                    <label className='block text-sm font-medium text-gray-700 mb-2'>
+                  <div className='image-url-input'>
+                    <label className='block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2'>
                       Image URL
+                      <div className='group relative'>
+                        <span className='text-blue-500 cursor-help text-lg'>ℹ️</span>
+                        <div className='invisible group-hover:visible absolute left-0 top-6 bg-gray-900 text-white text-xs rounded p-3 w-64 z-10 shadow-lg'>
+                          <p className='font-semibold mb-1'>Need an image URL?</p>
+                          <p className='mb-2'>Upload to Imgur.com (free, no signup)</p>
+                          <p className='text-gray-300'>Right-click the uploaded image → "Copy image address"</p>
+                        </div>
+                      </div>
                     </label>
                     <input
                       type='url'
@@ -979,16 +1077,28 @@ export default function EditCalendar({
                       onChange={(e) =>
                         setFormData({ ...formData, imageUrl: e.target.value })
                       }
-                      placeholder='https://example.com/image.jpg'
+                      placeholder='https://i.imgur.com/example.jpg'
                       className='w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-red-400 focus:outline-none'
                     />
+                    <p className='text-xs text-gray-500 mt-1'>
+                      💡 Tip: Use a direct image link ending in .jpg, .png, or .gif
+                    </p>
                   </div>
                 )}
 
                 {formData.type === 'VIDEO' && (
-                  <div>
-                    <label className='block text-sm font-medium text-gray-700 mb-2'>
+                  <div className='video-url-input'>
+                    <label className='block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2'>
                       Video URL
+                      <div className='group relative'>
+                        <span className='text-blue-500 cursor-help text-lg'>ℹ️</span>
+                        <div className='invisible group-hover:visible absolute left-0 top-6 bg-gray-900 text-white text-xs rounded p-3 w-64 z-10 shadow-lg'>
+                          <p className='font-semibold mb-1'>Supported platforms:</p>
+                          <p className='mb-1'>✓ YouTube</p>
+                          <p className='text-gray-300'>✓ Vimeo</p>
+                          <p className='mt-2 text-gray-300'>Just paste any YouTube or Vimeo URL!</p>
+                        </div>
+                      </div>
                     </label>
                     <input
                       type='url'
@@ -996,12 +1106,11 @@ export default function EditCalendar({
                       onChange={(e) =>
                         setFormData({ ...formData, videoUrl: e.target.value })
                       }
-                      placeholder='https://www.youtube.com/watch?v=... or https://vimeo.com/...'
+                      placeholder='https://www.youtube.com/watch?v=...'
                       className='w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-red-400 focus:outline-none'
                     />
                     <p className='text-xs text-gray-500 mt-1'>
-                      Enter a YouTube or Vimeo URL. It will be automatically
-                      converted to an embed URL.
+                      💡 Paste a YouTube or Vimeo link - we'll convert it automatically
                     </p>
                   </div>
                 )}
