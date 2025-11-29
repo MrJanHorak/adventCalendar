@@ -14,7 +14,17 @@ export async function PATCH(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { title, content, imageUrl, type, fontFamily, fontSize, textColor, backgroundColor, textAlign } = await req.json();
+    const {
+      title,
+      content,
+      imageUrl,
+      type,
+      fontFamily,
+      fontSize,
+      textColor,
+      backgroundColor,
+      textAlign,
+    } = await req.json();
 
     const entry = await prisma.calendarEntry.findUnique({
       where: { id: entryId },
@@ -31,10 +41,10 @@ export async function PATCH(
 
     const updatedEntry = await prisma.calendarEntry.update({
       where: { id: entryId },
-      data: { 
-        title, 
-        content, 
-        imageUrl, 
+      data: {
+        title,
+        content,
+        imageUrl,
         type,
         fontFamily,
         fontSize,

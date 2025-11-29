@@ -341,7 +341,8 @@ export default function EditCalendar({
                       fontFamily: formData.fontFamily,
                       fontSize: formData.fontSize,
                       color: formData.textColor,
-                      backgroundColor: formData.backgroundColor || 'transparent',
+                      backgroundColor:
+                        formData.backgroundColor || 'transparent',
                       textAlign: formData.textAlign as any,
                     }}
                   />
@@ -352,7 +353,7 @@ export default function EditCalendar({
                   <h4 className='text-sm font-semibold text-gray-700 mb-3'>
                     📝 Text Formatting
                   </h4>
-                  
+
                   <div className='grid grid-cols-2 gap-3'>
                     <div>
                       <label className='block text-xs font-medium text-gray-600 mb-1'>
@@ -361,7 +362,10 @@ export default function EditCalendar({
                       <select
                         value={formData.fontFamily}
                         onChange={(e) =>
-                          setFormData({ ...formData, fontFamily: e.target.value })
+                          setFormData({
+                            ...formData,
+                            fontFamily: e.target.value,
+                          })
                         }
                         className='w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:border-red-400 focus:outline-none'
                       >
@@ -409,7 +413,10 @@ export default function EditCalendar({
                           type='color'
                           value={formData.textColor}
                           onChange={(e) =>
-                            setFormData({ ...formData, textColor: e.target.value })
+                            setFormData({
+                              ...formData,
+                              textColor: e.target.value,
+                            })
                           }
                           className='h-10 w-16 border border-gray-300 rounded cursor-pointer'
                         />
@@ -417,7 +424,10 @@ export default function EditCalendar({
                           type='text'
                           value={formData.textColor}
                           onChange={(e) =>
-                            setFormData({ ...formData, textColor: e.target.value })
+                            setFormData({
+                              ...formData,
+                              textColor: e.target.value,
+                            })
                           }
                           placeholder='#000000'
                           className='flex-1 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:border-red-400 focus:outline-none'
@@ -434,7 +444,10 @@ export default function EditCalendar({
                           type='color'
                           value={formData.backgroundColor || '#ffffff'}
                           onChange={(e) =>
-                            setFormData({ ...formData, backgroundColor: e.target.value })
+                            setFormData({
+                              ...formData,
+                              backgroundColor: e.target.value,
+                            })
                           }
                           className='h-10 w-16 border border-gray-300 rounded cursor-pointer'
                         />
@@ -442,7 +455,10 @@ export default function EditCalendar({
                           type='text'
                           value={formData.backgroundColor || ''}
                           onChange={(e) =>
-                            setFormData({ ...formData, backgroundColor: e.target.value })
+                            setFormData({
+                              ...formData,
+                              backgroundColor: e.target.value,
+                            })
                           }
                           placeholder='None'
                           className='flex-1 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:border-red-400 focus:outline-none'
@@ -459,7 +475,9 @@ export default function EditCalendar({
                           <button
                             key={align}
                             type='button'
-                            onClick={() => setFormData({ ...formData, textAlign: align })}
+                            onClick={() =>
+                              setFormData({ ...formData, textAlign: align })
+                            }
                             className={`flex-1 px-3 py-2 text-sm border rounded-lg transition ${
                               formData.textAlign === align
                                 ? 'bg-red-500 text-white border-red-500'

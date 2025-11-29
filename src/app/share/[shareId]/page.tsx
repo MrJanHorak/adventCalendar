@@ -331,7 +331,8 @@ export default function SharedCalendar({
                   fontFamily: selectedEntry.fontFamily || 'Inter',
                   fontSize: selectedEntry.fontSize || '16px',
                   color: selectedEntry.textColor || '#374151',
-                  backgroundColor: selectedEntry.backgroundColor || 'transparent',
+                  backgroundColor:
+                    selectedEntry.backgroundColor || 'transparent',
                   textAlign: (selectedEntry.textAlign || 'left') as any,
                   padding: selectedEntry.backgroundColor ? '1rem' : '0',
                   borderRadius: selectedEntry.backgroundColor ? '0.5rem' : '0',

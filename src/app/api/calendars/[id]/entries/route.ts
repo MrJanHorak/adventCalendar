@@ -14,7 +14,18 @@ export async function POST(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { day, title, content, imageUrl, type, fontFamily, fontSize, textColor, backgroundColor, textAlign } = await req.json();
+    const {
+      day,
+      title,
+      content,
+      imageUrl,
+      type,
+      fontFamily,
+      fontSize,
+      textColor,
+      backgroundColor,
+      textAlign,
+    } = await req.json();
 
     if (!day || day < 1 || day > 25) {
       return NextResponse.json(
