@@ -127,9 +127,9 @@ For first-time users, the empty state dashboard now includes:
 ### Creating Multi-Content Entries
 
 - Use the editor controls at the top of the entry form:
-   - Toggle "Add Image" to show the Image URL field
-   - Toggle "Add Video" to show the Video URL field
-   - Check "Poem Styling" to apply italic + relaxed line-height to text
+  - Toggle "Add Image" to show the Image URL field
+  - Toggle "Add Video" to show the Video URL field
+  - Check "Poem Styling" to apply italic + relaxed line-height to text
 - Title is required; include at least one of text, image, or video.
 - You can include all three: text + image + video.
 

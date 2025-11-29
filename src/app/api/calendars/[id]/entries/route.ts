@@ -43,10 +43,7 @@ export async function POST(
     }
 
     if (!title) {
-      return NextResponse.json(
-        { error: 'Title is required' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Title is required' }, { status: 400 });
     }
 
     // Require at least one of text, image, or video

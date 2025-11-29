@@ -204,9 +204,10 @@ export default function EditCalendar({
     const dataToSave = {
       ...formData,
       imageUrl: showImageField ? formData.imageUrl : '',
-      videoUrl: showVideoField && formData.videoUrl
-        ? convertToEmbedUrl(formData.videoUrl)
-        : '',
+      videoUrl:
+        showVideoField && formData.videoUrl
+          ? convertToEmbedUrl(formData.videoUrl)
+          : '',
     };
 
     try {
