@@ -1,110 +1,116 @@
-"use client"
+'use client';
 
-import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
-import Link from "next/link"
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
-type EntryType = "TEXT" | "POEM" | "IMAGE"
+type EntryType = 'TEXT' | 'POEM' | 'IMAGE';
 
 interface CalendarEntry {
-  id: string
-  day: number
-  title: string
-  content: string
-  imageUrl: string | null
-  type: EntryType
+  id: string;
+  day: number;
+  title: string;
+  content: string;
+  imageUrl: string | null;
+  type: EntryType;
 }
 
 interface Calendar {
-  id: string
-  title: string
-  description: string | null
-  shareId: string
-  entries: CalendarEntry[]
+  id: string;
+  title: string;
+  description: string | null;
+  shareId: string;
+  entries: CalendarEntry[];
 }
 
-export default function EditCalendar({ params }: { params: Promise<{ id: string }> }) {
-  const router = useRouter()
-  const [resolvedParams, setResolvedParams] = useState<{ id: string } | null>(null)
-  const [calendar, setCalendar] = useState<Calendar | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [selectedDay, setSelectedDay] = useState<number | null>(null)
+export default function EditCalendar({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const router = useRouter();
+  const [resolvedParams, setResolvedParams] = useState<{ id: string } | null>(
+    null
+  );
+  const [calendar, setCalendar] = useState<Calendar | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [selectedDay, setSelectedDay] = useState<number | null>(null);
   const [formData, setFormData] = useState({
-    title: "",
-    content: "",
-    imageUrl: "",
-    type: "TEXT" as EntryType,
-  })
-  const [showEmbeddedPreview, setShowEmbeddedPreview] = useState(false)
+    title: '',
+    content: '',
+    imageUrl: '',
+    type: 'TEXT' as EntryType,
+  });
+  const [showEmbeddedPreview, setShowEmbeddedPreview] = useState(false);
 
   useEffect(() => {
-    params.then(setResolvedParams)
-  }, [params])
+    params.then(setResolvedParams);
+  }, [params]);
 
   useEffect(() => {
     const loadCalendar = async () => {
-      if (!resolvedParams) return
-      
+      if (!resolvedParams) return;
+
       try {
-        const response = await fetch(`/api/calendars/${resolvedParams.id}`)
+        const response = await fetch(`/api/calendars/${resolvedParams.id}`);
         if (response.ok) {
-          const data = await response.json()
-          setCalendar(data)
+          const data = await response.json();
+          setCalendar(data);
         } else {
-          router.push("/dashboard")
+          router.push('/dashboard');
         }
       } catch (error) {
-        console.error("Error fetching calendar:", error)
+        console.error('Error fetching calendar:', error);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    loadCalendar()
-  }, [resolvedParams, router])
+    loadCalendar();
+  }, [resolvedParams, router]);
 
   const fetchCalendar = async () => {
-    if (!resolvedParams) return
-    
+    if (!resolvedParams) return;
+
     try {
-      const response = await fetch(`/api/calendars/${resolvedParams.id}`)
+      const response = await fetch(`/api/calendars/${resolvedParams.id}`);
       if (response.ok) {
-        const data = await response.json()
-        setCalendar(data)
+        const data = await response.json();
+        setCalendar(data);
       } else {
-        router.push("/dashboard")
+        router.push('/dashboard');
       }
     } catch (error) {
-      console.error("Error fetching calendar:", error)
+      console.error('Error fetching calendar:', error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const handleDayClick = (day: number) => {
-    const entry = calendar?.entries.find((e) => e.day === day)
+    const entry = calendar?.entries.find((e) => e.day === day);
     if (entry) {
       setFormData({
         title: entry.title,
         content: entry.content,
-        imageUrl: entry.imageUrl || "",
+        imageUrl: entry.imageUrl || '',
         type: entry.type,
-      })
+      });
     } else {
       setFormData({
-        title: "",
-        content: "",
-        imageUrl: "",
-        type: "TEXT",
-      })
+        title: '',
+        content: '',
+        imageUrl: '',
+        type: 'TEXT',
+      });
     }
-    setSelectedDay(day)
-  }
+    setSelectedDay(day);
+  };
 
   const handleSaveEntry = async () => {
-    if (!calendar || selectedDay === null || !resolvedParams) return
+    if (!calendar || selectedDay === null || !resolvedParams) return;
 
-    const existingEntry = calendar.entries.find((e) => e.day === selectedDay)
+    const existingEntry = calendar.entries.find((e) => e.day === selectedDay);
 
     try {
       if (existingEntry) {
@@ -112,187 +118,205 @@ export default function EditCalendar({ params }: { params: Promise<{ id: string 
         const response = await fetch(
           `/api/calendars/${resolvedParams.id}/entries/${existingEntry.id}`,
           {
-            method: "PATCH",
-            headers: { "Content-Type": "application/json" },
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(formData),
           }
-        )
+        );
         if (response.ok) {
-          fetchCalendar()
-          setSelectedDay(null)
+          fetchCalendar();
+          setSelectedDay(null);
         }
       } else {
         // Create new entry
-        const response = await fetch(`/api/calendars/${resolvedParams.id}/entries`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ day: selectedDay, ...formData }),
-        })
+        const response = await fetch(
+          `/api/calendars/${resolvedParams.id}/entries`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ day: selectedDay, ...formData }),
+          }
+        );
         if (response.ok) {
-          fetchCalendar()
-          setSelectedDay(null)
+          fetchCalendar();
+          setSelectedDay(null);
         }
       }
     } catch (error) {
-      console.error("Error saving entry:", error)
+      console.error('Error saving entry:', error);
     }
-  }
+  };
 
   const handleDeleteEntry = async () => {
-    if (!calendar || selectedDay === null || !resolvedParams) return
+    if (!calendar || selectedDay === null || !resolvedParams) return;
 
-    const existingEntry = calendar.entries.find((e) => e.day === selectedDay)
-    if (!existingEntry) return
+    const existingEntry = calendar.entries.find((e) => e.day === selectedDay);
+    if (!existingEntry) return;
 
     try {
       const response = await fetch(
         `/api/calendars/${resolvedParams.id}/entries/${existingEntry.id}`,
         {
-          method: "DELETE",
+          method: 'DELETE',
         }
-      )
+      );
       if (response.ok) {
-        fetchCalendar()
-        setSelectedDay(null)
+        fetchCalendar();
+        setSelectedDay(null);
       }
     } catch (error) {
-      console.error("Error deleting entry:", error)
+      console.error('Error deleting entry:', error);
     }
-  }
+  };
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-red-50 via-white to-green-50">
-        <div className="text-2xl text-gray-600">Loading...</div>
+      <div className='min-h-screen flex items-center justify-center bg-gradient-to-br from-red-50 via-white to-green-50'>
+        <div className='text-2xl text-gray-600'>Loading...</div>
       </div>
-    )
+    );
   }
 
   if (!calendar) {
-    return null
+    return null;
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-50 via-white to-green-50">
+    <div className='min-h-screen bg-gradient-to-br from-red-50 via-white to-green-50'>
       {/* Navigation */}
-      <nav className="bg-white/80 backdrop-blur-sm border-b border-red-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <Link href="/dashboard" className="flex items-center space-x-2">
-              <span className="text-3xl">🎄</span>
-              <span className="text-2xl font-bold text-red-600">Advent Calendar</span>
+      <nav className='bg-white/80 backdrop-blur-sm border-b border-red-100'>
+        <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+          <div className='flex justify-between items-center h-16'>
+            <Link href='/dashboard' className='flex items-center space-x-2'>
+              <span className='text-3xl'>🎄</span>
+              <span className='text-2xl font-bold text-red-600'>
+                Advent Calendar
+              </span>
             </Link>
           </div>
         </div>
       </nav>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-800">{calendar.title}</h1>
+      <main className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12'>
+        <div className='mb-8'>
+          <h1 className='text-4xl font-bold text-gray-800'>{calendar.title}</h1>
           {calendar.description && (
-            <p className="text-gray-600 mt-2">{calendar.description}</p>
+            <p className='text-gray-600 mt-2'>{calendar.description}</p>
           )}
-          <div className="mt-4 text-sm text-gray-500 space-y-3">
+          <div className='mt-4 text-sm text-gray-500 space-y-3'>
             <div>
-              Share link: <code className="bg-white px-2 py-1 rounded">{typeof window !== 'undefined' ? window.location.origin : ''}/share/{calendar.shareId}</code>
+              Share link:{' '}
+              <code className='bg-white px-2 py-1 rounded'>
+                {typeof window !== 'undefined' ? window.location.origin : ''}
+                /share/{calendar.shareId}
+              </code>
             </div>
-            <div className="flex flex-wrap gap-3">
+            <div className='flex flex-wrap gap-3'>
               <Link
                 href={`/share/${calendar.shareId}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center px-4 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-green-500 text-white text-sm font-semibold hover:from-blue-600 hover:to-green-600 transition"
+                target='_blank'
+                rel='noopener noreferrer'
+                className='inline-flex items-center px-4 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-green-500 text-white text-sm font-semibold hover:from-blue-600 hover:to-green-600 transition'
               >
                 Preview as Viewer
               </Link>
               <Link
                 href={`/share/${calendar.shareId}?ownerPreview=1`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center px-4 py-2 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm font-semibold hover:from-purple-600 hover:to-pink-600 transition"
+                target='_blank'
+                rel='noopener noreferrer'
+                className='inline-flex items-center px-4 py-2 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm font-semibold hover:from-purple-600 hover:to-pink-600 transition'
               >
                 🔓 Owner Preview (Test All Days)
               </Link>
               <button
-                type="button"
-                onClick={() => setShowEmbeddedPreview(p => !p)}
-                className="inline-flex items-center px-4 py-2 rounded-lg bg-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-300 transition"
+                type='button'
+                onClick={() => setShowEmbeddedPreview((p) => !p)}
+                className='inline-flex items-center px-4 py-2 rounded-lg bg-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-300 transition'
               >
-                {showEmbeddedPreview ? "Hide Embedded Preview" : "Show Embedded Preview"}
+                {showEmbeddedPreview
+                  ? 'Hide Embedded Preview'
+                  : 'Show Embedded Preview'}
               </button>
             </div>
-            <p className="text-xs text-gray-400">Save an entry before previewing to see changes reflected.</p>
+            <p className='text-xs text-gray-400'>
+              Save an entry before previewing to see changes reflected.
+            </p>
           </div>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className='grid md:grid-cols-2 gap-8'>
           {/* Calendar Grid */}
           <div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">Calendar Days</h2>
-            <div className="grid grid-cols-5 gap-3">
+            <h2 className='text-2xl font-bold text-gray-800 mb-4'>
+              Calendar Days
+            </h2>
+            <div className='grid grid-cols-5 gap-3'>
               {Array.from({ length: 25 }, (_, i) => i + 1).map((day) => {
-                const hasEntry = calendar.entries.some((e) => e.day === day)
+                const hasEntry = calendar.entries.some((e) => e.day === day);
                 return (
                   <button
                     key={day}
                     onClick={() => handleDayClick(day)}
                     className={`aspect-square rounded-lg font-bold text-lg transition ${
                       selectedDay === day
-                        ? "bg-red-500 text-white"
+                        ? 'bg-red-500 text-white'
                         : hasEntry
-                        ? "bg-green-500 text-white hover:bg-green-600"
-                        : "bg-white border-2 border-gray-200 hover:border-red-300"
+                        ? 'bg-green-500 text-white hover:bg-green-600'
+                        : 'bg-white border-2 border-gray-200 hover:border-red-300'
                     }`}
                   >
                     {day}
                   </button>
-                )
+                );
               })}
             </div>
           </div>
 
           {/* Entry Editor */}
           {selectedDay !== null && (
-            <div className="bg-white rounded-2xl shadow-lg p-6 border-2 border-red-200">
-              <h3 className="text-2xl font-bold text-gray-800 mb-4">
+            <div className='bg-white rounded-2xl shadow-lg p-6 border-2 border-red-200'>
+              <h3 className='text-2xl font-bold text-gray-800 mb-4'>
                 Day {selectedDay}
               </h3>
 
-              <div className="space-y-4">
+              <div className='space-y-4'>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className='block text-sm font-medium text-gray-700 mb-2'>
                     Entry Type
                   </label>
                   <select
                     value={formData.type}
                     onChange={(e) =>
-                      setFormData({ ...formData, type: e.target.value as EntryType })
+                      setFormData({
+                        ...formData,
+                        type: e.target.value as EntryType,
+                      })
                     }
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-red-400 focus:outline-none"
+                    className='w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-red-400 focus:outline-none'
                   >
-                    <option value="TEXT">Text</option>
-                    <option value="POEM">Poem</option>
-                    <option value="IMAGE">Image</option>
+                    <option value='TEXT'>Text</option>
+                    <option value='POEM'>Poem</option>
+                    <option value='IMAGE'>Image</option>
                   </select>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className='block text-sm font-medium text-gray-700 mb-2'>
                     Title
                   </label>
                   <input
-                    type="text"
+                    type='text'
                     value={formData.title}
                     onChange={(e) =>
                       setFormData({ ...formData, title: e.target.value })
                     }
-                    placeholder="Enter a title"
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-red-400 focus:outline-none"
+                    placeholder='Enter a title'
+                    className='w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-red-400 focus:outline-none'
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className='block text-sm font-medium text-gray-700 mb-2'>
                     Content
                   </label>
                   <textarea
@@ -301,46 +325,46 @@ export default function EditCalendar({ params }: { params: Promise<{ id: string 
                       setFormData({ ...formData, content: e.target.value })
                     }
                     rows={6}
-                    placeholder="Enter your message, poem, or description"
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-red-400 focus:outline-none resize-none"
+                    placeholder='Enter your message, poem, or description'
+                    className='w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-red-400 focus:outline-none resize-none'
                   />
                 </div>
 
-                {formData.type === "IMAGE" && (
+                {formData.type === 'IMAGE' && (
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className='block text-sm font-medium text-gray-700 mb-2'>
                       Image URL
                     </label>
                     <input
-                      type="url"
+                      type='url'
                       value={formData.imageUrl}
                       onChange={(e) =>
                         setFormData({ ...formData, imageUrl: e.target.value })
                       }
-                      placeholder="https://example.com/image.jpg"
-                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-red-400 focus:outline-none"
+                      placeholder='https://example.com/image.jpg'
+                      className='w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-red-400 focus:outline-none'
                     />
                   </div>
                 )}
 
-                <div className="flex space-x-3 pt-4">
+                <div className='flex space-x-3 pt-4'>
                   <button
                     onClick={handleSaveEntry}
-                    className="flex-1 bg-green-500 text-white py-3 rounded-lg hover:bg-green-600 transition font-semibold"
+                    className='flex-1 bg-green-500 text-white py-3 rounded-lg hover:bg-green-600 transition font-semibold'
                   >
                     Save Entry
                   </button>
                   {calendar.entries.some((e) => e.day === selectedDay) && (
                     <button
                       onClick={handleDeleteEntry}
-                      className="flex-1 bg-red-500 text-white py-3 rounded-lg hover:bg-red-600 transition font-semibold"
+                      className='flex-1 bg-red-500 text-white py-3 rounded-lg hover:bg-red-600 transition font-semibold'
                     >
                       Delete
                     </button>
                   )}
                   <button
                     onClick={() => setSelectedDay(null)}
-                    className="bg-gray-200 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 transition font-semibold"
+                    className='bg-gray-200 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 transition font-semibold'
                   >
                     Cancel
                   </button>
@@ -350,16 +374,18 @@ export default function EditCalendar({ params }: { params: Promise<{ id: string 
           )}
         </div>
         {showEmbeddedPreview && (
-          <div className="mt-12 bg-white rounded-2xl shadow-lg border-2 border-red-200 p-6">
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">Live Preview</h2>
+          <div className='mt-12 bg-white rounded-2xl shadow-lg border-2 border-red-200 p-6'>
+            <h2 className='text-2xl font-bold text-gray-800 mb-4'>
+              Live Preview
+            </h2>
             <iframe
               src={`/share/${calendar.shareId}`}
-              className="w-full h-[800px] rounded-xl border-2 border-gray-200"
-              title="Calendar Preview"
+              className='w-full h-[800px] rounded-xl border-2 border-gray-200'
+              title='Calendar Preview'
             />
           </div>
         )}
       </main>
     </div>
-  )
+  );
 }

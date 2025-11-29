@@ -1,13 +1,13 @@
-import { NextRequest, NextResponse } from "next/server"
-import { auth } from "@/lib/auth"
-import { prisma } from "@/lib/prisma"
+import { NextRequest, NextResponse } from 'next/server';
+import { auth } from '@/lib/auth';
+import { prisma } from '@/lib/prisma';
 
 export async function GET() {
   try {
-    const session = await auth()
-    
+    const session = await auth();
+
     if (!session?.user?.id) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const calendars = await prisma.calendar.findMany({
@@ -15,37 +15,34 @@ export async function GET() {
       include: {
         entries: true,
         _count: {
-          select: { entries: true }
-        }
+          select: { entries: true },
+        },
       },
-      orderBy: { createdAt: "desc" },
-    })
+      orderBy: { createdAt: 'desc' },
+    });
 
-    return NextResponse.json(calendars)
+    return NextResponse.json(calendars);
   } catch (error) {
-    console.error("Error fetching calendars:", error)
+    console.error('Error fetching calendars:', error);
     return NextResponse.json(
-      { error: "Something went wrong" },
+      { error: 'Something went wrong' },
       { status: 500 }
-    )
+    );
   }
 }
 
 export async function POST(req: NextRequest) {
   try {
-    const session = await auth()
-    
+    const session = await auth();
+
     if (!session?.user?.id) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { title, description } = await req.json()
+    const { title, description } = await req.json();
 
     if (!title) {
-      return NextResponse.json(
-        { error: "Title is required" },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'Title is required' }, { status: 400 });
     }
 
     const calendar = await prisma.calendar.create({
@@ -54,14 +51,14 @@ export async function POST(req: NextRequest) {
         description,
         userId: session.user.id,
       },
-    })
+    });
 
-    return NextResponse.json(calendar, { status: 201 })
+    return NextResponse.json(calendar, { status: 201 });
   } catch (error) {
-    console.error("Error creating calendar:", error)
+    console.error('Error creating calendar:', error);
     return NextResponse.json(
-      { error: "Something went wrong" },
+      { error: 'Something went wrong' },
       { status: 500 }
-    )
+    );
   }
 }

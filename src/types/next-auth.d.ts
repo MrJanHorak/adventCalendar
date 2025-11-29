@@ -1,22 +1,22 @@
-declare module "next-auth" {
+declare module 'next-auth' {
   interface Session {
     user: {
-      id: string
-      email: string
-      name?: string | null
-      image?: string | null
-    }
+      id: string;
+      email: string;
+      name?: string | null;
+      image?: string | null;
+    };
   }
 
   interface User {
-    id: string
+    id: string;
   }
 }
 
-declare module "next-auth/jwt" {
+declare module 'next-auth/jwt' {
   interface JWT {
-    id: string
+    id: string;
   }
 }
 
-export {}
+export {};

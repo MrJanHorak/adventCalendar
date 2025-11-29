@@ -1,6 +1,6 @@
 # 🎄 Quick Start Guide - Holiday Advent Calendar
 
-## Welcome! 
+## Welcome!
 
 You now have a fully functional holiday advent calendar application. Here's how to get started:
 
@@ -11,13 +11,16 @@ You now have a fully functional holiday advent calendar application. Here's how 
 You have two options:
 
 **Option A: Use Prisma Local Postgres (Easiest)**
+
 ```bash
 npx prisma dev
 ```
+
 This starts a local PostgreSQL database automatically.
 
 **Option B: Use Your Own PostgreSQL Database**
 Update `.env` with your database URL:
+
 ```
 DATABASE_URL="postgresql://username:password@localhost:5432/advent_calendar"
 ```
@@ -40,6 +43,7 @@ NEXTAUTH_SECRET="generate-this-with-openssl"
 ```
 
 Generate a secure secret:
+
 ```bash
 openssl rand -base64 32
 ```
@@ -55,15 +59,18 @@ Open [http://localhost:3000](http://localhost:3000) 🎉
 ## 📝 First Steps
 
 1. **Create an Account**
+
    - Go to `/auth/signup`
    - Register with your email and password
 
 2. **Create Your First Calendar**
+
    - Click "Create New Calendar"
    - Add a title and description
    - Start filling in the 25 days!
 
 3. **Add Entries**
+
    - Click on any day number (1-25)
    - Choose entry type: Text, Poem, or Image
    - Add your content
@@ -118,11 +125,14 @@ prisma/
 ## 🎨 Customizing
 
 ### Change Colors
+
 Edit the Tailwind classes in components:
+
 - Red: `bg-red-500`, `text-red-600`
 - Green: `bg-green-500`, `text-green-600`
 
 ### Add More Entry Types
+
 1. Update `prisma/schema.prisma`
 2. Run `npx prisma db push`
 3. Update the UI components
@@ -130,17 +140,20 @@ Edit the Tailwind classes in components:
 ## 🐛 Troubleshooting
 
 ### "Can't connect to database"
+
 - Check your DATABASE_URL in `.env`
 - Make sure PostgreSQL is running
 - Try `npx prisma db push`
 
 ### "Module not found"
+
 ```bash
 rm -rf node_modules package-lock.json
 npm install
 ```
 
 ### Build errors
+
 ```bash
 rm -rf .next
 npm run build
@@ -163,7 +176,7 @@ npm run build
 
 ## 🎁 Have Fun!
 
-Create magical advent calendars and spread holiday joy! 
+Create magical advent calendars and spread holiday joy!
 
 If you need help, check the full README.md for more details.
 

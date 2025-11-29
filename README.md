@@ -73,6 +73,7 @@ UPLOADTHING_TOKEN="optional-for-image-uploads"
 ```
 
 Generate a secure secret for NEXTAUTH_SECRET:
+
 ```bash
 openssl rand -base64 32
 ```
@@ -99,6 +100,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 ### Opening Calendar Doors
 
 Recipients can visit the shared link and:
+
 - View all 25 doors
 - Open doors starting December 1st
 - Each door reveals its content on the corresponding date
@@ -130,6 +132,7 @@ adventCalendar/
 ### Changing Theme Colors
 
 Edit Tailwind classes in components to customize the color scheme. Current theme uses:
+
 - Red (#EF4444) for primary actions
 - Green (#10B981) for success states
 - Gradient combinations for festive feel
@@ -160,6 +163,7 @@ Then update the UI components accordingly.
 ## 📱 Responsive Design
 
 The application is fully responsive and works on:
+
 - Desktop computers
 - Tablets
 - Mobile phones
@@ -199,6 +203,7 @@ npm install
 ### Other Platforms
 
 The app can be deployed to any platform supporting Node.js:
+
 - Netlify
 - Railway
 - Render
@@ -206,6 +211,7 @@ The app can be deployed to any platform supporting Node.js:
 - DigitalOcean
 
 Make sure to:
+
 - Set all environment variables
 - Run database migrations
 - Configure proper DATABASE_URL
