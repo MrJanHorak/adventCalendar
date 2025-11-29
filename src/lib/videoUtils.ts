@@ -2,7 +2,8 @@ export function convertToEmbedUrl(url: string): string {
   if (!url) return url;
 
   // YouTube
-  const youtubeRegex = /(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/;
+  const youtubeRegex =
+    /(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/;
   const youtubeMatch = url.match(youtubeRegex);
   if (youtubeMatch) {
     return `https://www.youtube.com/embed/${youtubeMatch[1]}`;

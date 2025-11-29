@@ -32,6 +32,7 @@ The URL will be automatically converted to the proper embed format when saved.
 ### Viewing a Video Entry
 
 When a user opens a calendar door with a video:
+
 1. The video player appears in the entry modal
 2. The video is embedded in a responsive 16:9 player
 3. Users can play, pause, and fullscreen the video
@@ -75,11 +76,13 @@ Both entry creation and update endpoints accept `videoUrl`:
 ### UI Components
 
 **Edit Page** (`src/app/calendar/[id]/edit/page.tsx`):
+
 - Video type selector in entry type dropdown
 - Conditional video URL input field with helper text
 - Automatic URL conversion on save using `convertToEmbedUrl()`
 
 **Share Page** (`src/app/share/[shareId]/page.tsx`):
+
 - Video iframe rendering in entry modal
 - Responsive aspect-video container
 - Standard iframe permissions for video playback
@@ -87,6 +90,7 @@ Both entry creation and update endpoints accept `videoUrl`:
 ## Browser Support
 
 The video feature uses standard HTML5 iframe embedding, which is supported by all modern browsers:
+
 - Chrome/Edge (latest)
 - Firefox (latest)
 - Safari (latest)
@@ -101,6 +105,7 @@ The video feature uses standard HTML5 iframe embedding, which is supported by al
 ## Future Enhancements
 
 Potential improvements for future versions:
+
 - Additional video platform support (Dailymotion, etc.)
 - Video thumbnail preview in edit mode
 - Video autoplay/mute options

@@ -1000,7 +1000,8 @@ export default function EditCalendar({
                       className='w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-red-400 focus:outline-none'
                     />
                     <p className='text-xs text-gray-500 mt-1'>
-                      Enter a YouTube or Vimeo URL. It will be automatically converted to an embed URL.
+                      Enter a YouTube or Vimeo URL. It will be automatically
+                      converted to an embed URL.
                     </p>
                   </div>
                 )}
