@@ -7,16 +7,18 @@ import { themePresets, getThemePreset } from '@/lib/themes';
 import { convertToEmbedUrl } from '@/lib/videoUtils';
 import HelpModal from '@/components/HelpModal';
 
+// Legacy entry type retained for backward compatibility with existing records
 type EntryType = 'TEXT' | 'POEM' | 'IMAGE' | 'VIDEO';
 
 interface CalendarEntry {
   id: string;
   day: number;
   title: string;
-  content: string;
+  content: string | null;
   imageUrl: string | null;
   videoUrl: string | null;
-  type: EntryType;
+  type?: EntryType; // optional legacy
+  isPoem?: boolean;
   fontFamily?: string;
   fontSize?: string;
   textColor?: string;
@@ -75,7 +77,7 @@ export default function EditCalendar({
     content: '',
     imageUrl: '',
     videoUrl: '',
-    type: 'TEXT' as EntryType,
+    isPoem: false,
     fontFamily: 'Inter',
     fontSize: '16px',
     textColor: '#000000',
@@ -88,6 +90,8 @@ export default function EditCalendar({
     padding: '16px',
     boxShadow: 'none',
   });
+  const [showImageField, setShowImageField] = useState(false);
+  const [showVideoField, setShowVideoField] = useState(false);
 
   useEffect(() => {
     params.then(setResolvedParams);
@@ -148,10 +152,10 @@ export default function EditCalendar({
     if (entry) {
       setFormData({
         title: entry.title,
-        content: entry.content,
+        content: entry.content || '',
         imageUrl: entry.imageUrl || '',
         videoUrl: entry.videoUrl || '',
-        type: entry.type,
+        isPoem: entry.isPoem || false,
         fontFamily: entry.fontFamily || 'Inter',
         fontSize: entry.fontSize || '16px',
         textColor: entry.textColor || '#000000',
@@ -164,13 +168,15 @@ export default function EditCalendar({
         padding: entry.padding || '16px',
         boxShadow: entry.boxShadow || 'none',
       });
+      setShowImageField(!!entry.imageUrl);
+      setShowVideoField(!!entry.videoUrl);
     } else {
       setFormData({
         title: '',
         content: '',
         imageUrl: '',
         videoUrl: '',
-        type: 'TEXT',
+        isPoem: false,
         fontFamily: 'Inter',
         fontSize: '16px',
         textColor: '#000000',
@@ -183,6 +189,8 @@ export default function EditCalendar({
         padding: '16px',
         boxShadow: 'none',
       });
+      setShowImageField(false);
+      setShowVideoField(false);
     }
     setSelectedDay(day);
   };
@@ -195,10 +203,10 @@ export default function EditCalendar({
     // Prepare data with converted video URL
     const dataToSave = {
       ...formData,
-      videoUrl:
-        formData.type === 'VIDEO' && formData.videoUrl
-          ? convertToEmbedUrl(formData.videoUrl)
-          : formData.videoUrl,
+      imageUrl: showImageField ? formData.imageUrl : '',
+      videoUrl: showVideoField && formData.videoUrl
+        ? convertToEmbedUrl(formData.videoUrl)
+        : '',
     };
 
     try {
@@ -648,7 +656,7 @@ export default function EditCalendar({
                   <span>🎨</span> Formatting Tips
                 </h3>
                 <ul className='text-sm text-gray-700 space-y-1 list-disc list-inside'>
-                  <li>Use POEM type for automatic italics</li>
+                  <li>Enable Poem Styling for automatic italics</li>
                   <li>Customize each entry's colors independently</li>
                   <li>Try different border styles for variety</li>
                 </ul>
@@ -704,25 +712,46 @@ export default function EditCalendar({
               </h3>
 
               <div className='space-y-4'>
-                <div>
-                  <label className='block text-sm font-medium text-gray-700 mb-2'>
-                    Entry Type
-                  </label>
-                  <select
-                    value={formData.type}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        type: e.target.value as EntryType,
-                      })
-                    }
-                    className='w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-red-400 focus:outline-none'
-                  >
-                    <option value='TEXT'>Text</option>
-                    <option value='POEM'>Poem</option>
-                    <option value='IMAGE'>Image</option>
-                    <option value='VIDEO'>Video</option>
-                  </select>
+                {/* Entry Controls */}
+                <div className='space-y-4'>
+                  <div className='flex flex-wrap gap-3'>
+                    <label className='inline-flex items-center gap-2 px-3 py-2 border-2 rounded-lg cursor-pointer bg-white hover:border-red-300 transition'>
+                      <input
+                        type='checkbox'
+                        checked={formData.isPoem}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            isPoem: e.target.checked,
+                          })
+                        }
+                        className='w-4 h-4'
+                      />
+                      <span className='text-sm font-medium'>Poem Styling</span>
+                    </label>
+                    <button
+                      type='button'
+                      onClick={() => setShowImageField((v) => !v)}
+                      className={`px-3 py-2 border-2 rounded-lg text-sm font-medium transition ${
+                        showImageField
+                          ? 'border-green-500 bg-green-50'
+                          : 'border-gray-200 bg-white hover:border-green-400'
+                      }`}
+                    >
+                      {showImageField ? 'Remove Image' : 'Add Image'}
+                    </button>
+                    <button
+                      type='button'
+                      onClick={() => setShowVideoField((v) => !v)}
+                      className={`px-3 py-2 border-2 rounded-lg text-sm font-medium transition ${
+                        showVideoField
+                          ? 'border-blue-500 bg-blue-50'
+                          : 'border-gray-200 bg-white hover:border-blue-400'
+                      }`}
+                    >
+                      {showVideoField ? 'Remove Video' : 'Add Video'}
+                    </button>
+                  </div>
                 </div>
 
                 <div>
@@ -1058,7 +1087,7 @@ export default function EditCalendar({
                   </div>
                 </div>
 
-                {formData.type === 'IMAGE' && (
+                {showImageField && (
                   <div className='image-url-input'>
                     <label className='block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2'>
                       Image URL
@@ -1096,7 +1125,7 @@ export default function EditCalendar({
                   </div>
                 )}
 
-                {formData.type === 'VIDEO' && (
+                {showVideoField && (
                   <div className='video-url-input'>
                     <label className='block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2'>
                       Video URL

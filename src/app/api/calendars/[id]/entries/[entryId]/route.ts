@@ -20,6 +20,7 @@ export async function PATCH(
       imageUrl,
       videoUrl,
       type,
+      isPoem,
       fontFamily,
       fontSize,
       textColor,
@@ -53,6 +54,7 @@ export async function PATCH(
     if (imageUrl !== undefined) updateData.imageUrl = imageUrl;
     if (videoUrl !== undefined) updateData.videoUrl = videoUrl;
     if (type !== undefined) updateData.type = type;
+    if (isPoem !== undefined) updateData.isPoem = !!isPoem;
     if (fontFamily !== undefined && fontFamily !== '')
       updateData.fontFamily = fontFamily;
     if (fontSize !== undefined && fontSize !== '')

@@ -11,10 +11,11 @@ interface CalendarEntry {
   id: string;
   day: number;
   title: string;
-  content: string;
+  content: string | null;
   imageUrl: string | null;
   videoUrl: string | null;
-  type: EntryType;
+  type: EntryType; // retained for backward compatibility
+  isPoem?: boolean;
   fontFamily?: string;
   fontSize?: string;
   textColor?: string;
@@ -377,18 +378,8 @@ export default function SharedCalendar({
                 </button>
               </div>
 
-              {selectedEntry.type === 'IMAGE' && selectedEntry.imageUrl && (
-                <div className='mb-6 rounded-xl overflow-hidden'>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={selectedEntry.imageUrl}
-                    alt={selectedEntry.title}
-                    className='w-full h-auto'
-                  />
-                </div>
-              )}
-
-              {selectedEntry.type === 'VIDEO' && selectedEntry.videoUrl && (
+              {/* Video (if present) */}
+              {selectedEntry.videoUrl && (
                 <div className='mb-6 rounded-xl overflow-hidden'>
                   <div className='aspect-video'>
                     <iframe
@@ -402,29 +393,53 @@ export default function SharedCalendar({
                 </div>
               )}
 
-              <div
-                className='whitespace-pre-wrap'
-                style={{
-                  fontFamily: selectedEntry.fontFamily || 'Inter',
-                  fontSize: selectedEntry.fontSize || '16px',
-                  color: selectedEntry.textColor || '#374151',
-                  backgroundColor:
-                    selectedEntry.backgroundColor || 'transparent',
-                  textAlign: (selectedEntry.textAlign || 'left') as any,
-                  borderColor: selectedEntry.borderColor,
-                  borderWidth: selectedEntry.borderWidth || '0px',
-                  borderStyle: (selectedEntry.borderStyle || 'solid') as any,
-                  borderRadius: selectedEntry.borderRadius || '0px',
-                  padding: selectedEntry.padding || '16px',
-                  boxShadow: selectedEntry.boxShadow || 'none',
-                  ...(selectedEntry.type === 'POEM' && {
-                    fontStyle: 'italic',
-                    lineHeight: '1.75',
-                  }),
-                }}
-              >
-                {selectedEntry.content}
-              </div>
+              {/* Image (if present) */}
+              {selectedEntry.imageUrl && (
+                <div className='mb-6 rounded-xl overflow-hidden'>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={selectedEntry.imageUrl}
+                    alt={selectedEntry.title}
+                    className='w-full h-auto'
+                  />
+                </div>
+              )}
+
+              {/* Text / Poem (if present) */}
+              {selectedEntry.content && (
+                <div
+                  className='whitespace-pre-wrap'
+                  style={{
+                    fontFamily: selectedEntry.fontFamily || 'Inter',
+                    fontSize: selectedEntry.fontSize || '16px',
+                    color: selectedEntry.textColor || '#374151',
+                    backgroundColor:
+                      selectedEntry.backgroundColor || 'transparent',
+                    textAlign: (selectedEntry.textAlign || 'left') as any,
+                    borderColor: selectedEntry.borderColor,
+                    borderWidth: selectedEntry.borderWidth || '0px',
+                    borderStyle: (selectedEntry.borderStyle || 'solid') as any,
+                    borderRadius: selectedEntry.borderRadius || '0px',
+                    padding: selectedEntry.padding || '16px',
+                    boxShadow: selectedEntry.boxShadow || 'none',
+                    ...(selectedEntry.isPoem && {
+                      fontStyle: 'italic',
+                      lineHeight: '1.75',
+                    }),
+                  }}
+                >
+                  {selectedEntry.content}
+                </div>
+              )}
+
+              {/* Fallback if no content at all (should be rare) */}
+              {!selectedEntry.content &&
+                !selectedEntry.imageUrl &&
+                !selectedEntry.videoUrl && (
+                  <div className='text-center text-gray-500 italic'>
+                    No content available for this entry.
+                  </div>
+                )}
 
               <button
                 onClick={() => setSelectedDay(null)}

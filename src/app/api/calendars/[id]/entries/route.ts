@@ -20,7 +20,8 @@ export async function POST(
       content,
       imageUrl,
       videoUrl,
-      type,
+      type, // retained for backward compatibility
+      isPoem,
       fontFamily,
       fontSize,
       textColor,
@@ -41,9 +42,17 @@ export async function POST(
       );
     }
 
-    if (!title || !content) {
+    if (!title) {
       return NextResponse.json(
-        { error: 'Title and content are required' },
+        { error: 'Title is required' },
+        { status: 400 }
+      );
+    }
+
+    // Require at least one of text, image, or video
+    if (!content && !imageUrl && !videoUrl) {
+      return NextResponse.json(
+        { error: 'Provide at least one of text, imageUrl, or videoUrl' },
         { status: 400 }
       );
     }
@@ -71,6 +80,7 @@ export async function POST(
         imageUrl,
         videoUrl,
         type: type || 'TEXT',
+        isPoem: !!isPoem,
         fontFamily: fontFamily || 'Inter',
         fontSize: fontSize || '16px',
         textColor: textColor || '#000000',

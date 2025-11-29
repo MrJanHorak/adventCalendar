@@ -28,7 +28,7 @@ A full-featured modal with tabbed navigation covering:
 
 A prominent "❓ Help" button in the top-right corner of the edit page provides instant access to the help modal.
 
-### 3. Quick Tips Panel
+### 3. Quick Tips Panel (Updated for Multi-Content)
 
 A collapsible tips panel in the edit page featuring:
 
@@ -36,6 +36,7 @@ A collapsible tips panel in the edit page featuring:
 - 🎥 Adding Videos - Simple instructions for YouTube/Vimeo
 - 🎨 Formatting Tips - Best practices for styling entries
 - 👀 Preview & Test - How to use preview modes
+- 🧩 Multi-Content Entries - Use Add Image / Add Video toggles and Poem Styling checkbox
 
 **Benefits:**
 
@@ -48,14 +49,14 @@ A collapsible tips panel in the edit page featuring:
 
 Interactive tooltips on complex input fields:
 
-**Image URL Input:**
+**Image URL Input (Toggle-based):**
 
 - Hover tooltip explaining how to get image URLs
 - Mentions Imgur as the easiest solution
 - Helpful placeholder text
 - Tip text below input field
 
-**Video URL Input:**
+**Video URL Input (Toggle-based):**
 
 - Hover tooltip listing supported platforms
 - Explains automatic URL conversion
@@ -118,9 +119,19 @@ For first-time users, the empty state dashboard now includes:
 
 **Contextual Help:**
 
-1. When entering image/video URLs, hover over the ℹ️ icon
-2. Read the tooltip for quick guidance
-3. Check the tip text below the input field
+1. Enable "Add Image" or "Add Video" to reveal URL fields
+2. When entering image/video URLs, hover over the ℹ️ icon
+3. Read the tooltip for quick guidance
+4. Check the tip text below the input field
+
+### Creating Multi-Content Entries
+
+- Use the editor controls at the top of the entry form:
+   - Toggle "Add Image" to show the Image URL field
+   - Toggle "Add Video" to show the Video URL field
+   - Check "Poem Styling" to apply italic + relaxed line-height to text
+- Title is required; include at least one of text, image, or video.
+- You can include all three: text + image + video.
 
 ### For Developers
 
@@ -180,8 +191,9 @@ src/
 - Allows users to jump to relevant sections quickly
 - Maintains consistent location for all help resources
 
-### Why Tooltips AND Quick Tips?
+### Why Toggles, Tooltips, AND Quick Tips?
 
+- Toggles: Clear, discoverable controls to manage optional media fields
 - Tooltips: Immediate, contextual help without leaving the field
 - Quick Tips: Slightly more detailed, always visible option
 - Full Modal: Comprehensive reference for complex topics
