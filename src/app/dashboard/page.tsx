@@ -27,12 +27,13 @@ export default async function Dashboard() {
       },
       orderBy: { createdAt: 'desc' },
     });
-  } catch (e: any) {
+  } catch (e: unknown) {
     // Surface connection or query issues in server logs.
+    const error = e as { message?: string; code?: string; stack?: string };
     console.error('[Dashboard] prisma.calendar.findMany failed', {
-      message: e?.message,
-      code: e?.code,
-      stack: e?.stack,
+      message: error?.message,
+      code: error?.code,
+      stack: error?.stack,
     });
     throw e;
   }

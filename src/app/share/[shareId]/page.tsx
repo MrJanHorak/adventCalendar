@@ -13,6 +13,11 @@ interface CalendarEntry {
   content: string;
   imageUrl: string | null;
   type: EntryType;
+  fontFamily?: string;
+  fontSize?: string;
+  textColor?: string;
+  backgroundColor?: string;
+  textAlign?: string;
 }
 
 interface Calendar {
@@ -321,11 +326,20 @@ export default function SharedCalendar({
               )}
 
               <div
-                className={`text-gray-700 whitespace-pre-wrap ${
-                  selectedEntry.type === 'POEM'
-                    ? 'text-center italic text-lg leading-relaxed'
-                    : 'text-lg'
-                }`}
+                className='whitespace-pre-wrap'
+                style={{
+                  fontFamily: selectedEntry.fontFamily || 'Inter',
+                  fontSize: selectedEntry.fontSize || '16px',
+                  color: selectedEntry.textColor || '#374151',
+                  backgroundColor: selectedEntry.backgroundColor || 'transparent',
+                  textAlign: (selectedEntry.textAlign || 'left') as any,
+                  padding: selectedEntry.backgroundColor ? '1rem' : '0',
+                  borderRadius: selectedEntry.backgroundColor ? '0.5rem' : '0',
+                  ...(selectedEntry.type === 'POEM' && {
+                    fontStyle: 'italic',
+                    lineHeight: '1.75',
+                  }),
+                }}
               >
                 {selectedEntry.content}
               </div>

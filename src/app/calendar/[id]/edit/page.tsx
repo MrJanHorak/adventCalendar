@@ -13,6 +13,11 @@ interface CalendarEntry {
   content: string;
   imageUrl: string | null;
   type: EntryType;
+  fontFamily?: string;
+  fontSize?: string;
+  textColor?: string;
+  backgroundColor?: string;
+  textAlign?: string;
 }
 
 interface Calendar {
@@ -40,8 +45,12 @@ export default function EditCalendar({
     content: '',
     imageUrl: '',
     type: 'TEXT' as EntryType,
+    fontFamily: 'Inter',
+    fontSize: '16px',
+    textColor: '#000000',
+    backgroundColor: '',
+    textAlign: 'left',
   });
-  const [showEmbeddedPreview, setShowEmbeddedPreview] = useState(false);
 
   useEffect(() => {
     params.then(setResolvedParams);
@@ -95,6 +104,11 @@ export default function EditCalendar({
         content: entry.content,
         imageUrl: entry.imageUrl || '',
         type: entry.type,
+        fontFamily: entry.fontFamily || 'Inter',
+        fontSize: entry.fontSize || '16px',
+        textColor: entry.textColor || '#000000',
+        backgroundColor: entry.backgroundColor || '',
+        textAlign: entry.textAlign || 'left',
       });
     } else {
       setFormData({
@@ -102,6 +116,11 @@ export default function EditCalendar({
         content: '',
         imageUrl: '',
         type: 'TEXT',
+        fontFamily: 'Inter',
+        fontSize: '16px',
+        textColor: '#000000',
+        backgroundColor: '',
+        textAlign: 'left',
       });
     }
     setSelectedDay(day);
@@ -228,15 +247,6 @@ export default function EditCalendar({
               >
                 🔓 Owner Preview (Test All Days)
               </Link>
-              <button
-                type='button'
-                onClick={() => setShowEmbeddedPreview((p) => !p)}
-                className='inline-flex items-center px-4 py-2 rounded-lg bg-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-300 transition'
-              >
-                {showEmbeddedPreview
-                  ? 'Hide Embedded Preview'
-                  : 'Show Embedded Preview'}
-              </button>
             </div>
             <p className='text-xs text-gray-400'>
               Save an entry before previewing to see changes reflected.
@@ -327,7 +337,141 @@ export default function EditCalendar({
                     rows={6}
                     placeholder='Enter your message, poem, or description'
                     className='w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-red-400 focus:outline-none resize-none'
+                    style={{
+                      fontFamily: formData.fontFamily,
+                      fontSize: formData.fontSize,
+                      color: formData.textColor,
+                      backgroundColor: formData.backgroundColor || 'transparent',
+                      textAlign: formData.textAlign as any,
+                    }}
                   />
+                </div>
+
+                {/* Formatting Options */}
+                <div className='border-t-2 border-gray-200 pt-4'>
+                  <h4 className='text-sm font-semibold text-gray-700 mb-3'>
+                    📝 Text Formatting
+                  </h4>
+                  
+                  <div className='grid grid-cols-2 gap-3'>
+                    <div>
+                      <label className='block text-xs font-medium text-gray-600 mb-1'>
+                        Font Family
+                      </label>
+                      <select
+                        value={formData.fontFamily}
+                        onChange={(e) =>
+                          setFormData({ ...formData, fontFamily: e.target.value })
+                        }
+                        className='w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:border-red-400 focus:outline-none'
+                      >
+                        <option value='Inter'>Inter (Default)</option>
+                        <option value='serif'>Serif</option>
+                        <option value='Georgia'>Georgia</option>
+                        <option value='Times New Roman'>Times New Roman</option>
+                        <option value='monospace'>Monospace</option>
+                        <option value='Courier New'>Courier New</option>
+                        <option value='cursive'>Cursive</option>
+                        <option value='Comic Sans MS'>Comic Sans</option>
+                        <option value='Arial'>Arial</option>
+                        <option value='Verdana'>Verdana</option>
+                        <option value='Trebuchet MS'>Trebuchet MS</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className='block text-xs font-medium text-gray-600 mb-1'>
+                        Font Size
+                      </label>
+                      <select
+                        value={formData.fontSize}
+                        onChange={(e) =>
+                          setFormData({ ...formData, fontSize: e.target.value })
+                        }
+                        className='w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:border-red-400 focus:outline-none'
+                      >
+                        <option value='12px'>Small (12px)</option>
+                        <option value='14px'>Normal (14px)</option>
+                        <option value='16px'>Medium (16px)</option>
+                        <option value='18px'>Large (18px)</option>
+                        <option value='20px'>X-Large (20px)</option>
+                        <option value='24px'>XX-Large (24px)</option>
+                        <option value='28px'>Huge (28px)</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className='block text-xs font-medium text-gray-600 mb-1'>
+                        Text Color
+                      </label>
+                      <div className='flex gap-2'>
+                        <input
+                          type='color'
+                          value={formData.textColor}
+                          onChange={(e) =>
+                            setFormData({ ...formData, textColor: e.target.value })
+                          }
+                          className='h-10 w-16 border border-gray-300 rounded cursor-pointer'
+                        />
+                        <input
+                          type='text'
+                          value={formData.textColor}
+                          onChange={(e) =>
+                            setFormData({ ...formData, textColor: e.target.value })
+                          }
+                          placeholder='#000000'
+                          className='flex-1 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:border-red-400 focus:outline-none'
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className='block text-xs font-medium text-gray-600 mb-1'>
+                        Background Color
+                      </label>
+                      <div className='flex gap-2'>
+                        <input
+                          type='color'
+                          value={formData.backgroundColor || '#ffffff'}
+                          onChange={(e) =>
+                            setFormData({ ...formData, backgroundColor: e.target.value })
+                          }
+                          className='h-10 w-16 border border-gray-300 rounded cursor-pointer'
+                        />
+                        <input
+                          type='text'
+                          value={formData.backgroundColor || ''}
+                          onChange={(e) =>
+                            setFormData({ ...formData, backgroundColor: e.target.value })
+                          }
+                          placeholder='None'
+                          className='flex-1 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:border-red-400 focus:outline-none'
+                        />
+                      </div>
+                    </div>
+
+                    <div className='col-span-2'>
+                      <label className='block text-xs font-medium text-gray-600 mb-1'>
+                        Text Alignment
+                      </label>
+                      <div className='flex gap-2'>
+                        {['left', 'center', 'right', 'justify'].map((align) => (
+                          <button
+                            key={align}
+                            type='button'
+                            onClick={() => setFormData({ ...formData, textAlign: align })}
+                            className={`flex-1 px-3 py-2 text-sm border rounded-lg transition ${
+                              formData.textAlign === align
+                                ? 'bg-red-500 text-white border-red-500'
+                                : 'bg-white text-gray-700 border-gray-300 hover:border-red-300'
+                            }`}
+                          >
+                            {align.charAt(0).toUpperCase() + align.slice(1)}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
                 {formData.type === 'IMAGE' && (
@@ -373,18 +517,6 @@ export default function EditCalendar({
             </div>
           )}
         </div>
-        {showEmbeddedPreview && (
-          <div className='mt-12 bg-white rounded-2xl shadow-lg border-2 border-red-200 p-6'>
-            <h2 className='text-2xl font-bold text-gray-800 mb-4'>
-              Live Preview
-            </h2>
-            <iframe
-              src={`/share/${calendar.shareId}`}
-              className='w-full h-[800px] rounded-xl border-2 border-gray-200'
-              title='Calendar Preview'
-            />
-          </div>
-        )}
       </main>
     </div>
   );
