@@ -76,9 +76,7 @@ export default function HelpModal({ isOpen, onClose }: HelpModalProps) {
                   </p>
                 </div>
                 <div className='bg-blue-50 border-l-4 border-blue-500 p-4 rounded'>
-                  <h4 className='font-semibold text-lg mb-2'>
-                    Step 3: Share
-                  </h4>
+                  <h4 className='font-semibold text-lg mb-2'>Step 3: Share</h4>
                   <p className='text-gray-700'>
                     Copy the share link and send it to your loved ones. They can
                     open doors starting December 1st!
@@ -211,8 +209,8 @@ export default function HelpModal({ isOpen, onClose }: HelpModalProps) {
                   ✨ Automatic Conversion
                 </p>
                 <p className='text-blue-700'>
-                  Just paste a regular YouTube or Vimeo URL - we'll automatically
-                  convert it to the embed format!
+                  Just paste a regular YouTube or Vimeo URL - we'll
+                  automatically convert it to the embed format!
                 </p>
               </div>
 
@@ -370,7 +368,9 @@ export default function HelpModal({ isOpen, onClose }: HelpModalProps) {
                   <h4 className='font-semibold text-lg mb-2'>How to Share</h4>
                   <ol className='list-decimal list-inside space-y-2 text-gray-700 ml-4'>
                     <li>Complete your calendar with all 25 entries</li>
-                    <li>Copy the share link from your dashboard or edit page</li>
+                    <li>
+                      Copy the share link from your dashboard or edit page
+                    </li>
                     <li>Send it via email, text, or social media</li>
                     <li>Recipients can open doors starting December 1st</li>
                   </ol>
@@ -399,8 +399,8 @@ export default function HelpModal({ isOpen, onClose }: HelpModalProps) {
                       recipients see
                     </li>
                     <li>
-                      <strong>Owner Preview:</strong> Bypass date restrictions to
-                      test all doors
+                      <strong>Owner Preview:</strong> Bypass date restrictions
+                      to test all doors
                     </li>
                   </ul>
                 </div>
@@ -410,8 +410,9 @@ export default function HelpModal({ isOpen, onClose }: HelpModalProps) {
                     🔒 Privacy
                   </p>
                   <p className='text-yellow-700'>
-                    Your calendars are only accessible via the unique share link.
-                    They won't appear in search engines or public listings.
+                    Your calendars are only accessible via the unique share
+                    link. They won't appear in search engines or public
+                    listings.
                   </p>
                 </div>
               </div>

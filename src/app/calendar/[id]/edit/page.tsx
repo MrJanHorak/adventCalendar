@@ -1063,11 +1063,20 @@ export default function EditCalendar({
                     <label className='block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2'>
                       Image URL
                       <div className='group relative'>
-                        <span className='text-blue-500 cursor-help text-lg'>ℹ️</span>
+                        <span className='text-blue-500 cursor-help text-lg'>
+                          ℹ️
+                        </span>
                         <div className='invisible group-hover:visible absolute left-0 top-6 bg-gray-900 text-white text-xs rounded p-3 w-64 z-10 shadow-lg'>
-                          <p className='font-semibold mb-1'>Need an image URL?</p>
-                          <p className='mb-2'>Upload to Imgur.com (free, no signup)</p>
-                          <p className='text-gray-300'>Right-click the uploaded image → "Copy image address"</p>
+                          <p className='font-semibold mb-1'>
+                            Need an image URL?
+                          </p>
+                          <p className='mb-2'>
+                            Upload to Imgur.com (free, no signup)
+                          </p>
+                          <p className='text-gray-300'>
+                            Right-click the uploaded image → "Copy image
+                            address"
+                          </p>
                         </div>
                       </div>
                     </label>
@@ -1081,7 +1090,8 @@ export default function EditCalendar({
                       className='w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-red-400 focus:outline-none'
                     />
                     <p className='text-xs text-gray-500 mt-1'>
-                      💡 Tip: Use a direct image link ending in .jpg, .png, or .gif
+                      💡 Tip: Use a direct image link ending in .jpg, .png, or
+                      .gif
                     </p>
                   </div>
                 )}
@@ -1091,12 +1101,18 @@ export default function EditCalendar({
                     <label className='block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2'>
                       Video URL
                       <div className='group relative'>
-                        <span className='text-blue-500 cursor-help text-lg'>ℹ️</span>
+                        <span className='text-blue-500 cursor-help text-lg'>
+                          ℹ️
+                        </span>
                         <div className='invisible group-hover:visible absolute left-0 top-6 bg-gray-900 text-white text-xs rounded p-3 w-64 z-10 shadow-lg'>
-                          <p className='font-semibold mb-1'>Supported platforms:</p>
+                          <p className='font-semibold mb-1'>
+                            Supported platforms:
+                          </p>
                           <p className='mb-1'>✓ YouTube</p>
                           <p className='text-gray-300'>✓ Vimeo</p>
-                          <p className='mt-2 text-gray-300'>Just paste any YouTube or Vimeo URL!</p>
+                          <p className='mt-2 text-gray-300'>
+                            Just paste any YouTube or Vimeo URL!
+                          </p>
                         </div>
                       </div>
                     </label>
@@ -1110,7 +1126,8 @@ export default function EditCalendar({
                       className='w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-red-400 focus:outline-none'
                     />
                     <p className='text-xs text-gray-500 mt-1'>
-                      💡 Paste a YouTube or Vimeo link - we'll convert it automatically
+                      💡 Paste a YouTube or Vimeo link - we'll convert it
+                      automatically
                     </p>
                   </div>
                 )}

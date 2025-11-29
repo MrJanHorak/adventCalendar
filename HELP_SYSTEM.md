@@ -9,6 +9,7 @@ The advent calendar now includes a comprehensive help system designed to guide u
 ### 1. Help Modal Component (`src/components/HelpModal.tsx`)
 
 A full-featured modal with tabbed navigation covering:
+
 - **Getting Started**: Step-by-step guide to creating and sharing calendars
 - **Adding Images**: Detailed instructions for uploading images to Imgur/Cloudinary and using direct image URLs
 - **Adding Videos**: Guide for embedding YouTube and Vimeo videos
@@ -16,6 +17,7 @@ A full-featured modal with tabbed navigation covering:
 - **Sharing**: How to share calendars and understanding date restrictions
 
 **Key Features:**
+
 - Tabbed interface for easy navigation
 - Color-coded sections with icons
 - Practical examples (good vs bad URLs)
@@ -29,12 +31,14 @@ A prominent "❓ Help" button in the top-right corner of the edit page provides 
 ### 3. Quick Tips Panel
 
 A collapsible tips panel in the edit page featuring:
+
 - 🖼️ Adding Images - Quick 3-step guide with Imgur link
 - 🎥 Adding Videos - Simple instructions for YouTube/Vimeo
 - 🎨 Formatting Tips - Best practices for styling entries
 - 👀 Preview & Test - How to use preview modes
 
 **Benefits:**
+
 - Always visible without leaving the edit page
 - Expandable/collapsible to avoid clutter
 - Direct links to external services
@@ -45,12 +49,14 @@ A collapsible tips panel in the edit page featuring:
 Interactive tooltips on complex input fields:
 
 **Image URL Input:**
+
 - Hover tooltip explaining how to get image URLs
 - Mentions Imgur as the easiest solution
 - Helpful placeholder text
 - Tip text below input field
 
 **Video URL Input:**
+
 - Hover tooltip listing supported platforms
 - Explains automatic URL conversion
 - Updated placeholder to show YouTube format
@@ -59,6 +65,7 @@ Interactive tooltips on complex input fields:
 ### 5. Dashboard Quick Start Guide
 
 For first-time users, the empty state dashboard now includes:
+
 - 3-step visual guide (1️⃣ 2️⃣ 3️⃣)
 - Clear progression: Create → Add Content → Share
 - Encouraging messaging
@@ -67,23 +74,27 @@ For first-time users, the empty state dashboard now includes:
 ## User Experience Benefits
 
 ### Progressive Disclosure
+
 - Help is available but not intrusive
 - Users can expand sections as needed
 - Information appears contextually where it's relevant
 
 ### Multiple Learning Paths
+
 1. **Quick Reference**: Tooltips and inline tips
 2. **Detailed Guide**: Full help modal with tabs
 3. **Visual Learning**: Icons, colors, examples
 4. **Step-by-Step**: Numbered instructions
 
 ### Reduced Friction
+
 - Direct links to Imgur and Cloudinary
 - Clear examples of correct URL formats
 - Automatic video URL conversion explained
 - Preview modes explained
 
 ### Accessibility
+
 - Semantic HTML with proper labels
 - Keyboard-accessible modals and tooltips
 - Clear visual hierarchy
@@ -94,16 +105,19 @@ For first-time users, the empty state dashboard now includes:
 ### For Users
 
 **Accessing Help:**
+
 1. Click the "❓ Help" button in the top navigation
 2. Browse tabs to find relevant information
 3. Click "Got it!" or press ESC to close
 
 **Quick Tips:**
+
 1. In the edit page, find the "💡 Quick Tips & Help" section
 2. Click to expand/collapse
 3. Click external links to open services in new tabs
 
 **Contextual Help:**
+
 1. When entering image/video URLs, hover over the ℹ️ icon
 2. Read the tooltip for quick guidance
 3. Check the tip text below the input field
@@ -161,21 +175,25 @@ src/
 ## Design Decisions
 
 ### Why Tabbed Modal?
+
 - Organizes extensive help content without overwhelming users
 - Allows users to jump to relevant sections quickly
 - Maintains consistent location for all help resources
 
 ### Why Tooltips AND Quick Tips?
+
 - Tooltips: Immediate, contextual help without leaving the field
 - Quick Tips: Slightly more detailed, always visible option
 - Full Modal: Comprehensive reference for complex topics
 
 ### Why Inline Examples?
+
 - Shows correct vs incorrect formats visually
 - Reduces trial and error
 - Builds user confidence
 
 ### Color Coding
+
 - Red/Green: Christmas theme consistency
 - Blue: Information/help (universal convention)
 - Yellow: Warnings and important notes
@@ -186,22 +204,27 @@ src/
 Potential improvements for future versions:
 
 1. **Video Tutorials**
+
    - Embed short screencasts showing common tasks
    - Add to help modal as a "Video Tutorials" tab
 
 2. **Interactive Onboarding**
+
    - First-time user tour using libraries like `react-joyride`
    - Highlight key features step-by-step
 
 3. **Search Functionality**
+
    - Add search bar to help modal
    - Filter help content based on keywords
 
 4. **Contextual Help Suggestions**
+
    - Detect when user struggles (e.g., invalid URL)
    - Automatically show relevant help tooltip
 
 5. **FAQ Section**
+
    - Collect common questions from users
    - Add dedicated FAQ tab to help modal
 
