@@ -25,6 +25,12 @@ export async function POST(
       textColor,
       backgroundColor,
       textAlign,
+      borderColor,
+      borderWidth,
+      borderStyle,
+      borderRadius,
+      padding,
+      boxShadow,
     } = await req.json();
 
     if (!day || day < 1 || day > 25) {
@@ -68,6 +74,12 @@ export async function POST(
         textColor: textColor || '#000000',
         backgroundColor,
         textAlign: textAlign || 'left',
+        borderColor,
+        borderWidth: borderWidth || '0px',
+        borderStyle: borderStyle || 'solid',
+        borderRadius: borderRadius || '0px',
+        padding: padding || '16px',
+        boxShadow: boxShadow || 'none',
         calendarId: id,
       },
     });

@@ -18,6 +18,12 @@ interface CalendarEntry {
   textColor?: string;
   backgroundColor?: string;
   textAlign?: string;
+  borderColor?: string;
+  borderWidth?: string;
+  borderStyle?: string;
+  borderRadius?: string;
+  padding?: string;
+  boxShadow?: string;
 }
 
 interface Calendar {
@@ -334,8 +340,12 @@ export default function SharedCalendar({
                   backgroundColor:
                     selectedEntry.backgroundColor || 'transparent',
                   textAlign: (selectedEntry.textAlign || 'left') as any,
-                  padding: selectedEntry.backgroundColor ? '1rem' : '0',
-                  borderRadius: selectedEntry.backgroundColor ? '0.5rem' : '0',
+                  borderColor: selectedEntry.borderColor,
+                  borderWidth: selectedEntry.borderWidth || '0px',
+                  borderStyle: (selectedEntry.borderStyle || 'solid') as any,
+                  borderRadius: selectedEntry.borderRadius || '0px',
+                  padding: selectedEntry.padding || '16px',
+                  boxShadow: selectedEntry.boxShadow || 'none',
                   ...(selectedEntry.type === 'POEM' && {
                     fontStyle: 'italic',
                     lineHeight: '1.75',

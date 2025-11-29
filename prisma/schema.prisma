@@ -53,6 +53,12 @@ model CalendarEntry {
   textColor       String?  @default("#000000")
   backgroundColor String?
   textAlign       String?  @default("left")
+  borderColor     String?
+  borderWidth     String?  @default("0px")
+  borderStyle     String?  @default("solid")
+  borderRadius    String?  @default("0px")
+  padding         String?  @default("16px")
+  boxShadow       String?  @default("none")
   calendarId      String
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt

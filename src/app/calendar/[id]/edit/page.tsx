@@ -18,6 +18,12 @@ interface CalendarEntry {
   textColor?: string;
   backgroundColor?: string;
   textAlign?: string;
+  borderColor?: string;
+  borderWidth?: string;
+  borderStyle?: string;
+  borderRadius?: string;
+  padding?: string;
+  boxShadow?: string;
 }
 
 interface Calendar {
@@ -50,6 +56,12 @@ export default function EditCalendar({
     textColor: '#000000',
     backgroundColor: '',
     textAlign: 'left',
+    borderColor: '',
+    borderWidth: '0px',
+    borderStyle: 'solid',
+    borderRadius: '0px',
+    padding: '16px',
+    boxShadow: 'none',
   });
 
   useEffect(() => {
@@ -109,6 +121,12 @@ export default function EditCalendar({
         textColor: entry.textColor || '#000000',
         backgroundColor: entry.backgroundColor || '',
         textAlign: entry.textAlign || 'left',
+        borderColor: entry.borderColor || '',
+        borderWidth: entry.borderWidth || '0px',
+        borderStyle: entry.borderStyle || 'solid',
+        borderRadius: entry.borderRadius || '0px',
+        padding: entry.padding || '16px',
+        boxShadow: entry.boxShadow || 'none',
       });
     } else {
       setFormData({
@@ -121,6 +139,12 @@ export default function EditCalendar({
         textColor: '#000000',
         backgroundColor: '',
         textAlign: 'left',
+        borderColor: '',
+        borderWidth: '0px',
+        borderStyle: 'solid',
+        borderRadius: '0px',
+        padding: '16px',
+        boxShadow: 'none',
       });
     }
     setSelectedDay(day);
@@ -344,6 +368,12 @@ export default function EditCalendar({
                       backgroundColor:
                         formData.backgroundColor || 'transparent',
                       textAlign: formData.textAlign as any,
+                      borderColor: formData.borderColor || '#e5e7eb',
+                      borderWidth: formData.borderWidth,
+                      borderStyle: formData.borderStyle as any,
+                      borderRadius: formData.borderRadius,
+                      padding: formData.padding,
+                      boxShadow: formData.boxShadow,
                     }}
                   />
                 </div>
@@ -488,6 +518,143 @@ export default function EditCalendar({
                           </button>
                         ))}
                       </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Container Styling Options */}
+                <div className='border-t-2 border-gray-200 pt-4'>
+                  <h4 className='text-sm font-semibold text-gray-700 mb-3'>
+                    🎨 Container Styling
+                  </h4>
+                  
+                  <div className='grid grid-cols-2 gap-3'>
+                    <div>
+                      <label className='block text-xs font-medium text-gray-600 mb-1'>
+                        Border Style
+                      </label>
+                      <select
+                        value={formData.borderStyle}
+                        onChange={(e) =>
+                          setFormData({ ...formData, borderStyle: e.target.value })
+                        }
+                        className='w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:border-red-400 focus:outline-none'
+                      >
+                        <option value='solid'>Solid</option>
+                        <option value='dashed'>Dashed</option>
+                        <option value='dotted'>Dotted</option>
+                        <option value='double'>Double</option>
+                        <option value='none'>None</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className='block text-xs font-medium text-gray-600 mb-1'>
+                        Border Width
+                      </label>
+                      <select
+                        value={formData.borderWidth}
+                        onChange={(e) =>
+                          setFormData({ ...formData, borderWidth: e.target.value })
+                        }
+                        className='w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:border-red-400 focus:outline-none'
+                      >
+                        <option value='0px'>None (0px)</option>
+                        <option value='1px'>Thin (1px)</option>
+                        <option value='2px'>Medium (2px)</option>
+                        <option value='3px'>Thick (3px)</option>
+                        <option value='4px'>Extra Thick (4px)</option>
+                        <option value='6px'>Very Thick (6px)</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className='block text-xs font-medium text-gray-600 mb-1'>
+                        Border Color
+                      </label>
+                      <div className='flex gap-2'>
+                        <input
+                          type='color'
+                          value={formData.borderColor || '#000000'}
+                          onChange={(e) =>
+                            setFormData({ ...formData, borderColor: e.target.value })
+                          }
+                          className='h-10 w-16 border border-gray-300 rounded cursor-pointer'
+                        />
+                        <input
+                          type='text'
+                          value={formData.borderColor || ''}
+                          onChange={(e) =>
+                            setFormData({ ...formData, borderColor: e.target.value })
+                          }
+                          placeholder='#000000'
+                          className='flex-1 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:border-red-400 focus:outline-none'
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className='block text-xs font-medium text-gray-600 mb-1'>
+                        Corner Roundness
+                      </label>
+                      <select
+                        value={formData.borderRadius}
+                        onChange={(e) =>
+                          setFormData({ ...formData, borderRadius: e.target.value })
+                        }
+                        className='w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:border-red-400 focus:outline-none'
+                      >
+                        <option value='0px'>Sharp (0px)</option>
+                        <option value='4px'>Slightly Rounded (4px)</option>
+                        <option value='8px'>Rounded (8px)</option>
+                        <option value='12px'>Very Rounded (12px)</option>
+                        <option value='16px'>Extra Rounded (16px)</option>
+                        <option value='24px'>Pill-Shaped (24px)</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className='block text-xs font-medium text-gray-600 mb-1'>
+                        Inner Padding
+                      </label>
+                      <select
+                        value={formData.padding}
+                        onChange={(e) =>
+                          setFormData({ ...formData, padding: e.target.value })
+                        }
+                        className='w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:border-red-400 focus:outline-none'
+                      >
+                        <option value='0px'>None (0px)</option>
+                        <option value='8px'>Compact (8px)</option>
+                        <option value='12px'>Cozy (12px)</option>
+                        <option value='16px'>Normal (16px)</option>
+                        <option value='20px'>Comfortable (20px)</option>
+                        <option value='24px'>Spacious (24px)</option>
+                        <option value='32px'>Extra Spacious (32px)</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className='block text-xs font-medium text-gray-600 mb-1'>
+                        Shadow Effect
+                      </label>
+                      <select
+                        value={formData.boxShadow}
+                        onChange={(e) =>
+                          setFormData({ ...formData, boxShadow: e.target.value })
+                        }
+                        className='w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:border-red-400 focus:outline-none'
+                      >
+                        <option value='none'>None</option>
+                        <option value='0 1px 3px rgba(0,0,0,0.1)'>Subtle</option>
+                        <option value='0 2px 8px rgba(0,0,0,0.15)'>Light</option>
+                        <option value='0 4px 12px rgba(0,0,0,0.2)'>Medium</option>
+                        <option value='0 8px 24px rgba(0,0,0,0.25)'>Strong</option>
+                        <option value='0 12px 32px rgba(0,0,0,0.3)'>Very Strong</option>
+                        <option value='0 4px 12px rgba(255,0,0,0.3)'>Red Glow</option>
+                        <option value='0 4px 12px rgba(0,255,0,0.3)'>Green Glow</option>
+                        <option value='0 4px 12px rgba(255,215,0,0.5)'>Gold Glow</option>
+                      </select>
                     </div>
                   </div>
                 </div>
