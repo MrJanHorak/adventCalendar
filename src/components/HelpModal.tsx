@@ -32,6 +32,7 @@ export default function HelpModal({ isOpen, onClose }: HelpModalProps) {
             { id: 'getting-started', label: '🚀 Getting Started' },
             { id: 'images', label: '🖼️ Adding Images' },
             { id: 'videos', label: '🎥 Adding Videos' },
+            { id: 'links', label: '🔗 Adding Links' },
             { id: 'formatting', label: '🎨 Formatting' },
             { id: 'sharing', label: '🔗 Sharing' },
           ].map((tab) => (
@@ -273,6 +274,92 @@ export default function HelpModal({ isOpen, onClose }: HelpModalProps) {
                   "Unlisted" on YouTube/Vimeo so anyone with the calendar link
                   can watch it.
                 </p>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'links' && (
+            <div className='space-y-6'>
+              <h3 className='text-2xl font-bold text-gray-800'>
+                🔗 Adding External Links
+              </h3>
+
+              <div className='bg-purple-50 border-2 border-purple-300 p-4 rounded-lg'>
+                <p className='font-semibold text-purple-800 mb-2'>
+                  ✨ Link to Anything
+                </p>
+                <p className='text-purple-700'>
+                  Add links to external websites, recipes, playlists, gift
+                  registries, or any web page you want to share!
+                </p>
+              </div>
+
+              <div className='space-y-4'>
+                <div>
+                  <h4 className='font-semibold text-lg mb-3 flex items-center gap-2'>
+                    <span className='text-2xl'>🌐</span>
+                    How to Add a Link
+                  </h4>
+                  <ol className='list-decimal list-inside space-y-2 text-gray-700 ml-4'>
+                    <li>Click "Add Link" button when editing an entry</li>
+                    <li>Paste the full URL (starting with https://)</li>
+                    <li>Optionally customize the button text</li>
+                    <li>Save your entry</li>
+                  </ol>
+                </div>
+
+                <div className='bg-gray-100 p-4 rounded-lg'>
+                  <p className='font-semibold mb-2'>💡 Use Cases:</p>
+                  <ul className='list-disc list-inside space-y-1 text-gray-700 ml-2'>
+                    <li>
+                      <strong>Recipe:</strong> Link to your favorite holiday
+                      recipe
+                    </li>
+                    <li>
+                      <strong>Playlist:</strong> Share a Spotify or YouTube
+                      playlist
+                    </li>
+                    <li>
+                      <strong>Store:</strong> Link to an online gift wish list
+                    </li>
+                    <li>
+                      <strong>Article:</strong> Share an interesting story or
+                      blog post
+                    </li>
+                    <li>
+                      <strong>Event:</strong> Link to a calendar invite or
+                      tickets
+                    </li>
+                    <li>
+                      <strong>Game:</strong> Share an online game or activity
+                    </li>
+                  </ul>
+                </div>
+
+                <div className='bg-blue-50 border-l-4 border-blue-500 p-4 rounded'>
+                  <p className='font-semibold text-blue-800 mb-2'>
+                    🔒 Security Note
+                  </p>
+                  <p className='text-blue-700'>
+                    Links open in a new tab for safety. Make sure you trust the
+                    websites you're linking to!
+                  </p>
+                </div>
+
+                <div className='bg-green-50 border-l-4 border-green-500 p-4 rounded'>
+                  <p className='font-semibold text-green-800 mb-2'>
+                    ✏️ Customize Button Text
+                  </p>
+                  <p className='text-green-700 mb-2'>
+                    Make your link clear with custom text:
+                  </p>
+                  <ul className='list-disc list-inside space-y-1 text-green-700 ml-2'>
+                    <li>"View Recipe" for cooking links</li>
+                    <li>"Listen Now" for music playlists</li>
+                    <li>"Shop This Gift" for product pages</li>
+                    <li>"Read Story" for articles</li>
+                  </ul>
+                </div>
               </div>
             </div>
           )}

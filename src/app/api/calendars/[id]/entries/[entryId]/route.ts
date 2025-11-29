@@ -19,6 +19,8 @@ export async function PATCH(
       content,
       imageUrl,
       videoUrl,
+      linkUrl,
+      linkText,
       type,
       isPoem,
       fontFamily,
@@ -26,6 +28,7 @@ export async function PATCH(
       textColor,
       backgroundColor,
       textAlign,
+      verticalAlign,
       borderColor,
       borderWidth,
       borderStyle,
@@ -53,6 +56,8 @@ export async function PATCH(
     if (content !== undefined) updateData.content = content;
     if (imageUrl !== undefined) updateData.imageUrl = imageUrl;
     if (videoUrl !== undefined) updateData.videoUrl = videoUrl;
+    if (linkUrl !== undefined) updateData.linkUrl = linkUrl;
+    if (linkText !== undefined) updateData.linkText = linkText;
     if (type !== undefined) updateData.type = type;
     if (isPoem !== undefined) updateData.isPoem = !!isPoem;
     if (fontFamily !== undefined && fontFamily !== '')
@@ -65,6 +70,8 @@ export async function PATCH(
       updateData.backgroundColor = backgroundColor;
     if (textAlign !== undefined && textAlign !== '')
       updateData.textAlign = textAlign;
+    if (verticalAlign !== undefined && verticalAlign !== '')
+      updateData.verticalAlign = verticalAlign;
     if (borderColor !== undefined && borderColor !== '')
       updateData.borderColor = borderColor;
     if (borderWidth !== undefined && borderWidth !== '')

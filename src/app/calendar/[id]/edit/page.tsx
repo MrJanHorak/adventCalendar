@@ -17,6 +17,8 @@ interface CalendarEntry {
   content: string | null;
   imageUrl: string | null;
   videoUrl: string | null;
+  linkUrl: string | null;
+  linkText: string | null;
   type?: EntryType; // optional legacy
   isPoem?: boolean;
   fontFamily?: string;
@@ -24,6 +26,7 @@ interface CalendarEntry {
   textColor?: string;
   backgroundColor?: string;
   textAlign?: string;
+  verticalAlign?: string;
   borderColor?: string;
   borderWidth?: string;
   borderStyle?: string;
@@ -77,12 +80,15 @@ export default function EditCalendar({
     content: '',
     imageUrl: '',
     videoUrl: '',
+    linkUrl: '',
+    linkText: '',
     isPoem: false,
     fontFamily: 'Inter',
     fontSize: '16px',
     textColor: '#000000',
     backgroundColor: '',
-    textAlign: 'left',
+    textAlign: 'center',
+    verticalAlign: 'middle',
     borderColor: '',
     borderWidth: '0px',
     borderStyle: 'solid',
@@ -92,6 +98,7 @@ export default function EditCalendar({
   });
   const [showImageField, setShowImageField] = useState(false);
   const [showVideoField, setShowVideoField] = useState(false);
+  const [showLinkField, setShowLinkField] = useState(false);
 
   useEffect(() => {
     params.then(setResolvedParams);
@@ -155,12 +162,15 @@ export default function EditCalendar({
         content: entry.content || '',
         imageUrl: entry.imageUrl || '',
         videoUrl: entry.videoUrl || '',
+        linkUrl: entry.linkUrl || '',
+        linkText: entry.linkText || '',
         isPoem: entry.isPoem || false,
         fontFamily: entry.fontFamily || 'Inter',
         fontSize: entry.fontSize || '16px',
         textColor: entry.textColor || '#000000',
         backgroundColor: entry.backgroundColor || '',
-        textAlign: entry.textAlign || 'left',
+        textAlign: entry.textAlign || 'center',
+        verticalAlign: entry.verticalAlign || 'middle',
         borderColor: entry.borderColor || '',
         borderWidth: entry.borderWidth || '0px',
         borderStyle: entry.borderStyle || 'solid',
@@ -170,18 +180,22 @@ export default function EditCalendar({
       });
       setShowImageField(!!entry.imageUrl);
       setShowVideoField(!!entry.videoUrl);
+      setShowLinkField(!!entry.linkUrl);
     } else {
       setFormData({
         title: '',
         content: '',
         imageUrl: '',
         videoUrl: '',
+        linkUrl: '',
+        linkText: '',
         isPoem: false,
         fontFamily: 'Inter',
         fontSize: '16px',
         textColor: '#000000',
         backgroundColor: '',
-        textAlign: 'left',
+        textAlign: 'center',
+        verticalAlign: 'middle',
         borderColor: '',
         borderWidth: '0px',
         borderStyle: 'solid',
@@ -191,6 +205,7 @@ export default function EditCalendar({
       });
       setShowImageField(false);
       setShowVideoField(false);
+      setShowLinkField(false);
     }
     setSelectedDay(day);
   };
@@ -200,14 +215,33 @@ export default function EditCalendar({
 
     const existingEntry = calendar.entries.find((e) => e.day === selectedDay);
 
+    // Validate required fields
+    if (!formData.title) {
+      alert('Title is required');
+      return;
+    }
+
+    if (
+      !formData.content.trim() &&
+      !formData.imageUrl.trim() &&
+      !formData.videoUrl.trim() &&
+      !formData.linkUrl.trim()
+    ) {
+      alert('Please add at least some content (text, image, video, or link)');
+      return;
+    }
+
     // Prepare data with converted video URL
     const dataToSave = {
       ...formData,
-      imageUrl: showImageField ? formData.imageUrl : '',
+      content: formData.content.trim() || null,
+      imageUrl: showImageField && formData.imageUrl.trim() ? formData.imageUrl.trim() : null,
       videoUrl:
-        showVideoField && formData.videoUrl
-          ? convertToEmbedUrl(formData.videoUrl)
-          : '',
+        showVideoField && formData.videoUrl.trim()
+          ? convertToEmbedUrl(formData.videoUrl.trim())
+          : null,
+      linkUrl: showLinkField && formData.linkUrl.trim() ? formData.linkUrl.trim() : null,
+      linkText: showLinkField && formData.linkText.trim() ? formData.linkText.trim() : null,
     };
 
     try {
@@ -221,10 +255,16 @@ export default function EditCalendar({
             body: JSON.stringify(dataToSave),
           }
         );
-        if (response.ok) {
-          fetchCalendar();
-          setSelectedDay(null);
+
+        if (!response.ok) {
+          const error = await response.json();
+          console.error('Save error:', error);
+          alert(error.error || 'Failed to save entry');
+          return;
         }
+
+        fetchCalendar();
+        setSelectedDay(null);
       } else {
         // Create new entry
         const response = await fetch(
@@ -235,13 +275,20 @@ export default function EditCalendar({
             body: JSON.stringify({ day: selectedDay, ...dataToSave }),
           }
         );
-        if (response.ok) {
-          fetchCalendar();
-          setSelectedDay(null);
+
+        if (!response.ok) {
+          const error = await response.json();
+          console.error('Save error:', error);
+          alert(error.error || 'Failed to save entry');
+          return;
         }
+
+        fetchCalendar();
+        setSelectedDay(null);
       }
     } catch (error) {
       console.error('Error saving entry:', error);
+      alert('Failed to save entry');
     }
   };
 
@@ -652,6 +699,18 @@ export default function EditCalendar({
                 </ol>
               </div>
 
+              <div className='bg-white p-4 rounded-lg shadow-sm border border-yellow-100'>
+                <h3 className='font-bold text-lg mb-2 flex items-center gap-2'>
+                  <span>🔗</span> Adding Links
+                </h3>
+                <ol className='text-sm text-gray-700 space-y-1 list-decimal list-inside'>
+                  <li>Click "Add Link" in the entry editor</li>
+                  <li>Paste any website URL</li>
+                  <li>Optionally customize the button text</li>
+                  <li>Great for recipes, playlists, or gifts!</li>
+                </ol>
+              </div>
+
               <div className='bg-white p-4 rounded-lg shadow-sm border border-green-100'>
                 <h3 className='font-bold text-lg mb-2 flex items-center gap-2'>
                   <span>🎨</span> Formatting Tips
@@ -752,6 +811,17 @@ export default function EditCalendar({
                     >
                       {showVideoField ? 'Remove Video' : 'Add Video'}
                     </button>
+                    <button
+                      type='button'
+                      onClick={() => setShowLinkField((v) => !v)}
+                      className={`px-3 py-2 border-2 rounded-lg text-sm font-medium transition ${
+                        showLinkField
+                          ? 'border-purple-500 bg-purple-50'
+                          : 'border-gray-200 bg-white hover:border-purple-400'
+                      }`}
+                    >
+                      {showLinkField ? 'Remove Link' : 'Add Link'}
+                    </button>
                   </div>
                 </div>
 
@@ -795,6 +865,17 @@ export default function EditCalendar({
                       borderRadius: formData.borderRadius,
                       padding: formData.padding,
                       boxShadow: formData.boxShadow,
+                      display: 'flex',
+                      alignItems:
+                        formData.verticalAlign === 'top'
+                          ? 'flex-start'
+                          : formData.verticalAlign === 'bottom'
+                          ? 'flex-end'
+                          : 'center',
+                      ...(formData.isPoem && {
+                        fontStyle: 'italic',
+                        lineHeight: '1.75',
+                      }),
                     }}
                   />
                 </div>
@@ -893,7 +974,7 @@ export default function EditCalendar({
 
                     <div className='col-span-2'>
                       <label className='block text-xs font-medium text-gray-600 mb-1'>
-                        Text Alignment
+                        Horizontal Alignment
                       </label>
                       <div className='flex gap-2'>
                         {['left', 'center', 'right', 'justify'].map((align) => (
@@ -910,6 +991,37 @@ export default function EditCalendar({
                             }`}
                           >
                             {align.charAt(0).toUpperCase() + align.slice(1)}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className='col-span-2'>
+                      <label className='block text-xs font-medium text-gray-600 mb-1'>
+                        Vertical Alignment
+                      </label>
+                      <div className='flex gap-2'>
+                        {[
+                          { value: 'top', label: 'Top' },
+                          { value: 'middle', label: 'Middle' },
+                          { value: 'bottom', label: 'Bottom' },
+                        ].map((align) => (
+                          <button
+                            key={align.value}
+                            type='button'
+                            onClick={() =>
+                              setFormData({
+                                ...formData,
+                                verticalAlign: align.value,
+                              })
+                            }
+                            className={`flex-1 px-3 py-2 text-sm border rounded-lg transition ${
+                              formData.verticalAlign === align.value
+                                ? 'bg-red-500 text-white border-red-500'
+                                : 'bg-white text-gray-700 border-gray-300 hover:border-red-300'
+                            }`}
+                          >
+                            {align.label}
                           </button>
                         ))}
                       </div>
@@ -973,31 +1085,17 @@ export default function EditCalendar({
                       <label className='block text-xs font-medium text-gray-600 mb-1'>
                         Border Color
                       </label>
-                      <div className='flex gap-2'>
-                        <input
-                          type='color'
-                          value={formData.borderColor || '#000000'}
-                          onChange={(e) =>
-                            setFormData({
-                              ...formData,
-                              borderColor: e.target.value,
-                            })
-                          }
-                          className='h-10 w-16 border border-gray-300 rounded cursor-pointer'
-                        />
-                        <input
-                          type='text'
-                          value={formData.borderColor || ''}
-                          onChange={(e) =>
-                            setFormData({
-                              ...formData,
-                              borderColor: e.target.value,
-                            })
-                          }
-                          placeholder='#000000'
-                          className='flex-1 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:border-red-400 focus:outline-none'
-                        />
-                      </div>
+                      <input
+                        type='color'
+                        value={formData.borderColor || '#000000'}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            borderColor: e.target.value,
+                          })
+                        }
+                        className='h-12 w-full border border-gray-300 rounded cursor-pointer'
+                      />
                     </div>
 
                     <div>
@@ -1158,6 +1256,39 @@ export default function EditCalendar({
                     <p className='text-xs text-gray-500 mt-1'>
                       💡 Paste a YouTube or Vimeo link - we'll convert it
                       automatically
+                    </p>
+                  </div>
+                )}
+
+                {showLinkField && (
+                  <div>
+                    <label className='block text-sm font-medium text-gray-700 mb-2'>
+                      External Link URL
+                    </label>
+                    <input
+                      type='url'
+                      value={formData.linkUrl}
+                      onChange={(e) =>
+                        setFormData({ ...formData, linkUrl: e.target.value })
+                      }
+                      placeholder='https://example.com'
+                      className='w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-red-400 focus:outline-none'
+                    />
+                    <label className='block text-sm font-medium text-gray-700 mb-2 mt-3'>
+                      Link Button Text (optional)
+                    </label>
+                    <input
+                      type='text'
+                      value={formData.linkText}
+                      onChange={(e) =>
+                        setFormData({ ...formData, linkText: e.target.value })
+                      }
+                      placeholder='Visit Website'
+                      className='w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-red-400 focus:outline-none'
+                    />
+                    <p className='text-xs text-gray-500 mt-1'>
+                      💡 Add links to websites, recipes, playlists, or anything
+                      else!
                     </p>
                   </div>
                 )}

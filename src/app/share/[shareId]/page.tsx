@@ -14,6 +14,8 @@ interface CalendarEntry {
   content: string | null;
   imageUrl: string | null;
   videoUrl: string | null;
+  linkUrl: string | null;
+  linkText: string | null;
   type: EntryType; // retained for backward compatibility
   isPoem?: boolean;
   fontFamily?: string;
@@ -21,6 +23,7 @@ interface CalendarEntry {
   textColor?: string;
   backgroundColor?: string;
   textAlign?: string;
+  verticalAlign?: string;
   borderColor?: string;
   borderWidth?: string;
   borderStyle?: string;
@@ -408,20 +411,35 @@ export default function SharedCalendar({
               {/* Text / Poem (if present) */}
               {selectedEntry.content && (
                 <div
-                  className='whitespace-pre-wrap'
+                  className='whitespace-pre-wrap flex flex-col'
                   style={{
                     fontFamily: selectedEntry.fontFamily || 'Inter',
                     fontSize: selectedEntry.fontSize || '16px',
                     color: selectedEntry.textColor || '#374151',
                     backgroundColor:
                       selectedEntry.backgroundColor || 'transparent',
-                    textAlign: (selectedEntry.textAlign || 'left') as any,
+                    textAlign: (selectedEntry.textAlign || 'center') as any,
                     borderColor: selectedEntry.borderColor,
                     borderWidth: selectedEntry.borderWidth || '0px',
                     borderStyle: (selectedEntry.borderStyle || 'solid') as any,
                     borderRadius: selectedEntry.borderRadius || '0px',
                     padding: selectedEntry.padding || '16px',
                     boxShadow: selectedEntry.boxShadow || 'none',
+                    alignItems:
+                      selectedEntry.textAlign === 'left'
+                        ? 'flex-start'
+                        : selectedEntry.textAlign === 'right'
+                        ? 'flex-end'
+                        : selectedEntry.textAlign === 'justify'
+                        ? 'stretch'
+                        : 'center',
+                    justifyContent:
+                      selectedEntry.verticalAlign === 'top'
+                        ? 'flex-start'
+                        : selectedEntry.verticalAlign === 'bottom'
+                        ? 'flex-end'
+                        : 'center',
+                    minHeight: '200px',
                     ...(selectedEntry.isPoem && {
                       fontStyle: 'italic',
                       lineHeight: '1.75',
@@ -432,10 +450,25 @@ export default function SharedCalendar({
                 </div>
               )}
 
+              {/* External Link Button */}
+              {selectedEntry.linkUrl && (
+                <div className='mt-6'>
+                  <a
+                    href={selectedEntry.linkUrl}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    className='inline-block w-full text-center bg-gradient-to-r from-purple-500 to-blue-500 text-white px-6 py-4 rounded-xl hover:from-purple-600 hover:to-blue-600 transition font-semibold text-lg shadow-lg'
+                  >
+                    🔗 {selectedEntry.linkText || 'Visit Link'}
+                  </a>
+                </div>
+              )}
+
               {/* Fallback if no content at all (should be rare) */}
               {!selectedEntry.content &&
                 !selectedEntry.imageUrl &&
-                !selectedEntry.videoUrl && (
+                !selectedEntry.videoUrl &&
+                !selectedEntry.linkUrl && (
                   <div className='text-center text-gray-500 italic'>
                     No content available for this entry.
                   </div>

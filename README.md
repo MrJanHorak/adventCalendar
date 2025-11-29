@@ -6,12 +6,18 @@ A festive web application that allows users to create personalized online advent
 
 - **User Authentication**: Secure sign-up and login with NextAuth.js
 - **Create Calendars**: Design personalized advent calendars with custom titles and descriptions
+- **Multi-Content Entries**: Combine text, images, and videos in a single day's entry
+- **Flexible Entry Styling**: Apply poem formatting, customize fonts, colors, borders, and shadows per entry
+- **Calendar Theming**: Choose from 6 preset themes or create custom color schemes with background patterns
 - **25 Days of Content**: Add pictures, poems, or text entries for each day (December 1-25)
+- **Video Embedding**: Support for YouTube and Vimeo videos with automatic URL conversion
 - **Date-Restricted Access**: Doors can only be opened on their corresponding date
 - **Track Progress**: Monitor which doors users have opened
 - **Shareable Links**: Generate unique URLs to share calendars with others
+- **Owner Preview Mode**: Test all doors before sharing
 - **Holiday Theme**: Beautiful festive UI with snowflake animations and holiday colors
 - **Responsive Design**: Works seamlessly on desktop and mobile devices
+- **Built-in Help System**: Comprehensive tooltips, quick tips, and help modal
 
 ## 🚀 Tech Stack
 
@@ -139,18 +145,13 @@ Edit Tailwind classes in components to customize the color scheme. Current theme
 
 ### Adding More Entry Types
 
-Extend the `EntryType` enum in `schema.prisma`:
+The application now supports multi-content entries (text + image + video simultaneously) through a flexible toggle-based UI:
 
-```prisma
-enum EntryType {
-  TEXT
-  POEM
-  IMAGE
-  VIDEO  // Add new type
-}
-```
+- Users can enable/disable Image and Video fields independently
+- Poem styling is applied via a checkbox (`isPoem` field)
+- The legacy `type` enum in `schema.prisma` is retained for backward compatibility
 
-Then update the UI components accordingly.
+**Migration Note**: In a future release, the `type` field may be removed entirely as it's no longer used by the UI. All entry rendering is now based on the presence of `content`, `imageUrl`, `videoUrl`, and the `isPoem` boolean flag.
 
 ## 🔒 Security Features
 

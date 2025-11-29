@@ -20,6 +20,8 @@ export async function POST(
       content,
       imageUrl,
       videoUrl,
+      linkUrl,
+      linkText,
       type, // retained for backward compatibility
       isPoem,
       fontFamily,
@@ -27,6 +29,7 @@ export async function POST(
       textColor,
       backgroundColor,
       textAlign,
+      verticalAlign,
       borderColor,
       borderWidth,
       borderStyle,
@@ -42,14 +45,19 @@ export async function POST(
       );
     }
 
-    if (!title) {
+    if (!title || !title.trim()) {
       return NextResponse.json({ error: 'Title is required' }, { status: 400 });
     }
 
-    // Require at least one of text, image, or video
-    if (!content && !imageUrl && !videoUrl) {
+    // Require at least one of text, image, video, or link (check trimmed values)
+    const hasContent = content && content.trim();
+    const hasImage = imageUrl && imageUrl.trim();
+    const hasVideo = videoUrl && videoUrl.trim();
+    const hasLink = linkUrl && linkUrl.trim();
+
+    if (!hasContent && !hasImage && !hasVideo && !hasLink) {
       return NextResponse.json(
-        { error: 'Provide at least one of text, imageUrl, or videoUrl' },
+        { error: 'Provide at least one of text, imageUrl, videoUrl, or linkUrl' },
         { status: 400 }
       );
     }
@@ -76,13 +84,16 @@ export async function POST(
         content,
         imageUrl,
         videoUrl,
+        linkUrl,
+        linkText,
         type: type || 'TEXT',
         isPoem: !!isPoem,
         fontFamily: fontFamily || 'Inter',
         fontSize: fontSize || '16px',
         textColor: textColor || '#000000',
         backgroundColor,
-        textAlign: textAlign || 'left',
+        textAlign: textAlign || 'center',
+        verticalAlign: verticalAlign || 'middle',
         borderColor,
         borderWidth: borderWidth || '0px',
         borderStyle: borderStyle || 'solid',

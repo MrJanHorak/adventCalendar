@@ -56,13 +56,16 @@ model CalendarEntry {
   content         String?  @db.Text
   imageUrl        String?
   videoUrl        String?
+  linkUrl         String?
+  linkText        String?
   type            EntryType @default(TEXT)
   isPoem          Boolean  @default(false)
   fontFamily      String?  @default("Inter")
   fontSize        String?  @default("16px")
   textColor       String?  @default("#000000")
   backgroundColor String?
-  textAlign       String?  @default("left")
+  textAlign       String?  @default("center")
+  verticalAlign   String?  @default("middle")
   borderColor     String?
   borderWidth     String?  @default("0px")
   borderStyle     String?  @default("solid")
