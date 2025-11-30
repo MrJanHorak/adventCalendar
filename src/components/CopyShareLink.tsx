@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useState, useEffect } from 'react';
 
@@ -7,7 +7,10 @@ interface CopyShareLinkProps {
   className?: string;
 }
 
-export default function CopyShareLink({ shareId, className = '' }: CopyShareLinkProps) {
+export default function CopyShareLink({
+  shareId,
+  className = '',
+}: CopyShareLinkProps) {
   const [origin, setOrigin] = useState('');
   const [copied, setCopied] = useState(false);
 
