@@ -186,9 +186,7 @@ export default function IdeasSection() {
 
       {/* CTA */}
       <div className='text-center mt-12'>
-        <p className='text-gray-600 mb-4'>
-          Ready to create something magical?
-        </p>
+        <p className='text-gray-600 mb-4'>Ready to create something magical?</p>
         <a
           href='#features'
           className='inline-block bg-gradient-to-r from-purple-500 to-pink-500 text-white px-8 py-3 rounded-full font-semibold hover:opacity-90 transition shadow-lg'

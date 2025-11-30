@@ -72,8 +72,8 @@ export default function IdeasModal({ isOpen, onClose }: IdeasModalProps) {
                   </h4>
                   <ul className='list-disc list-inside space-y-2 text-gray-700 ml-4'>
                     <li>
-                      <strong>Love Notes:</strong> Daily affirmations and reasons
-                      why you love them
+                      <strong>Love Notes:</strong> Daily affirmations and
+                      reasons why you love them
                     </li>
                     <li>
                       <strong>Memory Lane:</strong> Photos from your favorite
@@ -84,12 +84,12 @@ export default function IdeasModal({ isOpen, onClose }: IdeasModalProps) {
                       year
                     </li>
                     <li>
-                      <strong>Love Songs:</strong> A different romantic song each
-                      day
+                      <strong>Love Songs:</strong> A different romantic song
+                      each day
                     </li>
                     <li>
-                      <strong>Countdown to Event:</strong> Build excitement for a
-                      vacation or special occasion
+                      <strong>Countdown to Event:</strong> Build excitement for
+                      a vacation or special occasion
                     </li>
                   </ul>
                 </div>
@@ -104,7 +104,9 @@ export default function IdeasModal({ isOpen, onClose }: IdeasModalProps) {
                   <ul className='list-disc list-inside space-y-1 text-gray-700 ml-4'>
                     <li>Days 1-20: Riddles and hints about the gift</li>
                     <li>Days 21-24: Photos showing parts of the gift</li>
-                    <li>Day 25: The big reveal with location or link to gift</li>
+                    <li>
+                      Day 25: The big reveal with location or link to gift
+                    </li>
                   </ul>
                 </div>
 
@@ -151,8 +153,8 @@ export default function IdeasModal({ isOpen, onClose }: IdeasModalProps) {
                       <strong>Learning Fun:</strong> Educational videos or songs
                     </li>
                     <li>
-                      <strong>Kindness Challenge:</strong> Daily acts of kindness
-                      to complete
+                      <strong>Kindness Challenge:</strong> Daily acts of
+                      kindness to complete
                     </li>
                   </ul>
                 </div>
@@ -179,8 +181,8 @@ export default function IdeasModal({ isOpen, onClose }: IdeasModalProps) {
                       family history
                     </li>
                     <li>
-                      <strong>Video Messages:</strong> Recorded messages from all
-                      family members
+                      <strong>Video Messages:</strong> Recorded messages from
+                      all family members
                     </li>
                   </ul>
                 </div>
@@ -228,8 +230,8 @@ export default function IdeasModal({ isOpen, onClose }: IdeasModalProps) {
                       colleagues
                     </li>
                     <li>
-                      <strong>Motivational Content:</strong> Inspiring quotes and
-                      videos
+                      <strong>Motivational Content:</strong> Inspiring quotes
+                      and videos
                     </li>
                     <li>
                       <strong>Wellness Tips:</strong> Daily health and
@@ -244,16 +246,16 @@ export default function IdeasModal({ isOpen, onClose }: IdeasModalProps) {
                   </h4>
                   <ul className='list-disc list-inside space-y-2 text-gray-700 ml-4'>
                     <li>
-                      <strong>New Hire Welcome:</strong> Company culture and team
-                      introductions
+                      <strong>New Hire Welcome:</strong> Company culture and
+                      team introductions
                     </li>
                     <li>
                       <strong>Skill Building:</strong> Daily training videos or
                       tutorials
                     </li>
                     <li>
-                      <strong>Product Launches:</strong> Build excitement for new
-                      products
+                      <strong>Product Launches:</strong> Build excitement for
+                      new products
                     </li>
                     <li>
                       <strong>Company History:</strong> Share company milestones
@@ -356,7 +358,8 @@ export default function IdeasModal({ isOpen, onClose }: IdeasModalProps) {
                       daily
                     </li>
                     <li>
-                      <strong>Writing Prompts:</strong> Daily creative challenges
+                      <strong>Writing Prompts:</strong> Daily creative
+                      challenges
                     </li>
                     <li>
                       <strong>Book Excerpts:</strong> Teasers for upcoming
@@ -431,8 +434,8 @@ export default function IdeasModal({ isOpen, onClose }: IdeasModalProps) {
                       <strong>Technique Tutorials:</strong> Quick art lessons
                     </li>
                     <li>
-                      <strong>Print Sale Countdown:</strong> Build excitement for
-                      limited editions
+                      <strong>Print Sale Countdown:</strong> Build excitement
+                      for limited editions
                     </li>
                   </ul>
                 </div>
@@ -503,15 +506,22 @@ export default function IdeasModal({ isOpen, onClose }: IdeasModalProps) {
                   </h4>
                   <div className='space-y-3'>
                     <div>
-                      <p className='font-semibold text-sm mb-1'>Classic Poems:</p>
+                      <p className='font-semibold text-sm mb-1'>
+                        Classic Poems:
+                      </p>
                       <ul className='list-disc list-inside space-y-1 text-sm text-gray-700 ml-2'>
-                        <li>A Visit from St. Nicholas (Twas the Night Before Christmas)</li>
+                        <li>
+                          A Visit from St. Nicholas (Twas the Night Before
+                          Christmas)
+                        </li>
                         <li>Christmas Bells by Henry Wadsworth Longfellow</li>
                         <li>In the Bleak Midwinter by Christina Rossetti</li>
                       </ul>
                     </div>
                     <div>
-                      <p className='font-semibold text-sm mb-1'>Quote Themes:</p>
+                      <p className='font-semibold text-sm mb-1'>
+                        Quote Themes:
+                      </p>
                       <ul className='list-disc list-inside space-y-1 text-sm text-gray-700 ml-2'>
                         <li>Love and gratitude messages</li>
                         <li>Inspirational holiday quotes</li>
@@ -523,9 +533,7 @@ export default function IdeasModal({ isOpen, onClose }: IdeasModalProps) {
                 </div>
 
                 <div className='bg-purple-50 border-l-4 border-purple-500 p-4 rounded'>
-                  <h4 className='font-semibold text-lg mb-2'>
-                    🖼️ Image Ideas
-                  </h4>
+                  <h4 className='font-semibold text-lg mb-2'>🖼️ Image Ideas</h4>
                   <div className='grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-gray-700'>
                     <div>
                       <p className='font-semibold mb-1'>Personal Photos:</p>
@@ -569,11 +577,12 @@ export default function IdeasModal({ isOpen, onClose }: IdeasModalProps) {
                       <strong>Comedy Clips:</strong> Holiday-themed sketches
                     </li>
                     <li>
-                      <strong>Educational:</strong> History of holiday traditions
+                      <strong>Educational:</strong> History of holiday
+                      traditions
                     </li>
                     <li>
-                      <strong>Personal Messages:</strong> Record yourself sharing
-                      thoughts
+                      <strong>Personal Messages:</strong> Record yourself
+                      sharing thoughts
                     </li>
                   </ul>
                 </div>
