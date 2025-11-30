@@ -5,6 +5,9 @@ import { redirect } from 'next/navigation';
 import CopyShareLink from '@/components/CopyShareLink';
 import Image from 'next/image';
 import SettingsModal from '@/components/SettingsModal';
+import DeleteCalendarButton from '@/components/DeleteCalendarButton';
+import IdeasSection from '@/components/IdeasSection';
+import HelpSection from '@/components/HelpSection';
 
 export default async function Dashboard() {
   const session = await auth();
@@ -64,12 +67,15 @@ export default async function Dashboard() {
               <span className='hidden sm:inline text-gray-700 truncate max-w-[140px]'>
                 Hello, {session.user.name || session.user.email}!
               </span>
+              <IdeasSection />
+              <HelpSection />
               <SettingsModal initialName={session.user.name} />
               <Link
                 href='/auth/signout'
-                className='bg-red-500 text-white px-4 py-2 sm:px-6 sm:py-2 rounded-full hover:bg-red-600 transition font-medium text-sm sm:text-base'
+                className='flex items-center gap-2 text-gray-700 hover:text-red-600 font-medium transition'
               >
-                Sign Out
+                <span className='text-xl'>🚪</span>
+                <span className='hidden sm:inline'>Sign Out</span>
               </Link>
             </div>
           </div>
@@ -186,6 +192,7 @@ export default async function Dashboard() {
                     >
                       View
                     </Link>
+                    <DeleteCalendarButton id={calendar.id} />
                   </div>
                   <div className='mt-3 pt-3 border-t border-gray-100'>
                     <p className='text-xs text-gray-500 mb-1'>Share:</p>

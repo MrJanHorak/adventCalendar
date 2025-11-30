@@ -65,9 +65,10 @@ export default function SettingsModal({ initialName }: Props) {
     <div>
       <button
         onClick={() => setOpen(true)}
-        className='bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-full text-sm'
+        className="flex items-center gap-2 text-gray-700 hover:text-gray-900 font-medium transition"
       >
-        Settings
+        <span className="text-xl">⚙️</span>
+        <span className="hidden sm:inline">Settings</span>
       </button>
 
       {open && (

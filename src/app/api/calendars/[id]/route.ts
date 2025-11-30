@@ -3,7 +3,7 @@ import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 
 export async function GET(
-  req: NextRequest,
+  _req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
@@ -16,11 +16,7 @@ export async function GET(
 
     const calendar = await prisma.calendar.findUnique({
       where: { id },
-      include: {
-        entries: {
-          orderBy: { day: 'asc' },
-        },
-      },
+      include: { entries: { orderBy: { day: 'asc' } } },
     });
 
     if (!calendar) {
@@ -56,89 +52,50 @@ export async function PATCH(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const {
-      title,
-      description,
-      theme,
-      backgroundColor,
-      backgroundPattern,
-      primaryColor,
-      secondaryColor,
-      textColor,
-      snowflakesEnabled,
-      customDecoration,
-      buttonStyle,
-      buttonPrimaryColor,
-      buttonSecondaryColor,
-      dateButtonStyle,
-      datePrimaryColor,
-      dateSecondaryColor,
-      dateTextColor,
-      dateOpenedPrimaryColor,
-      dateOpenedSecondaryColor,
-      dateUnavailableColor,
-      dateBorderRadius,
-    } = await req.json();
+    const body = await req.json();
+    const updateData: Record<string, unknown> = {};
 
-    const calendar = await prisma.calendar.findUnique({
-      where: { id },
-    });
+    const fields = [
+      'title',
+      'description',
+      'theme',
+      'backgroundColor',
+      'backgroundPattern',
+      'primaryColor',
+      'secondaryColor',
+      'textColor',
+      'snowflakesEnabled',
+      'customDecoration',
+      'buttonStyle',
+      'buttonPrimaryColor',
+      'buttonSecondaryColor',
+      'dateButtonStyle',
+      'datePrimaryColor',
+      'dateSecondaryColor',
+      'dateTextColor',
+      'dateOpenedPrimaryColor',
+      'dateOpenedSecondaryColor',
+      'dateUnavailableColor',
+      'dateBorderRadius',
+    ];
 
+    for (const key of fields) {
+      if (key in body) {
+        const val = body[key];
+        if (val !== undefined && val !== '') updateData[key] = val;
+      }
+    }
+
+    const calendar = await prisma.calendar.findUnique({ where: { id } });
     if (!calendar) {
       return NextResponse.json(
         { error: 'Calendar not found' },
         { status: 404 }
       );
     }
-
     if (calendar.userId !== session.user.id) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
-
-    const updateData: Record<string, unknown> = {};
-
-    if (title !== undefined && title !== '') updateData.title = title;
-    if (description !== undefined) updateData.description = description;
-    if (theme !== undefined && theme !== '') updateData.theme = theme;
-    if (backgroundColor !== undefined && backgroundColor !== '')
-      updateData.backgroundColor = backgroundColor;
-    if (backgroundPattern !== undefined && backgroundPattern !== '')
-      updateData.backgroundPattern = backgroundPattern;
-    if (primaryColor !== undefined && primaryColor !== '')
-      updateData.primaryColor = primaryColor;
-    if (secondaryColor !== undefined && secondaryColor !== '')
-      updateData.secondaryColor = secondaryColor;
-    if (textColor !== undefined && textColor !== '')
-      updateData.textColor = textColor;
-    if (snowflakesEnabled !== undefined)
-      updateData.snowflakesEnabled = snowflakesEnabled;
-    if (customDecoration !== undefined && customDecoration !== '')
-      updateData.customDecoration = customDecoration;
-    if (buttonStyle !== undefined && buttonStyle !== '')
-      updateData.buttonStyle = buttonStyle;
-    if (buttonPrimaryColor !== undefined && buttonPrimaryColor !== '')
-      updateData.buttonPrimaryColor = buttonPrimaryColor;
-    if (buttonSecondaryColor !== undefined && buttonSecondaryColor !== '')
-      updateData.buttonSecondaryColor = buttonSecondaryColor;
-    if (dateButtonStyle !== undefined && dateButtonStyle !== '')
-      updateData.dateButtonStyle = dateButtonStyle;
-    if (datePrimaryColor !== undefined && datePrimaryColor !== '')
-      updateData.datePrimaryColor = datePrimaryColor;
-    if (dateSecondaryColor !== undefined && dateSecondaryColor !== '')
-      updateData.dateSecondaryColor = dateSecondaryColor;
-    if (dateTextColor !== undefined && dateTextColor !== '')
-      updateData.dateTextColor = dateTextColor;
-    if (dateOpenedPrimaryColor !== undefined && dateOpenedPrimaryColor !== '')
-      updateData.dateOpenedPrimaryColor = dateOpenedPrimaryColor;
-    if (
-      dateOpenedSecondaryColor !== undefined &&
-      dateOpenedSecondaryColor !== ''
-    )
-      updateData.dateOpenedSecondaryColor = dateOpenedSecondaryColor;
-    if (dateUnavailableColor !== undefined && dateUnavailableColor !== '')
-      updateData.dateUnavailableColor = dateUnavailableColor;
-    if (dateBorderRadius !== undefined && dateBorderRadius !== '')
-      updateData.dateBorderRadius = dateBorderRadius;
 
     const updatedCalendar = await prisma.calendar.update({
       where: { id },
@@ -156,7 +113,7 @@ export async function PATCH(
 }
 
 export async function DELETE(
-  req: NextRequest,
+  _req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
@@ -167,25 +124,18 @@ export async function DELETE(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const calendar = await prisma.calendar.findUnique({
-      where: { id },
-    });
-
+    const calendar = await prisma.calendar.findUnique({ where: { id } });
     if (!calendar) {
       return NextResponse.json(
         { error: 'Calendar not found' },
         { status: 404 }
       );
     }
-
     if (calendar.userId !== session.user.id) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    await prisma.calendar.delete({
-      where: { id },
-    });
-
+    await prisma.calendar.delete({ where: { id } });
     return NextResponse.json({ message: 'Calendar deleted' });
   } catch (error) {
     console.error('Error deleting calendar:', error);

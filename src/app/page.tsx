@@ -37,15 +37,17 @@ export default async function Home() {
                 <>
                   <Link
                     href='/dashboard'
-                    className='text-gray-700 hover:text-red-600 font-medium transition'
+                    className='flex items-center gap-2 text-gray-700 hover:text-blue-600 font-medium transition'
                   >
-                    Dashboard
+                    <span className='text-xl'>📊</span>
+                    <span className='hidden sm:inline'>Dashboard</span>
                   </Link>
                   <Link
                     href='/auth/signout'
-                    className='bg-red-500 text-white px-4 py-2 sm:px-6 sm:py-2 rounded-full hover:bg-red-600 transition font-medium text-sm sm:text-base'
+                    className='flex items-center gap-2 text-gray-700 hover:text-red-600 font-medium transition'
                   >
-                    Sign Out
+                    <span className='text-xl'>🚪</span>
+                    <span className='hidden sm:inline'>Sign Out</span>
                   </Link>
                 </>
               ) : (
