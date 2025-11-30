@@ -40,6 +40,9 @@ export async function POST(
       backgroundGradientColor2,
       borderGradientEnabled,
       borderGradientColor2,
+      decorationEnabled,
+      decorationType,
+      decorationOptions,
     } = await req.json();
 
     if (!day || day < 1 || day > 25) {
@@ -110,6 +113,9 @@ export async function POST(
         backgroundGradientColor2,
         borderGradientEnabled: !!borderGradientEnabled,
         borderGradientColor2,
+        decorationEnabled: !!decorationEnabled,
+        decorationType: decorationType || null,
+        decorationOptions: decorationOptions || null,
         calendarId: id,
       },
     });

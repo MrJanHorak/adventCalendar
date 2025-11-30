@@ -39,6 +39,9 @@ export async function PATCH(
       backgroundGradientColor2,
       borderGradientEnabled,
       borderGradientColor2,
+      decorationEnabled,
+      decorationType,
+      decorationOptions,
     } = await req.json();
 
     const entry = await prisma.calendarEntry.findUnique({
@@ -95,6 +98,13 @@ export async function PATCH(
       updateData.borderGradientEnabled = !!borderGradientEnabled;
     if (borderGradientColor2 !== undefined)
       updateData.borderGradientColor2 = borderGradientColor2;
+    if (decorationEnabled !== undefined)
+      updateData.decorationEnabled = !!decorationEnabled;
+    if (decorationType !== undefined && decorationType !== null)
+      updateData.decorationType = decorationType;
+    if (decorationOptions !== undefined)
+      updateData.decorationOptions =
+        decorationOptions === null ? null : decorationOptions;
 
     const updatedEntry = await prisma.calendarEntry.update({
       where: { id: entryId },

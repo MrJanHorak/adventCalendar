@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { getThemeStyles, getButtonStyles } from '@/lib/themes';
+import SnowfallDecoration from '@/components/decorations/SnowfallDecoration';
 
 type EntryType = 'TEXT' | 'POEM' | 'IMAGE' | 'VIDEO';
 
@@ -34,6 +35,9 @@ interface CalendarEntry {
   backgroundGradientColor2?: string;
   borderGradientEnabled?: boolean;
   borderGradientColor2?: string;
+  decorationEnabled?: boolean;
+  decorationType?: 'SNOW' | 'LIGHTS' | 'GLOW';
+  decorationOptions?: { density?: number; speed?: number } | null;
 }
 
 interface Calendar {
@@ -443,7 +447,16 @@ export default function SharedCalendar({
               role='dialog'
               aria-modal='true'
             >
-              <div className='max-h-[90vh] overflow-y-auto p-8 scrollbar-rounded'>
+              <div className='max-h-[90vh] overflow-y-auto p-8 scrollbar-rounded relative'>
+                {/* Decorations overlay (phase 1: snowfall) */}
+                {selectedEntry.decorationEnabled &&
+                  selectedEntry.decorationType === 'SNOW' && (
+                    <SnowfallDecoration
+                      density={selectedEntry.decorationOptions?.density ?? 0.6}
+                      speed={selectedEntry.decorationOptions?.speed ?? 1}
+                    />
+                  )}
+
                 <div className='flex justify-between items-start mb-6'>
                   <h2 className='text-3xl font-bold text-gray-800'>
                     Day {selectedDay}: {selectedEntry.title}

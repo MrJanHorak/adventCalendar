@@ -7,6 +7,7 @@ import { themePresets, getThemePreset, getButtonStyles } from '@/lib/themes';
 import { convertToEmbedUrl } from '@/lib/videoUtils';
 import HelpModal from '@/components/HelpModal';
 import IdeasModal from '@/components/IdeasModal';
+import SnowfallDecoration from '@/components/decorations/SnowfallDecoration';
 
 // Legacy entry type retained for backward compatibility with existing records
 type EntryType = 'TEXT' | 'POEM' | 'IMAGE' | 'VIDEO';
@@ -127,6 +128,10 @@ export default function EditCalendar({
     borderRadius: '0px',
     padding: '16px',
     boxShadow: 'none',
+    // Decorations (Phase 1)
+    decorationEnabled: false,
+    decorationType: 'SNOW',
+    decorationOptions: { density: 0.6, speed: 1 },
   });
   const [copyFeedback, setCopyFeedback] = useState(false);
   const [showImageField, setShowImageField] = useState(false);
@@ -244,6 +249,12 @@ export default function EditCalendar({
         borderRadius: entry.borderRadius || '0px',
         padding: entry.padding || '16px',
         boxShadow: entry.boxShadow || 'none',
+        decorationEnabled: (entry as any).decorationEnabled || false,
+        decorationType: (entry as any).decorationType || 'SNOW',
+        decorationOptions: (entry as any).decorationOptions || {
+          density: 0.6,
+          speed: 1,
+        },
       });
       setShowImageField(!!entry.imageUrl);
       setShowVideoField(!!entry.videoUrl);
@@ -273,6 +284,9 @@ export default function EditCalendar({
         borderRadius: '0px',
         padding: '16px',
         boxShadow: 'none',
+        decorationEnabled: false,
+        decorationType: 'SNOW',
+        decorationOptions: { density: 0.6, speed: 1 },
       });
       setShowImageField(false);
       setShowVideoField(false);
@@ -1374,7 +1388,7 @@ export default function EditCalendar({
                     Content
                   </label>
                   <div
-                    className='w-full overflow-hidden'
+                    className='w-full overflow-hidden relative'
                     style={{
                       padding: formData.borderGradientEnabled
                         ? formData.borderWidth || '2px'
@@ -1388,6 +1402,14 @@ export default function EditCalendar({
                       boxShadow: formData.boxShadow,
                     }}
                   >
+                    {/* Live decoration preview */}
+                    {formData.decorationEnabled &&
+                      formData.decorationType === 'SNOW' && (
+                        <SnowfallDecoration
+                          density={formData.decorationOptions?.density ?? 0.6}
+                          speed={formData.decorationOptions?.speed ?? 1}
+                        />
+                      )}
                     <div
                       className='w-full'
                       style={{
@@ -1629,6 +1651,102 @@ export default function EditCalendar({
                   <h4 className='text-sm font-semibold text-gray-700 mb-3'>
                     🎨 Container Styling
                   </h4>
+
+                  {/* Decorations (Phase 1) */}
+                  <div className='mb-4 p-3 rounded-lg border-2 border-green-200 bg-green-50'>
+                    <div className='flex items-center justify-between'>
+                      <label className='inline-flex items-center gap-2 cursor-pointer'>
+                        <input
+                          type='checkbox'
+                          checked={formData.decorationEnabled}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              decorationEnabled: e.target.checked,
+                            })
+                          }
+                          className='w-4 h-4'
+                        />
+                        <span className='text-sm font-semibold'>
+                          ✨ Enable Decoration
+                        </span>
+                      </label>
+                      <select
+                        value={formData.decorationType}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            decorationType: e.target.value as any,
+                          })
+                        }
+                        className='px-3 py-2 text-sm border border-gray-300 rounded-lg'
+                      >
+                        <option value='SNOW'>Snowfall</option>
+                        <option value='GLOW'>Candle Glow (coming soon)</option>
+                        <option value='LIGHTS'>
+                          Blinking Lights (coming soon)
+                        </option>
+                      </select>
+                    </div>
+
+                    {formData.decorationEnabled &&
+                      formData.decorationType === 'SNOW' && (
+                        <div className='grid grid-cols-2 gap-3 mt-3'>
+                          <div>
+                            <label className='block text-xs font-medium text-gray-600 mb-1'>
+                              Snow Density
+                            </label>
+                            <input
+                              type='range'
+                              min={0.2}
+                              max={1.5}
+                              step={0.1}
+                              value={formData.decorationOptions?.density ?? 0.6}
+                              onChange={(e) =>
+                                setFormData({
+                                  ...formData,
+                                  decorationOptions: {
+                                    ...(formData.decorationOptions || {}),
+                                    density: parseFloat(e.target.value),
+                                  },
+                                })
+                              }
+                              className='w-full accent-green-500'
+                            />
+                            <div className='text-xs text-gray-600 mt-1'>
+                              {String(
+                                formData.decorationOptions?.density ?? 0.6
+                              )}
+                            </div>
+                          </div>
+                          <div>
+                            <label className='block text-xs font-medium text-gray-600 mb-1'>
+                              Fall Speed
+                            </label>
+                            <input
+                              type='range'
+                              min={0.5}
+                              max={2.0}
+                              step={0.1}
+                              value={formData.decorationOptions?.speed ?? 1}
+                              onChange={(e) =>
+                                setFormData({
+                                  ...formData,
+                                  decorationOptions: {
+                                    ...(formData.decorationOptions || {}),
+                                    speed: parseFloat(e.target.value),
+                                  },
+                                })
+                              }
+                              className='w-full accent-green-500'
+                            />
+                            <div className='text-xs text-gray-600 mt-1'>
+                              {String(formData.decorationOptions?.speed ?? 1)}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                  </div>
 
                   <div className='grid grid-cols-2 gap-3'>
                     <div>
