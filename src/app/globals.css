@@ -25,6 +25,28 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* Rounded, subtle scrollbar for scrollable modals/content */
+.scrollbar-rounded {
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: #cbd5e1 transparent; /* thumb color and track */
+}
+.scrollbar-rounded::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.scrollbar-rounded::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 9999px;
+}
+.scrollbar-rounded::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1; /* slate-300 */
+  border-radius: 9999px;
+  border: 2px solid transparent; /* creates spacing to match rounded track */
+}
+.scrollbar-rounded::-webkit-scrollbar-thumb:hover {
+  background-color: #94a3b8; /* slate-400 */
+}
+
 /* Snowflake animations */
 .snowflake {
   position: absolute;

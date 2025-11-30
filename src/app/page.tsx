@@ -74,12 +74,18 @@ export default async function Home() {
             with pictures, poems, and special messages for your loved ones.
           </p>
 
-          <div className='flex justify-center space-x-4'>
+          <div className='flex flex-wrap justify-center gap-4'>
             <Link
               href={session ? '/dashboard' : '/auth/signup'}
               className='bg-gradient-to-r from-red-500 to-green-500 text-white px-8 py-4 rounded-full text-lg font-semibold hover:from-red-600 hover:to-green-600 transition transform hover:scale-105 shadow-lg'
             >
               {session ? 'Go to Dashboard' : 'Get Started Free'}
+            </Link>
+            <Link
+              href='/demo'
+              className='bg-gradient-to-r from-purple-500 to-pink-500 text-white px-8 py-4 rounded-full text-lg font-semibold hover:opacity-90 transition transform hover:scale-105 shadow-lg'
+            >
+              🎁 View Demo Calendar
             </Link>
             <Link
               href='#features'
