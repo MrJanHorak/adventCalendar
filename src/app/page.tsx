@@ -41,11 +41,12 @@ export default async function Home() {
                   >
                     Dashboard
                   </Link>
-                  <form action='/api/auth/signout' method='POST'>
-                    <button className='bg-red-500 text-white px-4 py-2 sm:px-6 sm:py-2 rounded-full hover:bg-red-600 transition font-medium text-sm sm:text-base'>
-                      Sign Out
-                    </button>
-                  </form>
+                  <Link
+                    href='/auth/signout'
+                    className='bg-red-500 text-white px-4 py-2 sm:px-6 sm:py-2 rounded-full hover:bg-red-600 transition font-medium text-sm sm:text-base'
+                  >
+                    Sign Out
+                  </Link>
                 </>
               ) : (
                 <>

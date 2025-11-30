@@ -60,10 +60,10 @@ export default function Imprint() {
                 <p>
                   <strong>Email:</strong>{' '}
                   <a
-                    href='mailto:jan-horak@gmx.de'
+                    href='mailto:doorlyadvent@gmail.com'
                     className='text-red-600 hover:underline'
                   >
-                    jan-horak@gmx.de
+                    doorlyadvent@gmail.com
                   </a>
                 </p>
                 {/* <p>

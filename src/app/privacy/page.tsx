@@ -159,10 +159,10 @@ export default function PrivacyPolicy() {
                 If you have questions about this Privacy Policy, please contact
                 us at:{' '}
                 <a
-                  href='mailto:jan-horak@gmx.de'
+                  href='mailto:doorlyadvent@gmail.com'
                   className='text-red-600 hover:underline'
                 >
-                  jan-horak@gmx.de
+                  doorlyadvent@gmail.com
                 </a>
               </p>
             </section>
