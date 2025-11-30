@@ -113,9 +113,9 @@ export async function POST(
         backgroundGradientColor2,
         borderGradientEnabled: !!borderGradientEnabled,
         borderGradientColor2,
-        decorationEnabled: !!decorationEnabled,
-        decorationType: decorationType || null,
-        decorationOptions: decorationOptions || null,
+        ...(decorationEnabled !== undefined && { decorationEnabled: !!decorationEnabled }),
+        ...(decorationType !== undefined && { decorationType: decorationType || null }),
+        ...(decorationOptions !== undefined && { decorationOptions: decorationOptions || null }),
         calendarId: id,
       },
     });

@@ -100,7 +100,7 @@ export default function PrivacyPolicy() {
               <ul className='list-disc list-inside space-y-2 ml-4'>
                 <li>
                   When you explicitly share a calendar link with someone (they
-                  can view that calendar's content)
+                  can view that calendar&apos;s content)
                 </li>
                 <li>If required by law or legal process</li>
               </ul>
@@ -132,7 +132,7 @@ export default function PrivacyPolicy() {
 
             <section>
               <h2 className='text-2xl font-semibold text-gray-800 mb-3'>
-                7. Children's Privacy
+                7. Children&apos;s Privacy
               </h2>
               <p>
                 Our service is not directed to children under 13. We do not
@@ -146,8 +146,8 @@ export default function PrivacyPolicy() {
               </h2>
               <p>
                 We may update this privacy policy from time to time. We will
-                notify users of any material changes by updating the "Last
-                updated" date.
+                notify users of any material changes by updating the &ldquo;Last
+                updated&rdquo; date.
               </p>
             </section>
 

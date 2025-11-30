@@ -28,11 +28,11 @@ export default function GlowDecoration({
     if (!ctx) return;
 
     function resize() {
-      const parent = canvas.parentElement;
+      const parent = canvas!.parentElement;
       if (!parent) return;
       const rect = parent.getBoundingClientRect();
-      canvas.width = Math.max(1, Math.floor(rect.width));
-      canvas.height = Math.max(1, Math.floor(rect.height));
+      canvas!.width = Math.max(1, Math.floor(rect.width));
+      canvas!.height = Math.max(1, Math.floor(rect.height));
     }
     resize();
 
@@ -43,36 +43,36 @@ export default function GlowDecoration({
       last = now;
       if (pulse && !prefersReduced) t += dt * 0.8; // gentle pulse
 
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx!.clearRect(0, 0, canvas!.width, canvas!.height);
 
       // Full coverage radial gradient (no padding) so glow reaches edges
-      const parentStyle = canvas.parentElement
-        ? getComputedStyle(canvas.parentElement)
+      const parentStyle = canvas!.parentElement
+        ? getComputedStyle(canvas!.parentElement)
         : ({} as CSSStyleDeclaration);
       const borderRadius = parseFloat(parentStyle.borderRadius || '0') || 0;
-      const innerR = Math.max(1, Math.min(canvas.width, canvas.height) * 0.12);
+      const innerR = Math.max(1, Math.min(canvas!.width, canvas!.height) * 0.12);
       const outerR =
-        Math.sqrt(canvas.width * canvas.width + canvas.height * canvas.height) *
+        Math.sqrt(canvas!.width * canvas!.width + canvas!.height * canvas!.height) *
         0.55;
-      const grd = ctx.createRadialGradient(
-        canvas.width / 2,
-        canvas.height / 2,
+      const grd = ctx!.createRadialGradient(
+        canvas!.width / 2,
+        canvas!.height / 2,
         innerR,
-        canvas.width / 2,
-        canvas.height / 2,
+        canvas!.width / 2,
+        canvas!.height / 2,
         outerR
       );
       const alphaBase = 0.18 * intensity;
       const pulseFactor = pulse && !prefersReduced ? 0.06 * Math.sin(t) : 0;
       grd.addColorStop(0, hexToRgba(color, alphaBase + pulseFactor));
       grd.addColorStop(1, hexToRgba(color, 0));
-      ctx.save();
+      ctx!.save();
       // Clip to rounded rectangle so glow respects border radius
-      roundedRect(ctx, 0, 0, canvas.width, canvas.height, borderRadius);
-      ctx.clip();
-      ctx.fillStyle = grd;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.restore();
+      roundedRect(ctx!, 0, 0, canvas!.width, canvas!.height, borderRadius);
+      ctx!.clip();
+      ctx!.fillStyle = grd;
+      ctx!.fillRect(0, 0, canvas!.width, canvas!.height);
+      ctx!.restore();
 
       rafRef.current = requestAnimationFrame(draw);
     }

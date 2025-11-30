@@ -70,8 +70,8 @@ export default function HelpModal({ isOpen, onClose }: HelpModalProps) {
                     Step 1: Create a Calendar
                   </h4>
                   <p className='text-gray-700'>
-                    Click "Create New Calendar" and give it a meaningful title
-                    like "Christmas 2024 for Sarah".
+                    Click &ldquo;Create New Calendar&rdquo; and give it a meaningful title
+                    like &ldquo;Christmas 2024 for Sarah&rdquo;.
                   </p>
                 </div>
                 <div className='bg-green-50 border-l-4 border-green-500 p-4 rounded'>
@@ -138,8 +138,8 @@ export default function HelpModal({ isOpen, onClose }: HelpModalProps) {
                     </li>
                     <li>Upload your image (no account needed)</li>
                     <li>
-                      Right-click the uploaded image and select "Copy image
-                      address"
+                      Right-click the uploaded image and select &ldquo;Copy image
+                      address&rdquo;
                     </li>
                     <li>
                       Paste the URL (should look like:{' '}
@@ -169,7 +169,7 @@ export default function HelpModal({ isOpen, onClose }: HelpModalProps) {
                       </a>
                     </li>
                     <li>Upload your image to Media Library</li>
-                    <li>Click the image and copy the "Secure URL"</li>
+                    <li>Click the image and copy the &ldquo;Secure URL&rdquo;</li>
                     <li>Paste the URL into the Image URL field</li>
                   </ol>
                 </div>
@@ -182,8 +182,8 @@ export default function HelpModal({ isOpen, onClose }: HelpModalProps) {
                   <ol className='list-decimal list-inside space-y-2 text-gray-700 ml-4'>
                     <li>Find an image online</li>
                     <li>
-                      Right-click and select "Copy image address" or "Copy image
-                      URL"
+                      Right-click and select &ldquo;Copy image address&rdquo; or &ldquo;Copy image
+                      URL&rdquo;
                     </li>
                     <li>Make sure the URL ends with .jpg, .png, or .gif</li>
                     <li>Paste into the Image URL field</li>
@@ -217,7 +217,7 @@ export default function HelpModal({ isOpen, onClose }: HelpModalProps) {
                   ✨ Automatic Conversion
                 </p>
                 <p className='text-blue-700'>
-                  Just paste a regular YouTube or Vimeo URL - we'll
+                  Just paste a regular YouTube or Vimeo URL - we&apos;ll
                   automatically convert it to the embed format!
                 </p>
               </div>
@@ -230,7 +230,7 @@ export default function HelpModal({ isOpen, onClose }: HelpModalProps) {
                   </h4>
                   <ol className='list-decimal list-inside space-y-2 text-gray-700 ml-4'>
                     <li>Go to YouTube and find your video</li>
-                    <li>Click the "Share" button below the video</li>
+                    <li>Click the &ldquo;Share&rdquo; button below the video</li>
                     <li>Copy the URL (or just copy from the address bar)</li>
                     <li>Paste into the Video URL field</li>
                   </ol>
@@ -277,8 +277,8 @@ export default function HelpModal({ isOpen, onClose }: HelpModalProps) {
               <div className='bg-green-50 border-l-4 border-green-500 p-4 rounded'>
                 <p className='font-semibold text-green-800 mb-2'>💡 Pro Tip</p>
                 <p className='text-green-700'>
-                  For best results, make sure your video is set to "Public" or
-                  "Unlisted" on YouTube/Vimeo so anyone with the calendar link
+                  For best results, make sure your video is set to &ldquo;Public&rdquo; or
+                  &ldquo;Unlisted&rdquo; on YouTube/Vimeo so anyone with the calendar link
                   can watch it.
                 </p>
               </div>
@@ -308,7 +308,7 @@ export default function HelpModal({ isOpen, onClose }: HelpModalProps) {
                     How to Add a Link
                   </h4>
                   <ol className='list-decimal list-inside space-y-2 text-gray-700 ml-4'>
-                    <li>Click "Add Link" button when editing an entry</li>
+                    <li>Click &ldquo;Add Link&rdquo; button when editing an entry</li>
                     <li>Paste the full URL (starting with https://)</li>
                     <li>Optionally customize the button text</li>
                     <li>Save your entry</li>
@@ -349,7 +349,7 @@ export default function HelpModal({ isOpen, onClose }: HelpModalProps) {
                   </p>
                   <p className='text-blue-700'>
                     Links open in a new tab for safety. Make sure you trust the
-                    websites you're linking to!
+                    websites you&apos;re linking to!
                   </p>
                 </div>
 
@@ -361,10 +361,10 @@ export default function HelpModal({ isOpen, onClose }: HelpModalProps) {
                     Make your link clear with custom text:
                   </p>
                   <ul className='list-disc list-inside space-y-1 text-green-700 ml-2'>
-                    <li>"View Recipe" for cooking links</li>
-                    <li>"Listen Now" for music playlists</li>
-                    <li>"Shop This Gift" for product pages</li>
-                    <li>"Read Story" for articles</li>
+                    <li>&ldquo;View Recipe&rdquo; for cooking links</li>
+                    <li>&ldquo;Listen Now&rdquo; for music playlists</li>
+                    <li>&ldquo;Shop This Gift&rdquo; for product pages</li>
+                    <li>&ldquo;Read Story&rdquo; for articles</li>
                   </ul>
                 </div>
               </div>
@@ -444,7 +444,7 @@ export default function HelpModal({ isOpen, onClose }: HelpModalProps) {
                     <br />
                     2. Then customize individual entries as needed
                     <br />
-                    3. Use "Owner Preview" to test how everything looks together
+                    3. Use &ldquo;Owner Preview&rdquo; to test how everything looks together
                   </p>
                 </div>
               </div>
@@ -505,7 +505,7 @@ export default function HelpModal({ isOpen, onClose }: HelpModalProps) {
                   </p>
                   <p className='text-yellow-700'>
                     Your calendars are only accessible via the unique share
-                    link. They won't appear in search engines or public
+                    link. They won&apos;t appear in search engines or public
                     listings.
                   </p>
                 </div>

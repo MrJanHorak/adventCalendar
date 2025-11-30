@@ -58,6 +58,7 @@ export async function PATCH(
     }
 
     // Only include defined values in the update
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const updateData: any = {};
     if (title !== undefined) updateData.title = title;
     if (content !== undefined) updateData.content = content;

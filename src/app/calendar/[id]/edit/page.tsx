@@ -20,6 +20,21 @@ import RibbonsDecoration from '@/components/decorations/RibbonsDecoration';
 // Legacy entry type retained for backward compatibility with existing records
 type EntryType = 'TEXT' | 'POEM' | 'IMAGE' | 'VIDEO';
 
+// Decoration options type
+interface DecorationOptions {
+  density?: number;
+  speed?: number;
+  colors?: string[];
+  color?: string;
+  intensity?: number;
+  pulse?: boolean;
+  size?: number;
+  twinkleSpeed?: number;
+  count?: number;
+  flameColor?: string;
+  brightness?: number;
+}
+
 interface CalendarEntry {
   id: string;
   day: number;
@@ -47,6 +62,9 @@ interface CalendarEntry {
   borderRadius?: string;
   padding?: string;
   boxShadow?: string;
+  decorationEnabled?: boolean;
+  decorationType?: string | null;
+  decorationOptions?: DecorationOptions;
 }
 
 interface Calendar {
@@ -138,8 +156,8 @@ export default function EditCalendar({
     boxShadow: 'none',
     // Decorations (Phase 1)
     decorationEnabled: false,
-    decorationType: 'SNOW',
-    decorationOptions: { density: 0.6, speed: 1 } as any,
+    decorationType: 'SNOW' as string | null,
+    decorationOptions: { density: 0.6, speed: 1 } as DecorationOptions | null,
   });
   const [copyFeedback, setCopyFeedback] = useState(false);
   const [showImageField, setShowImageField] = useState(false);
@@ -257,9 +275,9 @@ export default function EditCalendar({
         borderRadius: entry.borderRadius || '0px',
         padding: entry.padding || '16px',
         boxShadow: entry.boxShadow || 'none',
-        decorationEnabled: (entry as any).decorationEnabled || false,
-        decorationType: (entry as any).decorationType || 'SNOW',
-        decorationOptions: (entry as any).decorationOptions || {
+        decorationEnabled: (entry as unknown as CalendarEntry).decorationEnabled || false,
+        decorationType: (entry as unknown as CalendarEntry).decorationType || 'SNOW',
+        decorationOptions: (entry as unknown as CalendarEntry).decorationOptions || {
           density: 0.6,
           speed: 1,
         },
@@ -1241,7 +1259,7 @@ export default function EditCalendar({
                       Imgur
                     </a>
                   </li>
-                  <li>Right-click → "Copy image address"</li>
+                  <li>Right-click → &ldquo;Copy image address&rdquo;</li>
                   <li>Paste the URL (should end in .jpg or .png)</li>
                 </ol>
               </div>
@@ -1253,7 +1271,7 @@ export default function EditCalendar({
                 <ol className='text-sm text-gray-700 space-y-1 list-decimal list-inside'>
                   <li>Find your video on YouTube or Vimeo</li>
                   <li>Copy the URL from the address bar</li>
-                  <li>Paste it - we'll convert it automatically!</li>
+                  <li>Paste it - we&apos;ll convert it automatically!</li>
                 </ol>
               </div>
 
@@ -1262,7 +1280,7 @@ export default function EditCalendar({
                   <span>🔗</span> Adding Links
                 </h3>
                 <ol className='text-sm text-gray-700 space-y-1 list-decimal list-inside'>
-                  <li>Click "Add Link" in the entry editor</li>
+                  <li>Click &ldquo;Add Link&rdquo; in the entry editor</li>
                   <li>Paste any website URL</li>
                   <li>Optionally customize the button text</li>
                   <li>Great for recipes, playlists, or gifts!</li>
@@ -1275,7 +1293,7 @@ export default function EditCalendar({
                 </h3>
                 <ul className='text-sm text-gray-700 space-y-1 list-disc list-inside'>
                   <li>Enable Poem Styling for automatic italics</li>
-                  <li>Customize each entry's colors independently</li>
+                  <li>Customize each entry&apos;s colors independently</li>
                   <li>Try different border styles for variety</li>
                 </ul>
               </div>
@@ -1285,7 +1303,7 @@ export default function EditCalendar({
                   <span>👀</span> Preview & Test
                 </h3>
                 <ul className='text-sm text-gray-700 space-y-1 list-disc list-inside'>
-                  <li>Use "Owner Preview" to test all doors</li>
+                  <li>Use &ldquo;Owner Preview&rdquo; to test all doors</li>
                   <li>Check how it looks on mobile too</li>
                   <li>Save before previewing to see changes</li>
                 </ul>
@@ -1495,7 +1513,7 @@ export default function EditCalendar({
                         borderWidth: formData.borderGradientEnabled
                           ? '0'
                           : formData.borderWidth,
-                        borderStyle: formData.borderStyle as any,
+                        borderStyle: formData.borderStyle as 'solid' | 'dashed' | 'dotted' | 'none',
                         borderRadius: formData.borderGradientEnabled
                           ? `calc(${formData.borderRadius} - ${
                               formData.borderWidth || '2px'
@@ -1530,7 +1548,7 @@ export default function EditCalendar({
                           fontFamily: formData.fontFamily,
                           fontSize: formData.fontSize,
                           color: formData.textColor,
-                          textAlign: formData.textAlign as any,
+                          textAlign: formData.textAlign as 'left' | 'center' | 'right' | 'justify',
                           padding: formData.padding,
                           outline: 'none',
                           ...(formData.isPoem && {
@@ -1739,15 +1757,15 @@ export default function EditCalendar({
                             setFormData({
                               ...formData,
                               decorationEnabled: e.target.checked,
-                              decorationType: e.target.checked
+                              decorationType: (e.target.checked
                                 ? formData.decorationType || 'SNOW'
-                                : null,
+                                : null),
                               decorationOptions: e.target.checked
                                 ? formData.decorationOptions || {
                                     density: 0.6,
                                     speed: 1,
                                   }
-                                : null,
+                                : (null as DecorationOptions | null),
                             })
                           }
                           className='w-4 h-4'
@@ -3068,8 +3086,8 @@ export default function EditCalendar({
                             Upload to Imgur.com (free, no signup)
                           </p>
                           <p className='text-gray-300'>
-                            Right-click the uploaded image → "Copy image
-                            address"
+                            Right-click the uploaded image → &ldquo;Copy image
+                            address&rdquo;
                           </p>
                         </div>
                       </div>
@@ -3120,7 +3138,7 @@ export default function EditCalendar({
                       className='w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-red-400 focus:outline-none'
                     />
                     <p className='text-xs text-gray-500 mt-1'>
-                      💡 Paste a YouTube or Vimeo link - we'll convert it
+                      💡 Paste a YouTube or Vimeo link - we&apos;ll convert it
                       automatically
                     </p>
                   </div>

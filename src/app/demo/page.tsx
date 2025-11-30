@@ -571,7 +571,7 @@ export default function DemoCalendar() {
           </h2>
           <p className='text-gray-600 mb-6 max-w-2xl mx-auto'>
             Build your own personalized advent calendar with photos, videos,
-            poems, and links. It's free and takes just minutes to set up!
+            poems, and links. It&apos;s free and takes just minutes to set up!
           </p>
           <Link
             href='/auth/signup'
@@ -627,6 +627,7 @@ export default function DemoCalendar() {
               {/* Image */}
               {selectedEntry.imageUrl && (
                 <div className='mb-6 rounded-xl overflow-hidden'>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={selectedEntry.imageUrl}
                     alt={selectedEntry.title}
@@ -645,10 +646,10 @@ export default function DemoCalendar() {
                     color: selectedEntry.textColor || '#000000',
                     backgroundColor:
                       selectedEntry.backgroundColor || 'transparent',
-                    textAlign: (selectedEntry.textAlign as any) || 'center',
+                    textAlign: (selectedEntry.textAlign as 'left' | 'center' | 'right' | 'justify') || 'center',
                     borderColor: selectedEntry.borderColor || 'transparent',
                     borderWidth: selectedEntry.borderWidth || '0px',
-                    borderStyle: (selectedEntry.borderStyle as any) || 'solid',
+                    borderStyle: (selectedEntry.borderStyle as 'solid' | 'dashed' | 'dotted' | 'none') || 'solid',
                     borderRadius: selectedEntry.borderRadius || '0px',
                     padding: selectedEntry.padding || '16px',
                     boxShadow: selectedEntry.boxShadow || 'none',

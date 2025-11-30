@@ -488,7 +488,7 @@ export default function IdeasModal({ isOpen, onClose }: IdeasModalProps) {
                       <li>Last Christmas - Wham!</li>
                       <li>Jingle Bell Rock</li>
                       <li>Feliz Navidad</li>
-                      <li>Rockin' Around the Christmas Tree</li>
+                      <li>Rockin&apos; Around the Christmas Tree</li>
                       <li>Santa Tell Me - Ariana Grande</li>
                     </ul>
                     <ul className='list-disc list-inside space-y-1'>

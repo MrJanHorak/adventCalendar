@@ -28,17 +28,17 @@ export default function LightsDecoration({
     if (!ctx) return;
 
     function resize() {
-      const parent = canvas.parentElement;
+      const parent = canvas!.parentElement;
       if (!parent) return;
       const rect = parent.getBoundingClientRect();
-      canvas.width = Math.max(1, Math.floor(rect.width));
-      canvas.height = Math.max(1, Math.floor(rect.height));
+      canvas!.width = Math.max(1, Math.floor(rect.width));
+      canvas!.height = Math.max(1, Math.floor(rect.height));
     }
     resize();
 
     // Determine border radius & border width of parent to avoid clipping
-    const parentStyle = canvas.parentElement
-      ? getComputedStyle(canvas.parentElement)
+    const parentStyle = canvas!.parentElement
+      ? getComputedStyle(canvas!.parentElement)
       : ({} as CSSStyleDeclaration);
     const parentBorderWidth = parseFloat(parentStyle.borderWidth || '0') || 0;
     const parentRadius = parseFloat(parentStyle.borderRadius || '0') || 0;
@@ -48,14 +48,14 @@ export default function LightsDecoration({
     // Keep bulbs fully visible: inset includes radius + halo + parent border
     const edgeInset = bulbRadius + 6 + parentBorderWidth;
     const perimeter = () =>
-      2 * (canvas.width - 2 * edgeInset + (canvas.height - 2 * edgeInset));
+      2 * (canvas!.width - 2 * edgeInset + (canvas!.height - 2 * edgeInset));
 
     // Build bulb positions around rectangle perimeter
     const bulbs: { x: number; y: number; phase: number; color: string }[] = [];
     function layoutBulbs() {
       bulbs.length = 0;
-      const effectiveW = Math.max(20, canvas.width - 2 * edgeInset);
-      const effectiveH = Math.max(20, canvas.height - 2 * edgeInset);
+      const effectiveW = Math.max(20, canvas!.width - 2 * edgeInset);
+      const effectiveH = Math.max(20, canvas!.height - 2 * edgeInset);
       const total = Math.max(4, Math.floor(perimeter() / bulbGap));
       const sides = [effectiveW, effectiveH, effectiveW, effectiveH];
       let sideIdx = 0;
@@ -101,21 +101,21 @@ export default function LightsDecoration({
     function draw(now: number) {
       const dt = Math.min(0.05, (now - last) / 1000) * speed;
       last = now;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx!.clearRect(0, 0, canvas!.width, canvas!.height);
 
       // wire (rounded rectangle if parent has radius)
-      ctx.strokeStyle = 'rgba(50,50,50,0.55)';
-      ctx.lineWidth = 2;
-      ctx.beginPath();
+      ctx!.strokeStyle = 'rgba(50,50,50,0.55)';
+      ctx!.lineWidth = 2;
+      ctx!.beginPath();
       roundedRect(
-        ctx,
+        ctx!,
         edgeInset,
         edgeInset,
-        canvas.width - 2 * edgeInset,
-        canvas.height - 2 * edgeInset,
+        canvas!.width - 2 * edgeInset,
+        canvas!.height - 2 * edgeInset,
         Math.max(0, parentRadius - parentBorderWidth - 4)
       );
-      ctx.stroke();
+      ctx!.stroke();
 
       for (const b of bulbs) {
         b.phase += dt * 2; // blink speed
@@ -123,7 +123,7 @@ export default function LightsDecoration({
         const r = bulbRadius * (1 + 0.25 * Math.sin(b.phase));
 
         // glow halo
-        const grd = ctx.createRadialGradient(
+        const grd = ctx!.createRadialGradient(
           b.x,
           b.y,
           r * 0.6,
@@ -133,18 +133,18 @@ export default function LightsDecoration({
         );
         grd.addColorStop(0, hexToRgba(b.color, 0.35 * brightness * glow));
         grd.addColorStop(1, hexToRgba(b.color, 0));
-        ctx.fillStyle = grd;
-        ctx.beginPath();
-        ctx.arc(b.x, b.y, r * 3, 0, Math.PI * 2);
-        ctx.fill();
+        ctx!.fillStyle = grd;
+        ctx!.beginPath();
+        ctx!.arc(b.x, b.y, r * 3, 0, Math.PI * 2);
+        ctx!.fill();
 
         // bulb body + small socket shadow (no overflow beyond edge)
-        ctx.fillStyle = hexToRgba(b.color, 0.95 * brightness);
-        ctx.beginPath();
-        ctx.arc(b.x, b.y, r, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = 'rgba(30,30,30,0.7)';
-        ctx.fillRect(b.x - r * 0.5, b.y - r * 0.5, r, r * 0.2);
+        ctx!.fillStyle = hexToRgba(b.color, 0.95 * brightness);
+        ctx!.beginPath();
+        ctx!.arc(b.x, b.y, r, 0, Math.PI * 2);
+        ctx!.fill();
+        ctx!.fillStyle = 'rgba(30,30,30,0.7)';
+        ctx!.fillRect(b.x - r * 0.5, b.y - r * 0.5, r, r * 0.2);
       }
 
       rafRef.current = requestAnimationFrame(draw);

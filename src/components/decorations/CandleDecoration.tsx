@@ -27,11 +27,11 @@ export default function CandleDecoration({
     if (!ctx) return;
 
     function resize() {
-      const parent = canvas.parentElement;
+      const parent = canvas!.parentElement;
       if (!parent) return;
       const rect = parent.getBoundingClientRect();
-      canvas.width = Math.max(1, Math.floor(rect.width));
-      canvas.height = Math.max(1, Math.floor(rect.height));
+      canvas!.width = Math.max(1, Math.floor(rect.width));
+      canvas!.height = Math.max(1, Math.floor(rect.height));
     }
     resize();
 
@@ -72,21 +72,21 @@ export default function CandleDecoration({
       const dt = Math.min(0.05, (now - last) / 1000);
       last = now;
 
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx!.clearRect(0, 0, canvas!.width, canvas!.height);
 
       for (const c of candles) {
         if (!prefersReduced) {
           c.phase += dt * c.speed;
         }
         const flicker = prefersReduced ? 0.9 : 0.7 + 0.3 * Math.sin(c.phase);
-        const x = c.x * canvas.width;
-        const y = c.y * canvas.height;
+        const x = c.x * canvas!.width;
+        const y = c.y * canvas!.height;
 
         const flameHeight = 20 * intensity * flicker;
         const flameWidth = 12 * intensity;
 
         // Glow halo
-        const grd = ctx.createRadialGradient(
+        const grd = ctx!.createRadialGradient(
           x,
           y - flameHeight / 2,
           0,
@@ -96,16 +96,16 @@ export default function CandleDecoration({
         );
         grd.addColorStop(0, hexToRgba(flameColor, 0.6 * flicker));
         grd.addColorStop(1, hexToRgba(flameColor, 0));
-        ctx.fillStyle = grd;
-        ctx.beginPath();
-        ctx.arc(x, y - flameHeight / 2, flameWidth * 2, 0, Math.PI * 2);
-        ctx.fill();
+        ctx!.fillStyle = grd;
+        ctx!.beginPath();
+        ctx!.arc(x, y - flameHeight / 2, flameWidth * 2, 0, Math.PI * 2);
+        ctx!.fill();
 
         // Flame shape (teardrop)
-        ctx.fillStyle = hexToRgba(flameColor, 0.9 * flicker);
-        ctx.beginPath();
-        ctx.moveTo(x, y);
-        ctx.bezierCurveTo(
+        ctx!.fillStyle = hexToRgba(flameColor, 0.9 * flicker);
+        ctx!.beginPath();
+        ctx!.moveTo(x, y);
+        ctx!.bezierCurveTo(
           x - flameWidth / 2,
           y - flameHeight / 3,
           x - flameWidth / 2,
@@ -113,7 +113,7 @@ export default function CandleDecoration({
           x,
           y - flameHeight
         );
-        ctx.bezierCurveTo(
+        ctx!.bezierCurveTo(
           x + flameWidth / 2,
           y - flameHeight * 0.7,
           x + flameWidth / 2,
@@ -121,13 +121,13 @@ export default function CandleDecoration({
           x,
           y
         );
-        ctx.fill();
+        ctx!.fill();
 
         // Inner flame
-        ctx.fillStyle = hexToRgba('#ffd700', 0.8 * flicker);
-        ctx.beginPath();
-        ctx.moveTo(x, y);
-        ctx.bezierCurveTo(
+        ctx!.fillStyle = hexToRgba('#ffd700', 0.8 * flicker);
+        ctx!.beginPath();
+        ctx!.moveTo(x, y);
+        ctx!.bezierCurveTo(
           x - flameWidth / 4,
           y - flameHeight / 4,
           x - flameWidth / 4,
@@ -135,7 +135,7 @@ export default function CandleDecoration({
           x,
           y - flameHeight * 0.7
         );
-        ctx.bezierCurveTo(
+        ctx!.bezierCurveTo(
           x + flameWidth / 4,
           y - flameHeight * 0.5,
           x + flameWidth / 4,
@@ -143,11 +143,11 @@ export default function CandleDecoration({
           x,
           y
         );
-        ctx.fill();
+        ctx!.fill();
 
         // Candle stick
-        ctx.fillStyle = 'rgba(200,180,150,0.8)';
-        ctx.fillRect(x - 4, y, 8, 15);
+        ctx!.fillStyle = 'rgba(200,180,150,0.8)';
+        ctx!.fillRect(x - 4, y, 8, 15);
       }
 
       rafRef.current = requestAnimationFrame(draw);

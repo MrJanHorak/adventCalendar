@@ -644,7 +644,7 @@ export default function SharedCalendar({
                         fontSize: selectedEntry.fontSize || '16px',
                         color: selectedEntry.textColor || '#374151',
                         background: 'transparent',
-                        textAlign: (selectedEntry.textAlign || 'center') as any,
+                        textAlign: (selectedEntry.textAlign || 'center') as 'left' | 'center' | 'right' | 'justify',
                         borderColor: selectedEntry.borderGradientEnabled
                           ? 'transparent'
                           : selectedEntry.borderColor,
@@ -652,7 +652,7 @@ export default function SharedCalendar({
                           ? '0'
                           : selectedEntry.borderWidth || '0px',
                         borderStyle: (selectedEntry.borderStyle ||
-                          'solid') as any,
+                          'solid') as 'solid' | 'dashed' | 'dotted' | 'none',
                         borderRadius: selectedEntry.borderGradientEnabled
                           ? `calc(${selectedEntry.borderRadius || '0px'} - ${
                               selectedEntry.borderWidth || '2px'

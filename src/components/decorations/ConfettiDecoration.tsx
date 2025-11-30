@@ -29,11 +29,11 @@ export default function ConfettiDecoration({
     if (!ctx) return;
 
     function resize() {
-      const parent = canvas.parentElement;
+      const parent = canvas!.parentElement;
       if (!parent) return;
       const rect = parent.getBoundingClientRect();
-      canvas.width = Math.max(1, Math.floor(rect.width));
-      canvas.height = Math.max(1, Math.floor(rect.height));
+      canvas!.width = Math.max(1, Math.floor(rect.width));
+      canvas!.height = Math.max(1, Math.floor(rect.height));
     }
     resize();
 
@@ -54,8 +54,8 @@ export default function ConfettiDecoration({
 
     for (let i = 0; i < count; i++) {
       confetti.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height - canvas.height,
+        x: Math.random() * canvas!.width,
+        y: Math.random() * canvas!.height - canvas!.height,
         vx: (Math.random() - 0.5) * 2,
         vy: 1 + Math.random() * 3,
         rotation: Math.random() * Math.PI * 2,
@@ -71,7 +71,7 @@ export default function ConfettiDecoration({
       const dt = Math.min(0.05, (now - last) / 1000) * speed;
       last = now;
 
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx!.clearRect(0, 0, canvas!.width, canvas!.height);
 
       for (const c of confetti) {
         c.x += c.vx * dt * 60;
@@ -79,19 +79,19 @@ export default function ConfettiDecoration({
         c.rotation += c.rotationSpeed * dt * 60;
 
         // Wrap around
-        if (c.y > canvas.height + 20) {
+        if (c.y > canvas!.height + 20) {
           c.y = -20;
-          c.x = Math.random() * canvas.width;
+          c.x = Math.random() * canvas!.width;
         }
-        if (c.x < -20) c.x = canvas.width + 20;
-        if (c.x > canvas.width + 20) c.x = -20;
+        if (c.x < -20) c.x = canvas!.width + 20;
+        if (c.x > canvas!.width + 20) c.x = -20;
 
-        ctx.save();
-        ctx.translate(c.x, c.y);
-        ctx.rotate(c.rotation);
-        ctx.fillStyle = c.color;
-        ctx.fillRect(-c.width / 2, -c.height / 2, c.width, c.height);
-        ctx.restore();
+        ctx!.save();
+        ctx!.translate(c.x, c.y);
+        ctx!.rotate(c.rotation);
+        ctx!.fillStyle = c.color;
+        ctx!.fillRect(-c.width / 2, -c.height / 2, c.width, c.height);
+        ctx!.restore();
       }
 
       rafRef.current = requestAnimationFrame(draw);
