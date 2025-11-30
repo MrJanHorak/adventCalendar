@@ -644,15 +644,22 @@ export default function SharedCalendar({
                         fontSize: selectedEntry.fontSize || '16px',
                         color: selectedEntry.textColor || '#374151',
                         background: 'transparent',
-                        textAlign: (selectedEntry.textAlign || 'center') as 'left' | 'center' | 'right' | 'justify',
+                        textAlign: (selectedEntry.textAlign || 'center') as
+                          | 'left'
+                          | 'center'
+                          | 'right'
+                          | 'justify',
                         borderColor: selectedEntry.borderGradientEnabled
                           ? 'transparent'
                           : selectedEntry.borderColor,
                         borderWidth: selectedEntry.borderGradientEnabled
                           ? '0'
                           : selectedEntry.borderWidth || '0px',
-                        borderStyle: (selectedEntry.borderStyle ||
-                          'solid') as 'solid' | 'dashed' | 'dotted' | 'none',
+                        borderStyle: (selectedEntry.borderStyle || 'solid') as
+                          | 'solid'
+                          | 'dashed'
+                          | 'dotted'
+                          | 'none',
                         borderRadius: selectedEntry.borderGradientEnabled
                           ? `calc(${selectedEntry.borderRadius || '0px'} - ${
                               selectedEntry.borderWidth || '2px'

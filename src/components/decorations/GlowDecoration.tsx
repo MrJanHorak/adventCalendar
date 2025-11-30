@@ -50,10 +50,14 @@ export default function GlowDecoration({
         ? getComputedStyle(canvas!.parentElement)
         : ({} as CSSStyleDeclaration);
       const borderRadius = parseFloat(parentStyle.borderRadius || '0') || 0;
-      const innerR = Math.max(1, Math.min(canvas!.width, canvas!.height) * 0.12);
+      const innerR = Math.max(
+        1,
+        Math.min(canvas!.width, canvas!.height) * 0.12
+      );
       const outerR =
-        Math.sqrt(canvas!.width * canvas!.width + canvas!.height * canvas!.height) *
-        0.55;
+        Math.sqrt(
+          canvas!.width * canvas!.width + canvas!.height * canvas!.height
+        ) * 0.55;
       const grd = ctx!.createRadialGradient(
         canvas!.width / 2,
         canvas!.height / 2,

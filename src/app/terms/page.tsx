@@ -127,10 +127,10 @@ export default function TermsOfService() {
                 7. Limitation of Liability
               </h2>
               <p>
-                Doorly Advent is provided &ldquo;as is&rdquo; without warranties of any
-                kind. We are not liable for any damages arising from your use of
-                the service, including but not limited to data loss, service
-                interruptions, or content disputes.
+                Doorly Advent is provided &ldquo;as is&rdquo; without warranties
+                of any kind. We are not liable for any damages arising from your
+                use of the service, including but not limited to data loss,
+                service interruptions, or content disputes.
               </p>
             </section>
 

@@ -275,9 +275,12 @@ export default function EditCalendar({
         borderRadius: entry.borderRadius || '0px',
         padding: entry.padding || '16px',
         boxShadow: entry.boxShadow || 'none',
-        decorationEnabled: (entry as unknown as CalendarEntry).decorationEnabled || false,
-        decorationType: (entry as unknown as CalendarEntry).decorationType || 'SNOW',
-        decorationOptions: (entry as unknown as CalendarEntry).decorationOptions || {
+        decorationEnabled:
+          (entry as unknown as CalendarEntry).decorationEnabled || false,
+        decorationType:
+          (entry as unknown as CalendarEntry).decorationType || 'SNOW',
+        decorationOptions: (entry as unknown as CalendarEntry)
+          .decorationOptions || {
           density: 0.6,
           speed: 1,
         },
@@ -1513,7 +1516,11 @@ export default function EditCalendar({
                         borderWidth: formData.borderGradientEnabled
                           ? '0'
                           : formData.borderWidth,
-                        borderStyle: formData.borderStyle as 'solid' | 'dashed' | 'dotted' | 'none',
+                        borderStyle: formData.borderStyle as
+                          | 'solid'
+                          | 'dashed'
+                          | 'dotted'
+                          | 'none',
                         borderRadius: formData.borderGradientEnabled
                           ? `calc(${formData.borderRadius} - ${
                               formData.borderWidth || '2px'
@@ -1548,7 +1555,11 @@ export default function EditCalendar({
                           fontFamily: formData.fontFamily,
                           fontSize: formData.fontSize,
                           color: formData.textColor,
-                          textAlign: formData.textAlign as 'left' | 'center' | 'right' | 'justify',
+                          textAlign: formData.textAlign as
+                            | 'left'
+                            | 'center'
+                            | 'right'
+                            | 'justify',
                           padding: formData.padding,
                           outline: 'none',
                           ...(formData.isPoem && {
@@ -1757,9 +1768,9 @@ export default function EditCalendar({
                             setFormData({
                               ...formData,
                               decorationEnabled: e.target.checked,
-                              decorationType: (e.target.checked
+                              decorationType: e.target.checked
                                 ? formData.decorationType || 'SNOW'
-                                : null),
+                                : null,
                               decorationOptions: e.target.checked
                                 ? formData.decorationOptions || {
                                     density: 0.6,

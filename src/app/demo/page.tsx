@@ -646,10 +646,20 @@ export default function DemoCalendar() {
                     color: selectedEntry.textColor || '#000000',
                     backgroundColor:
                       selectedEntry.backgroundColor || 'transparent',
-                    textAlign: (selectedEntry.textAlign as 'left' | 'center' | 'right' | 'justify') || 'center',
+                    textAlign:
+                      (selectedEntry.textAlign as
+                        | 'left'
+                        | 'center'
+                        | 'right'
+                        | 'justify') || 'center',
                     borderColor: selectedEntry.borderColor || 'transparent',
                     borderWidth: selectedEntry.borderWidth || '0px',
-                    borderStyle: (selectedEntry.borderStyle as 'solid' | 'dashed' | 'dotted' | 'none') || 'solid',
+                    borderStyle:
+                      (selectedEntry.borderStyle as
+                        | 'solid'
+                        | 'dashed'
+                        | 'dotted'
+                        | 'none') || 'solid',
                     borderRadius: selectedEntry.borderRadius || '0px',
                     padding: selectedEntry.padding || '16px',
                     boxShadow: selectedEntry.boxShadow || 'none',
