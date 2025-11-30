@@ -136,27 +136,32 @@ Recipients can visit the shared link and:
 ## 🗂️ Project Structure
 
 ```
+
 adventCalendar/
 ├── src/
-│   │   ├── calendar/         # Calendar management
-│   │   ├── dashboard/        # User dashboard
-│   │   ├── share/            # Shared calendar viewing
-│   │   └── prisma.ts         # Prisma client
-│   └── types/                # TypeScript definitions
+│ │ ├── calendar/ # Calendar management
+│ │ ├── dashboard/ # User dashboard
+│ │ ├── share/ # Shared calendar viewing
+│ │ └── prisma.ts # Prisma client
+│ └── types/ # TypeScript definitions
 ├── prisma/
-│   └── schema.prisma         # Database schema
-└── .env                      # Environment variables
+│ └── schema.prisma # Database schema
+└── .env # Environment variables
+
 ## 🎨 Customization
 
 ### Changing Theme Colors
+
 - Gradient combinations for festive feel
 
 ### Adding More Entry Types
+
 - Users can enable/disable Image and Video fields independently
 - Poem styling is applied via a checkbox (`isPoem` field)
-**Migration Note**: In a future release, the `type` field may be removed entirely as it's no longer used by the UI. All entry rendering is now based on the presence of `content`, `imageUrl`, `videoUrl`, and the `isPoem` boolean flag.
+  **Migration Note**: In a future release, the `type` field may be removed entirely as it's no longer used by the UI. All entry rendering is now based on the presence of `content`, `imageUrl`, `videoUrl`, and the `isPoem` boolean flag.
 
 ### Decorations & Themes
+
 - `THEME_FEATURES.md` — theme presets, backgrounds, and customization guidance
 
 You can enable decorations per calendar and preview them live in the editor.
@@ -191,11 +196,14 @@ Add screenshots to the `public/` folder and reference them here:
 - Share view with modal: `![Share Modal](public/screenshots/share-modal.png)`
 
 ### Database Connection Issues
+
 npx prisma db pull
 
 # Reset database if needed
+
 npx prisma migrate reset
-```
+
+````
 
 ### Build Errors
 
@@ -205,7 +213,7 @@ npx prisma migrate reset
 # Reinstall dependencies
 rm -rf node_modules package-lock.json
 npm install
-```
+````
 
 If you use Turbopack (Next.js 16), you may see non-breaking source map warnings during dev; these do not affect functionality.
 
