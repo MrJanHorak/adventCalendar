@@ -547,7 +547,7 @@ export default function EditCalendar({
             </div>
             <div>
               <Link
-                href={`/share/${calendar.shareId}`}
+                href={`/share/${calendar.shareId}?ownerPreview=1`}
                 target='_blank'
                 rel='noopener noreferrer'
                 className='inline-flex items-center px-4 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-green-500 text-white text-sm font-semibold hover:from-blue-600 hover:to-green-600 transition'
@@ -555,7 +555,7 @@ export default function EditCalendar({
                 Preview Calendar
               </Link>
               <p className='text-xs text-gray-400 mt-2'>
-                Save an entry before previewing to see changes reflected.
+                Save an entry before previewing to see changes reflected. As the owner, you can test all doors.
               </p>
             </div>
           </div>
