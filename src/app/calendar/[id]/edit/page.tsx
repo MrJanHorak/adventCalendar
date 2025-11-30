@@ -2012,10 +2012,7 @@ export default function EditCalendar({
               Made with ❤️ for the holiday season
             </p>
             <div className='flex flex-wrap justify-center gap-6 text-sm'>
-              <Link
-                href='/privacy'
-                className='hover:text-red-600 transition'
-              >
+              <Link href='/privacy' className='hover:text-red-600 transition'>
                 Privacy Policy
               </Link>
               <Link href='/terms' className='hover:text-red-600 transition'>

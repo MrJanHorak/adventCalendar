@@ -75,7 +75,9 @@ export default function TermsOfService() {
               <h2 className='text-2xl font-semibold text-gray-800 mb-3'>
                 4. Content Guidelines
               </h2>
-              <p className='mb-2'>You agree not to upload or share content that:</p>
+              <p className='mb-2'>
+                You agree not to upload or share content that:
+              </p>
               <ul className='list-disc list-inside space-y-2 ml-4'>
                 <li>Is illegal, harmful, or offensive</li>
                 <li>Infringes on intellectual property rights</li>
@@ -97,9 +99,7 @@ export default function TermsOfService() {
                   You grant us a license to store and display your content as
                   necessary to provide the service
                 </li>
-                <li>
-                  You must have the right to use any content you upload
-                </li>
+                <li>You must have the right to use any content you upload</li>
               </ul>
             </section>
 
@@ -119,9 +119,9 @@ export default function TermsOfService() {
                 7. Limitation of Liability
               </h2>
               <p>
-                Doorly Advent is provided "as is" without warranties of any kind.
-                We are not liable for any damages arising from your use of the
-                service, including but not limited to data loss, service
+                Doorly Advent is provided "as is" without warranties of any
+                kind. We are not liable for any damages arising from your use of
+                the service, including but not limited to data loss, service
                 interruptions, or content disputes.
               </p>
             </section>

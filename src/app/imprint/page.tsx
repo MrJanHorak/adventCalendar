@@ -75,9 +75,7 @@ export default function Imprint() {
               <h2 className='text-2xl font-semibold text-gray-800 mb-3'>
                 VAT Identification Number
               </h2>
-              <p>
-                I am not a company. Not making any profit off of this site. 
-              </p>
+              <p>I am not a company. Not making any profit off of this site.</p>
             </section>
 
             <section>
@@ -142,7 +140,9 @@ export default function Imprint() {
 
             <div className='mt-8 p-4 bg-yellow-50 border border-yellow-200 rounded-lg'>
               <p className='text-sm text-gray-600'>
-                <strong>Note:</strong> This entire site is just a freely shared work for free and fun for the holidays. I make no financial profit from this site. 
+                <strong>Note:</strong> This entire site is just a freely shared
+                work for free and fun for the holidays. I make no financial
+                profit from this site.
               </p>
             </div>
           </div>
