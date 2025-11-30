@@ -42,6 +42,7 @@ Branding: The site is branded as "Doorly Advent" with a red/green split title an
 - **Decorations System**: Optional animated decorations including Snowfall, Lights, Glow, Confetti, Stars, Candle, Aurora, and Ribbons
 - **Owner/Share Views Polished**: Modal titles, close buttons, and backgrounds dynamically respect entry text/background colors
 - **Mobile UX**: Dashboard cards, modals, and share view tuned for small screens
+- Account settings: update display name and request full account deletion (calendars and entries removed per data standards)
 
 ## 🚀 Tech Stack
 
@@ -111,10 +112,6 @@ openssl rand -base64 32
 ### 5. Run Development Server
 
 ```bash
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## 📖 Usage Guide
 
@@ -141,47 +138,25 @@ Recipients can visit the shared link and:
 ```
 adventCalendar/
 ├── src/
-│   ├── app/
-│   │   ├── api/              # API routes
-│   │   ├── auth/             # Authentication pages
 │   │   ├── calendar/         # Calendar management
 │   │   ├── dashboard/        # User dashboard
 │   │   ├── share/            # Shared calendar viewing
-│   │   └── page.tsx          # Landing page
-│   ├── lib/
-│   │   ├── auth.ts           # NextAuth configuration
 │   │   └── prisma.ts         # Prisma client
 │   └── types/                # TypeScript definitions
 ├── prisma/
 │   └── schema.prisma         # Database schema
 └── .env                      # Environment variables
-```
-
 ## 🎨 Customization
 
 ### Changing Theme Colors
-
-Edit Tailwind classes in components to customize the color scheme. Current theme uses:
-
-- Red (#EF4444) for primary actions
-- Green (#10B981) for success states
 - Gradient combinations for festive feel
 
 ### Adding More Entry Types
-
-The application now supports multi-content entries (text + image + video simultaneously) through a flexible toggle-based UI:
-
 - Users can enable/disable Image and Video fields independently
 - Poem styling is applied via a checkbox (`isPoem` field)
-- The legacy `type` enum in `schema.prisma` is retained for backward compatibility
-
 **Migration Note**: In a future release, the `type` field may be removed entirely as it's no longer used by the UI. All entry rendering is now based on the presence of `content`, `imageUrl`, `videoUrl`, and the `isPoem` boolean flag.
 
 ### Decorations & Themes
-
-Detailed docs on decorations and theme options:
-
-- `DECORATION_EXPANSION.md` — overview of animated decorations and their controls
 - `THEME_FEATURES.md` — theme presets, backgrounds, and customization guidance
 
 You can enable decorations per calendar and preview them live in the editor.
@@ -214,16 +189,8 @@ Add screenshots to the `public/` folder and reference them here:
 - Dashboard (desktop): `![Dashboard Desktop](public/screenshots/dashboard-desktop.png)`
 - Dashboard (mobile): `![Dashboard Mobile](public/screenshots/dashboard-mobile.png)`
 - Share view with modal: `![Share Modal](public/screenshots/share-modal.png)`
-- Decorations examples: `![Decorations](public/screenshots/decorations.png)`
-
-Optional: include a short GIF showcasing opening doors and animations.
-
-## 🐛 Troubleshooting
 
 ### Database Connection Issues
-
-```bash
-# Test database connection
 npx prisma db pull
 
 # Reset database if needed
@@ -234,7 +201,6 @@ npx prisma migrate reset
 
 ```bash
 # Clear Next.js cache
-rm -rf .next
 
 # Reinstall dependencies
 rm -rf node_modules package-lock.json
@@ -257,8 +223,6 @@ If you use Turbopack (Next.js 16), you may see non-breaking source map warnings 
 The app can be deployed to any platform supporting Node.js:
 
 - Netlify
-- Railway
-- Render
 - AWS
 - DigitalOcean
 
