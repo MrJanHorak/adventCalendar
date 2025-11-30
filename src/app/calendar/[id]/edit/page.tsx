@@ -128,6 +128,7 @@ export default function EditCalendar({
     padding: '16px',
     boxShadow: 'none',
   });
+  const [copyFeedback, setCopyFeedback] = useState(false);
   const [showImageField, setShowImageField] = useState(false);
   const [showVideoField, setShowVideoField] = useState(false);
   const [showLinkField, setShowLinkField] = useState(false);
@@ -517,28 +518,46 @@ export default function EditCalendar({
                 {typeof window !== 'undefined' ? window.location.origin : ''}
                 /share/{calendar.shareId}
               </code>
+              <button
+                type='button'
+                onClick={() => {
+                  const shareUrl = `${window.location.origin}/share/${calendar.shareId}`;
+                  if (navigator?.clipboard?.writeText) {
+                    navigator.clipboard.writeText(shareUrl).then(() => {
+                      setCopyFeedback(true);
+                      setTimeout(() => setCopyFeedback(false), 1800);
+                    });
+                  } else {
+                    // Fallback for very old browsers
+                    const tempInput = document.createElement('input');
+                    tempInput.value = shareUrl;
+                    document.body.appendChild(tempInput);
+                    tempInput.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(tempInput);
+                    setCopyFeedback(true);
+                    setTimeout(() => setCopyFeedback(false), 1800);
+                  }
+                }}
+                className='ml-2 inline-flex items-center px-3 py-1 rounded-lg bg-blue-600 text-white text-xs font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400'
+                aria-label='Copy share link to clipboard'
+              >
+                {copyFeedback ? 'Copied!' : 'Copy'}
+              </button>
             </div>
-            <div className='flex flex-wrap gap-3'>
+            <div>
               <Link
                 href={`/share/${calendar.shareId}`}
                 target='_blank'
                 rel='noopener noreferrer'
                 className='inline-flex items-center px-4 py-2 rounded-lg bg-gradient-to-r from-blue-500 to-green-500 text-white text-sm font-semibold hover:from-blue-600 hover:to-green-600 transition'
               >
-                Preview as Viewer
+                Preview Calendar
               </Link>
-              <Link
-                href={`/share/${calendar.shareId}?ownerPreview=1`}
-                target='_blank'
-                rel='noopener noreferrer'
-                className='inline-flex items-center px-4 py-2 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm font-semibold hover:from-purple-600 hover:to-pink-600 transition'
-              >
-                🔓 Owner Preview (Test All Days)
-              </Link>
+              <p className='text-xs text-gray-400 mt-2'>
+                Save an entry before previewing to see changes reflected.
+              </p>
             </div>
-            <p className='text-xs text-gray-400'>
-              Save an entry before previewing to see changes reflected.
-            </p>
           </div>
         </div>
 

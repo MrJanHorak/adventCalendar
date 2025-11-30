@@ -2,6 +2,7 @@ import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
+import CopyShareLink from '@/components/CopyShareLink';
 
 export default async function Dashboard() {
   const session = await auth();
@@ -172,11 +173,7 @@ export default async function Dashboard() {
                     </Link>
                   </div>
                   <div className='mt-3 text-xs text-gray-500 text-center'>
-                    Share:{' '}
-                    {typeof window !== 'undefined'
-                      ? window.location.origin
-                      : ''}
-                    /share/{calendar.shareId}
+                    Share: <CopyShareLink shareId={calendar.shareId} />
                   </div>
                 </div>
               )
