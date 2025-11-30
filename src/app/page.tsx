@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { auth } from '@/lib/auth';
+import IdeasSection from '@/components/IdeasSection';
 
 export default async function Home() {
   const session = await auth();
@@ -124,6 +125,9 @@ export default async function Home() {
             </p>
           </div>
         </div>
+
+        {/* Ideas & Inspiration Section */}
+        <IdeasSection />
 
         {/* How it Works */}
         <div className='mt-32 bg-white rounded-3xl shadow-2xl p-12 border-4 border-green-200'>

@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { themePresets, getThemePreset, getButtonStyles } from '@/lib/themes';
 import { convertToEmbedUrl } from '@/lib/videoUtils';
 import HelpModal from '@/components/HelpModal';
+import IdeasModal from '@/components/IdeasModal';
 
 // Legacy entry type retained for backward compatibility with existing records
 type EntryType = 'TEXT' | 'POEM' | 'IMAGE' | 'VIDEO';
@@ -68,6 +69,7 @@ export default function EditCalendar({
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
   const [showThemeEditor, setShowThemeEditor] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
+  const [showIdeas, setShowIdeas] = useState(false);
   const [showQuickTips, setShowQuickTips] = useState(false);
   const [themeData, setThemeData] = useState({
     theme: 'classic',
@@ -420,6 +422,7 @@ export default function EditCalendar({
   return (
     <div className='min-h-screen' style={themeStyles}>
       <HelpModal isOpen={showHelp} onClose={() => setShowHelp(false)} />
+      <IdeasModal isOpen={showIdeas} onClose={() => setShowIdeas(false)} />
 
       {/* Navigation */}
       <nav className='bg-white/80 backdrop-blur-sm border-b border-red-100'>
@@ -431,13 +434,22 @@ export default function EditCalendar({
                 Advent Calendar
               </span>
             </Link>
-            <button
-              onClick={() => setShowHelp(true)}
-              className='flex items-center gap-2 text-gray-700 hover:text-red-600 font-medium transition'
-            >
-              <span className='text-xl'>❓</span>
-              <span>Help</span>
-            </button>
+            <div className='flex items-center gap-4'>
+              <button
+                onClick={() => setShowIdeas(true)}
+                className='flex items-center gap-2 text-gray-700 hover:text-purple-600 font-medium transition'
+              >
+                <span className='text-xl'>💡</span>
+                <span className='hidden sm:inline'>Ideas</span>
+              </button>
+              <button
+                onClick={() => setShowHelp(true)}
+                className='flex items-center gap-2 text-gray-700 hover:text-red-600 font-medium transition'
+              >
+                <span className='text-xl'>❓</span>
+                <span className='hidden sm:inline'>Help</span>
+              </button>
+            </div>
           </div>
         </div>
       </nav>
