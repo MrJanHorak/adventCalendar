@@ -53,6 +53,14 @@ interface Calendar {
   buttonStyle?: string;
   buttonPrimaryColor?: string;
   buttonSecondaryColor?: string;
+  dateButtonStyle?: string;
+  datePrimaryColor?: string;
+  dateSecondaryColor?: string;
+  dateTextColor?: string;
+  dateOpenedPrimaryColor?: string;
+  dateOpenedSecondaryColor?: string;
+  dateUnavailableColor?: string;
+  dateBorderRadius?: string;
 }
 
 export default function EditCalendar({
@@ -82,6 +90,14 @@ export default function EditCalendar({
     buttonStyle: 'gradient',
     buttonPrimaryColor: '#dc2626',
     buttonSecondaryColor: '#16a34a',
+    dateButtonStyle: 'gradient',
+    datePrimaryColor: '#dc2626',
+    dateSecondaryColor: '#16a34a',
+    dateTextColor: '#ffffff',
+    dateOpenedPrimaryColor: '#16a34a',
+    dateOpenedSecondaryColor: '#22c55e',
+    dateUnavailableColor: '#d1d5db',
+    dateBorderRadius: '16px',
   });
   const [formData, setFormData] = useState({
     title: '',
@@ -133,6 +149,15 @@ export default function EditCalendar({
             buttonStyle: data.buttonStyle || 'gradient',
             buttonPrimaryColor: data.buttonPrimaryColor || '#dc2626',
             buttonSecondaryColor: data.buttonSecondaryColor || '#16a34a',
+            dateButtonStyle: data.dateButtonStyle || 'gradient',
+            datePrimaryColor: data.datePrimaryColor || '#dc2626',
+            dateSecondaryColor: data.dateSecondaryColor || '#16a34a',
+            dateTextColor: data.dateTextColor || '#ffffff',
+            dateOpenedPrimaryColor: data.dateOpenedPrimaryColor || '#16a34a',
+            dateOpenedSecondaryColor:
+              data.dateOpenedSecondaryColor || '#22c55e',
+            dateUnavailableColor: data.dateUnavailableColor || '#d1d5db',
+            dateBorderRadius: data.dateBorderRadius || '16px',
           });
         } else {
           router.push('/dashboard');
@@ -349,6 +374,15 @@ export default function EditCalendar({
         buttonPrimaryColor: preset.buttonPrimaryColor || preset.primaryColor,
         buttonSecondaryColor:
           preset.buttonSecondaryColor || preset.secondaryColor,
+        dateButtonStyle: preset.dateButtonStyle || 'gradient',
+        datePrimaryColor: preset.datePrimaryColor || preset.primaryColor,
+        dateSecondaryColor: preset.dateSecondaryColor || preset.secondaryColor,
+        dateTextColor: preset.dateTextColor || '#ffffff',
+        dateOpenedPrimaryColor:
+          preset.dateOpenedPrimaryColor || preset.secondaryColor,
+        dateOpenedSecondaryColor: preset.dateOpenedSecondaryColor || '#22c55e',
+        dateUnavailableColor: preset.dateUnavailableColor || '#d1d5db',
+        dateBorderRadius: preset.dateBorderRadius || '16px',
       });
     }
   };
@@ -765,6 +799,270 @@ export default function EditCalendar({
                     >
                       Sample Button
                     </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Calendar Date Button Styling Section */}
+              <div className='border-t-2 border-gray-200 pt-6'>
+                <h3 className='text-lg font-semibold text-gray-800 mb-4'>
+                  📅 Calendar Date Styling
+                </h3>
+                <p className='text-sm text-gray-600 mb-4'>
+                  Customize how the calendar day buttons look
+                </p>
+
+                <div className='space-y-4'>
+                  {/* Date Button Style Type */}
+                  <div>
+                    <label className='block text-sm font-medium text-gray-700 mb-2'>
+                      Date Button Style
+                    </label>
+                    <div className='grid grid-cols-3 gap-3'>
+                      {[
+                        { value: 'gradient', label: 'Gradient', emoji: '🌈' },
+                        { value: 'solid', label: 'Solid', emoji: '⬛' },
+                      ].map((style) => (
+                        <button
+                          key={style.value}
+                          type='button'
+                          onClick={() =>
+                            setThemeData({
+                              ...themeData,
+                              dateButtonStyle: style.value,
+                            })
+                          }
+                          className={`p-3 rounded-lg border-2 text-center transition ${
+                            themeData.dateButtonStyle === style.value
+                              ? 'border-purple-500 bg-purple-50'
+                              : 'border-gray-200 hover:border-gray-300'
+                          }`}
+                        >
+                          <div className='text-2xl mb-1'>{style.emoji}</div>
+                          <div className='text-xs font-medium'>
+                            {style.label}
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Unopened Date Colors */}
+                  <div>
+                    <h4 className='text-sm font-semibold text-gray-700 mb-3'>
+                      Unopened Dates (Available to Open)
+                    </h4>
+                    <div className='grid md:grid-cols-3 gap-4'>
+                      <div>
+                        <label className='block text-xs font-medium text-gray-600 mb-2'>
+                          Primary Color
+                        </label>
+                        <input
+                          type='color'
+                          value={themeData.datePrimaryColor}
+                          onChange={(e) =>
+                            setThemeData({
+                              ...themeData,
+                              datePrimaryColor: e.target.value,
+                            })
+                          }
+                          className='h-10 w-full rounded border-2 border-gray-200 cursor-pointer'
+                        />
+                      </div>
+
+                      {themeData.dateButtonStyle === 'gradient' && (
+                        <div>
+                          <label className='block text-xs font-medium text-gray-600 mb-2'>
+                            Secondary Color (Gradient)
+                          </label>
+                          <input
+                            type='color'
+                            value={themeData.dateSecondaryColor}
+                            onChange={(e) =>
+                              setThemeData({
+                                ...themeData,
+                                dateSecondaryColor: e.target.value,
+                              })
+                            }
+                            className='h-10 w-full rounded border-2 border-gray-200 cursor-pointer'
+                          />
+                        </div>
+                      )}
+
+                      <div>
+                        <label className='block text-xs font-medium text-gray-600 mb-2'>
+                          Text Color
+                        </label>
+                        <input
+                          type='color'
+                          value={themeData.dateTextColor}
+                          onChange={(e) =>
+                            setThemeData({
+                              ...themeData,
+                              dateTextColor: e.target.value,
+                            })
+                          }
+                          className='h-10 w-full rounded border-2 border-gray-200 cursor-pointer'
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Opened Date Colors */}
+                  <div>
+                    <h4 className='text-sm font-semibold text-gray-700 mb-3'>
+                      Opened Dates (Already Viewed)
+                    </h4>
+                    <div className='grid md:grid-cols-2 gap-4'>
+                      <div>
+                        <label className='block text-xs font-medium text-gray-600 mb-2'>
+                          Primary Color
+                        </label>
+                        <input
+                          type='color'
+                          value={themeData.dateOpenedPrimaryColor}
+                          onChange={(e) =>
+                            setThemeData({
+                              ...themeData,
+                              dateOpenedPrimaryColor: e.target.value,
+                            })
+                          }
+                          className='h-10 w-full rounded border-2 border-gray-200 cursor-pointer'
+                        />
+                      </div>
+
+                      {themeData.dateButtonStyle === 'gradient' && (
+                        <div>
+                          <label className='block text-xs font-medium text-gray-600 mb-2'>
+                            Secondary Color (Gradient)
+                          </label>
+                          <input
+                            type='color'
+                            value={themeData.dateOpenedSecondaryColor}
+                            onChange={(e) =>
+                              setThemeData({
+                                ...themeData,
+                                dateOpenedSecondaryColor: e.target.value,
+                              })
+                            }
+                            className='h-10 w-full rounded border-2 border-gray-200 cursor-pointer'
+                          />
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Unavailable Date Color */}
+                  <div>
+                    <h4 className='text-sm font-semibold text-gray-700 mb-3'>
+                      Unavailable Dates (Future Days)
+                    </h4>
+                    <div className='grid md:grid-cols-2 gap-4'>
+                      <div>
+                        <label className='block text-xs font-medium text-gray-600 mb-2'>
+                          Background Color
+                        </label>
+                        <input
+                          type='color'
+                          value={themeData.dateUnavailableColor}
+                          onChange={(e) =>
+                            setThemeData({
+                              ...themeData,
+                              dateUnavailableColor: e.target.value,
+                            })
+                          }
+                          className='h-10 w-full rounded border-2 border-gray-200 cursor-pointer'
+                        />
+                      </div>
+
+                      <div>
+                        <label className='block text-xs font-medium text-gray-600 mb-2'>
+                          Border Radius
+                        </label>
+                        <input
+                          type='text'
+                          value={themeData.dateBorderRadius}
+                          onChange={(e) =>
+                            setThemeData({
+                              ...themeData,
+                              dateBorderRadius: e.target.value,
+                            })
+                          }
+                          placeholder='e.g., 16px'
+                          className='w-full px-3 py-2 border-2 border-gray-200 rounded-lg focus:border-purple-400 focus:outline-none'
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Date Preview */}
+                  <div className='bg-gray-50 p-4 rounded-lg'>
+                    <p className='text-sm font-medium text-gray-700 mb-3'>
+                      Calendar Date Preview:
+                    </p>
+                    <div className='flex gap-3 justify-center'>
+                      {/* Unopened */}
+                      <div className='text-center'>
+                        <div
+                          className='w-16 h-16 flex items-center justify-center font-bold shadow-lg transition hover:scale-105'
+                          style={{
+                            backgroundImage:
+                              themeData.dateButtonStyle === 'gradient'
+                                ? `linear-gradient(135deg, ${themeData.datePrimaryColor}, ${themeData.dateSecondaryColor})`
+                                : undefined,
+                            backgroundColor:
+                              themeData.dateButtonStyle === 'solid'
+                                ? themeData.datePrimaryColor
+                                : undefined,
+                            color: themeData.dateTextColor,
+                            borderRadius: themeData.dateBorderRadius,
+                          }}
+                        >
+                          12
+                        </div>
+                        <p className='text-xs text-gray-600 mt-1'>Unopened</p>
+                      </div>
+
+                      {/* Opened */}
+                      <div className='text-center'>
+                        <div
+                          className='w-16 h-16 flex flex-col items-center justify-center font-bold shadow-lg'
+                          style={{
+                            backgroundImage:
+                              themeData.dateButtonStyle === 'gradient'
+                                ? `linear-gradient(135deg, ${themeData.dateOpenedPrimaryColor}, ${themeData.dateOpenedSecondaryColor})`
+                                : undefined,
+                            backgroundColor:
+                              themeData.dateButtonStyle === 'solid'
+                                ? themeData.dateOpenedPrimaryColor
+                                : undefined,
+                            color: themeData.dateTextColor,
+                            borderRadius: themeData.dateBorderRadius,
+                          }}
+                        >
+                          <span className='text-sm'>5</span>
+                          <span className='text-xs'>✓</span>
+                        </div>
+                        <p className='text-xs text-gray-600 mt-1'>Opened</p>
+                      </div>
+
+                      {/* Unavailable */}
+                      <div className='text-center'>
+                        <div
+                          className='w-16 h-16 flex items-center justify-center font-bold shadow-lg opacity-50'
+                          style={{
+                            backgroundColor: themeData.dateUnavailableColor,
+                            color: '#6b7280',
+                            borderRadius: themeData.dateBorderRadius,
+                          }}
+                        >
+                          25
+                        </div>
+                        <p className='text-xs text-gray-600 mt-1'>
+                          Unavailable
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

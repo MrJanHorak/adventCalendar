@@ -41,6 +41,14 @@ model Calendar {
   buttonStyle         String?  @default("gradient")
   buttonPrimaryColor  String?  @default("#dc2626")
   buttonSecondaryColor String? @default("#16a34a")
+  dateButtonStyle     String?  @default("gradient")
+  datePrimaryColor    String?  @default("#dc2626")
+  dateSecondaryColor  String?  @default("#16a34a")
+  dateTextColor       String?  @default("#ffffff")
+  dateOpenedPrimaryColor String? @default("#16a34a")
+  dateOpenedSecondaryColor String? @default("#22c55e")
+  dateUnavailableColor String? @default("#d1d5db")
+  dateBorderRadius    String?  @default("16px")
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
 

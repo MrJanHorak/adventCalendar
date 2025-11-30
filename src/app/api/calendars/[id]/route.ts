@@ -70,6 +70,14 @@ export async function PATCH(
       buttonStyle,
       buttonPrimaryColor,
       buttonSecondaryColor,
+      dateButtonStyle,
+      datePrimaryColor,
+      dateSecondaryColor,
+      dateTextColor,
+      dateOpenedPrimaryColor,
+      dateOpenedSecondaryColor,
+      dateUnavailableColor,
+      dateBorderRadius,
     } = await req.json();
 
     const calendar = await prisma.calendar.findUnique({
@@ -112,6 +120,25 @@ export async function PATCH(
       updateData.buttonPrimaryColor = buttonPrimaryColor;
     if (buttonSecondaryColor !== undefined && buttonSecondaryColor !== '')
       updateData.buttonSecondaryColor = buttonSecondaryColor;
+    if (dateButtonStyle !== undefined && dateButtonStyle !== '')
+      updateData.dateButtonStyle = dateButtonStyle;
+    if (datePrimaryColor !== undefined && datePrimaryColor !== '')
+      updateData.datePrimaryColor = datePrimaryColor;
+    if (dateSecondaryColor !== undefined && dateSecondaryColor !== '')
+      updateData.dateSecondaryColor = dateSecondaryColor;
+    if (dateTextColor !== undefined && dateTextColor !== '')
+      updateData.dateTextColor = dateTextColor;
+    if (dateOpenedPrimaryColor !== undefined && dateOpenedPrimaryColor !== '')
+      updateData.dateOpenedPrimaryColor = dateOpenedPrimaryColor;
+    if (
+      dateOpenedSecondaryColor !== undefined &&
+      dateOpenedSecondaryColor !== ''
+    )
+      updateData.dateOpenedSecondaryColor = dateOpenedSecondaryColor;
+    if (dateUnavailableColor !== undefined && dateUnavailableColor !== '')
+      updateData.dateUnavailableColor = dateUnavailableColor;
+    if (dateBorderRadius !== undefined && dateBorderRadius !== '')
+      updateData.dateBorderRadius = dateBorderRadius;
 
     const updatedCalendar = await prisma.calendar.update({
       where: { id },

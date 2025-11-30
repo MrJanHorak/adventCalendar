@@ -54,6 +54,14 @@ interface Calendar {
   buttonStyle?: string;
   buttonPrimaryColor?: string;
   buttonSecondaryColor?: string;
+  dateButtonStyle?: string;
+  datePrimaryColor?: string;
+  dateSecondaryColor?: string;
+  dateTextColor?: string;
+  dateOpenedPrimaryColor?: string;
+  dateOpenedSecondaryColor?: string;
+  dateUnavailableColor?: string;
+  dateBorderRadius?: string;
 }
 
 interface OpenedDoor {
@@ -349,30 +357,71 @@ export default function SharedCalendar({
             const isOpened = isDoorOpened(day);
             const canOpen = isDoorOpenable(day);
 
+            // Apply theme date styling
+            const style: React.CSSProperties = {
+              borderRadius: calendar.dateBorderRadius || '16px',
+            };
+
+            if (hasEntry) {
+              const isGradient =
+                (calendar.dateButtonStyle || 'gradient') === 'gradient';
+              if (isOpened) {
+                // Opened state
+                if (
+                  isGradient &&
+                  calendar.dateOpenedPrimaryColor &&
+                  calendar.dateOpenedSecondaryColor
+                ) {
+                  style.backgroundImage = `linear-gradient(135deg, ${calendar.dateOpenedPrimaryColor}, ${calendar.dateOpenedSecondaryColor})`;
+                } else if (calendar.dateOpenedPrimaryColor) {
+                  style.backgroundColor = calendar.dateOpenedPrimaryColor;
+                } else {
+                  style.backgroundColor = calendar.secondaryColor || '#16a34a';
+                }
+                style.color = calendar.dateTextColor || '#ffffff';
+              } else if (canOpen) {
+                // Unopened but available
+                if (
+                  isGradient &&
+                  calendar.datePrimaryColor &&
+                  calendar.dateSecondaryColor
+                ) {
+                  style.backgroundImage = `linear-gradient(135deg, ${calendar.datePrimaryColor}, ${calendar.dateSecondaryColor})`;
+                } else if (calendar.datePrimaryColor) {
+                  style.backgroundColor = calendar.datePrimaryColor;
+                } else {
+                  style.backgroundColor = calendar.primaryColor || '#dc2626';
+                }
+                style.color = calendar.dateTextColor || '#ffffff';
+              } else {
+                // Not available yet
+                style.backgroundColor =
+                  calendar.dateUnavailableColor || '#d1d5db';
+                style.color = '#6b7280';
+              }
+            } else {
+              // No entry
+              style.backgroundColor =
+                calendar.dateUnavailableColor || '#d1d5db';
+              style.color = '#9ca3af';
+            }
+
             return (
               <button
                 key={day}
                 onClick={() => handleDayClick(day)}
                 disabled={!hasEntry || (!canOpen && !isOpened)}
-                style={{
-                  backgroundColor: isOpened
-                    ? calendar.secondaryColor || '#16a34a'
-                    : canOpen && hasEntry
-                    ? calendar.primaryColor || '#dc2626'
-                    : 'rgba(255, 255, 255, 0.8)',
-                  color:
-                    isOpened || (canOpen && hasEntry)
-                      ? '#ffffff'
-                      : calendar.textColor || '#9ca3af',
-                  borderColor: calendar.primaryColor || '#dc2626',
-                }}
-                className={`aspect-square rounded-2xl font-bold text-2xl transition-all transform hover:scale-105 shadow-lg border-2 ${
+                style={style}
+                className={`aspect-square font-bold text-2xl transition-all transform hover:scale-105 shadow-lg ${
                   !hasEntry || (!canOpen && !isOpened)
                     ? 'opacity-50 cursor-not-allowed'
                     : ''
                 }`}
               >
-                {day}
+                <div className='flex flex-col items-center justify-center h-full'>
+                  <span>{day}</span>
+                  {isOpened && <span className='text-lg'>✓</span>}
+                </div>
               </button>
             );
           })}
@@ -380,121 +429,124 @@ export default function SharedCalendar({
 
         {/* Entry Modal */}
         {selectedDay && selectedEntry && (
-          <div className='fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50'>
-            <div className='bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[80vh] overflow-y-auto p-8 border-4 border-red-200'>
-              <div className='flex justify-between items-start mb-6'>
-                <h2 className='text-3xl font-bold text-gray-800'>
-                  Day {selectedDay}: {selectedEntry.title}
-                </h2>
-                <button
-                  onClick={() => setSelectedDay(null)}
-                  className='text-gray-500 hover:text-gray-700 text-3xl'
-                >
-                  ×
-                </button>
-              </div>
-
-              {/* Video (if present) */}
-              {selectedEntry.videoUrl && (
-                <div className='mb-6 rounded-xl overflow-hidden'>
-                  <div className='aspect-video'>
-                    <iframe
-                      src={selectedEntry.videoUrl}
-                      title={selectedEntry.title}
-                      className='w-full h-full'
-                      allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
-                      allowFullScreen
-                    />
-                  </div>
-                </div>
-              )}
-
-              {/* Image (if present) */}
-              {selectedEntry.imageUrl && (
-                <div className='mb-6 rounded-xl overflow-hidden'>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={selectedEntry.imageUrl}
-                    alt={selectedEntry.title}
-                    className='w-full h-auto'
-                  />
-                </div>
-              )}
-
-              {/* Text / Poem (if present) */}
-              {selectedEntry.content && (
-                <div
-                  className='whitespace-pre-wrap flex flex-col'
-                  style={{
-                    fontFamily: selectedEntry.fontFamily || 'Inter',
-                    fontSize: selectedEntry.fontSize || '16px',
-                    color: selectedEntry.textColor || '#374151',
-                    backgroundColor:
-                      selectedEntry.backgroundColor || 'transparent',
-                    textAlign: (selectedEntry.textAlign || 'center') as any,
-                    borderColor: selectedEntry.borderColor,
-                    borderWidth: selectedEntry.borderWidth || '0px',
-                    borderStyle: (selectedEntry.borderStyle || 'solid') as any,
-                    borderRadius: selectedEntry.borderRadius || '0px',
-                    padding: selectedEntry.padding || '16px',
-                    boxShadow: selectedEntry.boxShadow || 'none',
-                    alignItems:
-                      selectedEntry.textAlign === 'left'
-                        ? 'flex-start'
-                        : selectedEntry.textAlign === 'right'
-                        ? 'flex-end'
-                        : selectedEntry.textAlign === 'justify'
-                        ? 'stretch'
-                        : 'center',
-                    justifyContent:
-                      selectedEntry.verticalAlign === 'top'
-                        ? 'flex-start'
-                        : selectedEntry.verticalAlign === 'bottom'
-                        ? 'flex-end'
-                        : 'center',
-                    minHeight: '200px',
-                    ...(selectedEntry.isPoem && {
-                      fontStyle: 'italic',
-                      lineHeight: '1.75',
-                    }),
-                  }}
-                >
-                  {selectedEntry.content}
-                </div>
-              )}
-
-              {/* External Link Button */}
-              {selectedEntry.linkUrl && (
-                <div className='mt-6'>
-                  <a
-                    href={selectedEntry.linkUrl}
-                    target='_blank'
-                    rel='noopener noreferrer'
-                    style={buttonStyles}
-                    className='inline-block w-full text-center text-white px-6 py-4 rounded-xl hover:opacity-90 transition font-semibold text-lg shadow-lg'
+          <div
+            className='fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-50'
+            onClick={() => setSelectedDay(null)}
+          >
+            <div
+              className='bg-white rounded-3xl shadow-2xl max-w-3xl w-full overflow-hidden'
+              onClick={(e) => e.stopPropagation()}
+              role='dialog'
+              aria-modal='true'
+            >
+              <div className='max-h-[90vh] overflow-y-auto p-8 scrollbar-rounded'>
+                <div className='flex justify-between items-start mb-6'>
+                  <h2 className='text-3xl font-bold text-gray-800'>
+                    Day {selectedDay}: {selectedEntry.title}
+                  </h2>
+                  <button
+                    onClick={() => setSelectedDay(null)}
+                    className='text-gray-500 hover:text-gray-700 text-3xl'
                   >
-                    🔗 {selectedEntry.linkText || 'Visit Link'}
-                  </a>
+                    ×
+                  </button>
                 </div>
-              )}
 
-              {/* Fallback if no content at all (should be rare) */}
-              {!selectedEntry.content &&
-                !selectedEntry.imageUrl &&
-                !selectedEntry.videoUrl &&
-                !selectedEntry.linkUrl && (
-                  <div className='text-center text-gray-500 italic'>
-                    No content available for this entry.
+                {/* Video (if present) */}
+                {selectedEntry.videoUrl && (
+                  <div className='mb-6 rounded-xl overflow-hidden'>
+                    <div className='aspect-video'>
+                      <iframe
+                        src={selectedEntry.videoUrl}
+                        title={selectedEntry.title}
+                        className='w-full h-full'
+                        allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+                        allowFullScreen
+                      />
+                    </div>
                   </div>
                 )}
 
-              <button
-                onClick={() => setSelectedDay(null)}
-                style={buttonStyles}
-                className='mt-8 w-full text-white py-4 rounded-full hover:opacity-90 transition font-semibold text-lg'
-              >
-                Close
-              </button>
+                {/* Image (if present) */}
+                {selectedEntry.imageUrl && (
+                  <div className='mb-6 rounded-xl overflow-hidden'>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={selectedEntry.imageUrl}
+                      alt={selectedEntry.title}
+                      className='w-full h-auto'
+                    />
+                  </div>
+                )}
+
+                {/* Text / Poem (if present) */}
+                {selectedEntry.content && (
+                  <div
+                    className='whitespace-pre-wrap flex flex-col'
+                    style={{
+                      fontFamily: selectedEntry.fontFamily || 'Inter',
+                      fontSize: selectedEntry.fontSize || '16px',
+                      color: selectedEntry.textColor || '#374151',
+                      backgroundColor:
+                        selectedEntry.backgroundColor || 'transparent',
+                      textAlign: (selectedEntry.textAlign || 'center') as any,
+                      borderColor: selectedEntry.borderColor,
+                      borderWidth: selectedEntry.borderWidth || '0px',
+                      borderStyle: (selectedEntry.borderStyle ||
+                        'solid') as any,
+                      borderRadius: selectedEntry.borderRadius || '0px',
+                      padding: selectedEntry.padding || '16px',
+                      boxShadow: selectedEntry.boxShadow || 'none',
+                      alignItems:
+                        selectedEntry.textAlign === 'left'
+                          ? 'flex-start'
+                          : selectedEntry.textAlign === 'right'
+                          ? 'flex-end'
+                          : selectedEntry.textAlign === 'justify'
+                          ? 'stretch'
+                          : 'center',
+                      justifyContent:
+                        selectedEntry.verticalAlign === 'top'
+                          ? 'flex-start'
+                          : selectedEntry.verticalAlign === 'bottom'
+                          ? 'flex-end'
+                          : 'center',
+                      minHeight: '200px',
+                      ...(selectedEntry.isPoem && {
+                        fontStyle: 'italic',
+                        lineHeight: '1.75',
+                      }),
+                    }}
+                  >
+                    {selectedEntry.content}
+                  </div>
+                )}
+
+                {/* External Link Button */}
+                {selectedEntry.linkUrl && (
+                  <div className='mt-6'>
+                    <a
+                      href={selectedEntry.linkUrl}
+                      target='_blank'
+                      rel='noopener noreferrer'
+                      style={buttonStyles}
+                      className='inline-block w-full text-center text-white px-6 py-4 rounded-xl hover:opacity-90 transition font-semibold text-lg shadow-lg'
+                    >
+                      🔗 {selectedEntry.linkText || 'Visit Link'}
+                    </a>
+                  </div>
+                )}
+
+                {/* Fallback if no content at all (should be rare) */}
+                {!selectedEntry.content &&
+                  !selectedEntry.imageUrl &&
+                  !selectedEntry.videoUrl &&
+                  !selectedEntry.linkUrl && (
+                    <div className='text-center text-gray-500 italic'>
+                      No content available for this entry.
+                    </div>
+                  )}
+              </div>
             </div>
           </div>
         )}

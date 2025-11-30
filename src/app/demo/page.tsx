@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { getThemeStyles } from '@/lib/themes';
+import { getThemeStyles, getThemePreset } from '@/lib/themes';
 
 // Demo calendar data
 const demoCalendar = {
@@ -10,13 +10,7 @@ const demoCalendar = {
   title: '🎄 Holiday Magic Advent Calendar 2024',
   description:
     'Experience the joy of a personalized advent calendar! This demo showcases poems, images, videos, and special messages.',
-  theme: 'festive-gold',
-  backgroundColor: '#1e293b',
-  backgroundPattern: 'stars',
-  primaryColor: '#fbbf24',
-  secondaryColor: '#dc2626',
-  textColor: '#ffffff',
-  snowflakesEnabled: true,
+  theme: 'classic',
   entries: [
     {
       day: 1,
@@ -263,14 +257,8 @@ export default function DemoCalendar() {
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
   const [openedDoors, setOpenedDoors] = useState<number[]>([]);
 
-  const themeStyles = getThemeStyles(
-    demoCalendar.theme,
-    demoCalendar.backgroundColor,
-    demoCalendar.backgroundPattern,
-    demoCalendar.primaryColor,
-    demoCalendar.secondaryColor,
-    demoCalendar.textColor
-  );
+  const theme = getThemePreset(demoCalendar.theme) || null;
+  const themeStyles = getThemeStyles(theme);
 
   const handleDoorClick = (day: number) => {
     if (!openedDoors.includes(day)) {
@@ -288,7 +276,7 @@ export default function DemoCalendar() {
   return (
     <div className='min-h-screen' style={themeStyles}>
       {/* Snowflakes */}
-      {demoCalendar.snowflakesEnabled && (
+      {theme?.snowflakesEnabled && (
         <div className='fixed inset-0 pointer-events-none overflow-hidden z-0'>
           <div className='snowflake'>❄</div>
           <div className='snowflake'>❅</div>
@@ -326,19 +314,9 @@ export default function DemoCalendar() {
       <main className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-10'>
         {/* Header */}
         <div className='text-center mb-12'>
-          <h1
-            className='text-5xl font-bold mb-4'
-            style={{ color: demoCalendar.textColor }}
-          >
-            {demoCalendar.title}
-          </h1>
+          <h1 className='text-5xl font-bold mb-4'>{demoCalendar.title}</h1>
           {demoCalendar.description && (
-            <p
-              className='text-xl opacity-90'
-              style={{ color: demoCalendar.textColor }}
-            >
-              {demoCalendar.description}
-            </p>
+            <p className='text-xl opacity-90'>{demoCalendar.description}</p>
           )}
           <div className='mt-6 inline-block bg-white/90 backdrop-blur-sm px-6 py-3 rounded-full shadow-lg'>
             <p className='text-gray-700 font-medium'>
@@ -353,6 +331,41 @@ export default function DemoCalendar() {
             const hasEntry = demoCalendar.entries.some((e) => e.day === day);
             const opened = isDoorOpened(day);
 
+            // Compute style for day button based on theme date styling
+            const style: React.CSSProperties = {};
+            if (theme) {
+              style.borderRadius = theme.dateBorderRadius || '16px';
+              if (hasEntry) {
+                const isGradient =
+                  (theme.dateButtonStyle || 'gradient') === 'gradient';
+                if (opened) {
+                  if (
+                    isGradient &&
+                    theme.dateOpenedPrimaryColor &&
+                    theme.dateOpenedSecondaryColor
+                  ) {
+                    style.backgroundImage = `linear-gradient(135deg, ${theme.dateOpenedPrimaryColor}, ${theme.dateOpenedSecondaryColor})`;
+                  } else if (theme.dateOpenedPrimaryColor) {
+                    style.backgroundColor = theme.dateOpenedPrimaryColor;
+                  }
+                } else {
+                  if (
+                    isGradient &&
+                    theme.datePrimaryColor &&
+                    theme.dateSecondaryColor
+                  ) {
+                    style.backgroundImage = `linear-gradient(135deg, ${theme.datePrimaryColor}, ${theme.dateSecondaryColor})`;
+                  } else if (theme.datePrimaryColor) {
+                    style.backgroundColor = theme.datePrimaryColor;
+                  }
+                }
+              }
+            }
+
+            const numberStyle: React.CSSProperties = {
+              color: theme?.dateTextColor || '#ffffff',
+            };
+
             return (
               <button
                 key={day}
@@ -362,20 +375,20 @@ export default function DemoCalendar() {
                   !hasEntry
                     ? 'bg-gray-300 cursor-not-allowed opacity-50'
                     : opened
-                    ? 'bg-gradient-to-br from-green-400 to-green-600 text-white transform scale-95'
-                    : 'bg-gradient-to-br from-red-500 to-red-700 text-white hover:scale-110 hover:shadow-2xl cursor-pointer'
+                    ? 'transform scale-95'
+                    : 'hover:scale-110 hover:shadow-2xl cursor-pointer'
                 }`}
-                style={
-                  hasEntry && !opened
-                    ? {
-                        backgroundImage: `linear-gradient(135deg, ${demoCalendar.primaryColor}, ${demoCalendar.secondaryColor})`,
-                      }
-                    : {}
-                }
+                style={style}
               >
                 <div className='flex flex-col items-center justify-center h-full'>
-                  <span className='text-3xl font-bold'>{day}</span>
-                  {opened && <span className='text-lg mt-1'>✓</span>}
+                  <span className='text-3xl font-bold' style={numberStyle}>
+                    {day}
+                  </span>
+                  {opened && (
+                    <span className='text-lg mt-1' style={numberStyle}>
+                      ✓
+                    </span>
+                  )}
                 </div>
               </button>
             );

@@ -11,6 +11,14 @@ export interface ThemePreset {
   buttonStyle?: 'gradient' | 'solid' | 'outline';
   buttonPrimaryColor?: string;
   buttonSecondaryColor?: string;
+  // Calendar date (day button) styling
+  dateButtonStyle?: 'gradient' | 'solid' | 'outline';
+  datePrimaryColor?: string; // unopened primary
+  dateSecondaryColor?: string; // unopened secondary (for gradient)
+  dateTextColor?: string;
+  dateOpenedPrimaryColor?: string; // opened primary
+  dateOpenedSecondaryColor?: string; // opened secondary
+  dateBorderRadius?: string; // e.g., '16px'
 }
 
 export const themePresets: ThemePreset[] = [
@@ -27,6 +35,13 @@ export const themePresets: ThemePreset[] = [
     buttonStyle: 'gradient',
     buttonPrimaryColor: '#dc2626',
     buttonSecondaryColor: '#16a34a',
+    dateButtonStyle: 'gradient',
+    datePrimaryColor: '#dc2626',
+    dateSecondaryColor: '#16a34a',
+    dateTextColor: '#ffffff',
+    dateOpenedPrimaryColor: '#16a34a',
+    dateOpenedSecondaryColor: '#22c55e',
+    dateBorderRadius: '16px',
   },
   {
     id: 'winter-wonderland',
@@ -41,6 +56,13 @@ export const themePresets: ThemePreset[] = [
     buttonStyle: 'gradient',
     buttonPrimaryColor: '#3b82f6',
     buttonSecondaryColor: '#60a5fa',
+    dateButtonStyle: 'gradient',
+    datePrimaryColor: '#3b82f6',
+    dateSecondaryColor: '#60a5fa',
+    dateTextColor: '#ffffff',
+    dateOpenedPrimaryColor: '#0ea5e9',
+    dateOpenedSecondaryColor: '#3b82f6',
+    dateBorderRadius: '16px',
   },
   {
     id: 'festive-gold',
@@ -55,6 +77,13 @@ export const themePresets: ThemePreset[] = [
     buttonStyle: 'solid',
     buttonPrimaryColor: '#eab308',
     buttonSecondaryColor: '#15803d',
+    dateButtonStyle: 'gradient',
+    datePrimaryColor: '#eab308',
+    dateSecondaryColor: '#15803d',
+    dateTextColor: '#ffffff',
+    dateOpenedPrimaryColor: '#15803d',
+    dateOpenedSecondaryColor: '#16a34a',
+    dateBorderRadius: '18px',
   },
   {
     id: 'cozy-cabin',
@@ -69,6 +98,13 @@ export const themePresets: ThemePreset[] = [
     buttonStyle: 'solid',
     buttonPrimaryColor: '#b91c1c',
     buttonSecondaryColor: '#92400e',
+    dateButtonStyle: 'gradient',
+    datePrimaryColor: '#b91c1c',
+    dateSecondaryColor: '#92400e',
+    dateTextColor: '#ffffff',
+    dateOpenedPrimaryColor: '#92400e',
+    dateOpenedSecondaryColor: '#f59e0b',
+    dateBorderRadius: '16px',
   },
   {
     id: 'modern-minimal',
@@ -83,6 +119,13 @@ export const themePresets: ThemePreset[] = [
     buttonStyle: 'outline',
     buttonPrimaryColor: '#0f172a',
     buttonSecondaryColor: '#475569',
+    dateButtonStyle: 'solid',
+    datePrimaryColor: '#0f172a',
+    dateSecondaryColor: '#475569',
+    dateTextColor: '#ffffff',
+    dateOpenedPrimaryColor: '#475569',
+    dateOpenedSecondaryColor: '#64748b',
+    dateBorderRadius: '12px',
   },
   {
     id: 'candy-cane',
@@ -97,6 +140,13 @@ export const themePresets: ThemePreset[] = [
     buttonStyle: 'gradient',
     buttonPrimaryColor: '#f43f5e',
     buttonSecondaryColor: '#fb7185',
+    dateButtonStyle: 'gradient',
+    datePrimaryColor: '#f43f5e',
+    dateSecondaryColor: '#fb7185',
+    dateTextColor: '#ffffff',
+    dateOpenedPrimaryColor: '#e11d48',
+    dateOpenedSecondaryColor: '#be185d',
+    dateBorderRadius: '16px',
   },
 ];
 
