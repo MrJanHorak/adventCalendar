@@ -1447,12 +1447,16 @@ export default function EditCalendar({
                           color={formData.decorationOptions?.color ?? '#ffd33b'}
                           size={formData.decorationOptions?.size ?? 1}
                           density={formData.decorationOptions?.density ?? 0.5}
-                          twinkleSpeed={formData.decorationOptions?.twinkleSpeed ?? 1}
+                          twinkleSpeed={
+                            formData.decorationOptions?.twinkleSpeed ?? 1
+                          }
                         />
                       ) : formData.decorationType === 'CANDLE' ? (
                         <CandleDecoration
                           count={formData.decorationOptions?.count ?? 4}
-                          flameColor={formData.decorationOptions?.flameColor ?? '#ff6600'}
+                          flameColor={
+                            formData.decorationOptions?.flameColor ?? '#ff6600'
+                          }
                           intensity={formData.decorationOptions?.intensity ?? 1}
                         />
                       ) : formData.decorationType === 'AURORA' ? (
@@ -1461,7 +1465,9 @@ export default function EditCalendar({
                             formData.decorationOptions?.colors ?? undefined
                           }
                           speed={formData.decorationOptions?.speed ?? 1}
-                          intensity={formData.decorationOptions?.intensity ?? 0.7}
+                          intensity={
+                            formData.decorationOptions?.intensity ?? 0.7
+                          }
                         />
                       ) : formData.decorationType === 'RIBBONS' ? (
                         <RibbonsDecoration
@@ -1761,7 +1767,16 @@ export default function EditCalendar({
                               newType === 'SNOW'
                                 ? { density: 0.6, speed: 1 }
                                 : newType === 'LIGHTS'
-                                ? { speed: 1, brightness: 1, colors: ['#ff3b3b', '#33c1ff', '#46f05a', '#ffd33b'] }
+                                ? {
+                                    speed: 1,
+                                    brightness: 1,
+                                    colors: [
+                                      '#ff3b3b',
+                                      '#33c1ff',
+                                      '#46f05a',
+                                      '#ffd33b',
+                                    ],
+                                  }
                                 : newType === 'GLOW'
                                 ? {
                                     color: '#ffd33b',
@@ -1769,15 +1784,42 @@ export default function EditCalendar({
                                     pulse: true,
                                   }
                                 : newType === 'CONFETTI'
-                                ? { density: 0.6, speed: 1, colors: ['#ff3b3b', '#33c1ff', '#46f05a', '#ffd33b', '#ff6edb'] }
+                                ? {
+                                    density: 0.6,
+                                    speed: 1,
+                                    colors: [
+                                      '#ff3b3b',
+                                      '#33c1ff',
+                                      '#46f05a',
+                                      '#ffd33b',
+                                      '#ff6edb',
+                                    ],
+                                  }
                                 : newType === 'STARS'
-                                ? { color: '#ffd33b', size: 1, density: 0.5, twinkleSpeed: 1 }
+                                ? {
+                                    color: '#ffd33b',
+                                    size: 1,
+                                    density: 0.5,
+                                    twinkleSpeed: 1,
+                                  }
                                 : newType === 'CANDLE'
-                                ? { count: 4, flameColor: '#ff6600', intensity: 1 }
+                                ? {
+                                    count: 4,
+                                    flameColor: '#ff6600',
+                                    intensity: 1,
+                                  }
                                 : newType === 'AURORA'
-                                ? { colors: ['#00ff87', '#60efff', '#b967ff'], speed: 1, intensity: 0.7 }
+                                ? {
+                                    colors: ['#00ff87', '#60efff', '#b967ff'],
+                                    speed: 1,
+                                    intensity: 0.7,
+                                  }
                                 : newType === 'RIBBONS'
-                                ? { colors: ['#ff3b3b', '#33c1ff', '#46f05a'], count: 4, speed: 1 }
+                                ? {
+                                    colors: ['#ff3b3b', '#33c1ff', '#46f05a'],
+                                    count: 4,
+                                    speed: 1,
+                                  }
                                 : {},
                           });
                         }}
@@ -1912,15 +1954,35 @@ export default function EditCalendar({
                             </div>
                           </div>
                           <div>
-                            <label className='block text-xs font-medium text-gray-600 mb-2'>Light Colors</label>
+                            <label className='block text-xs font-medium text-gray-600 mb-2'>
+                              Light Colors
+                            </label>
                             <div className='flex flex-wrap gap-3'>
-                              {(formData.decorationOptions?.colors || ['#ff3b3b','#33c1ff','#46f05a','#ffd33b']).map((c: string, idx: number) => (
-                                <div key={idx} className='flex items-center gap-2'>
+                              {(
+                                formData.decorationOptions?.colors || [
+                                  '#ff3b3b',
+                                  '#33c1ff',
+                                  '#46f05a',
+                                  '#ffd33b',
+                                ]
+                              ).map((c: string, idx: number) => (
+                                <div
+                                  key={idx}
+                                  className='flex items-center gap-2'
+                                >
                                   <input
                                     type='color'
                                     value={c}
                                     onChange={(e) => {
-                                      const newColors = [...(formData.decorationOptions?.colors || ['#ff3b3b','#33c1ff','#46f05a','#ffd33b'])];
+                                      const newColors = [
+                                        ...(formData.decorationOptions
+                                          ?.colors || [
+                                          '#ff3b3b',
+                                          '#33c1ff',
+                                          '#46f05a',
+                                          '#ffd33b',
+                                        ]),
+                                      ];
                                       newColors[idx] = e.target.value;
                                       setFormData({
                                         ...formData,
@@ -1932,15 +1994,33 @@ export default function EditCalendar({
                                     }}
                                     className='h-10 w-10 border rounded'
                                   />
-                                  { (formData.decorationOptions?.colors || ['#ff3b3b','#33c1ff','#46f05a','#ffd33b']).length > 1 && (
+                                  {(
+                                    formData.decorationOptions?.colors || [
+                                      '#ff3b3b',
+                                      '#33c1ff',
+                                      '#46f05a',
+                                      '#ffd33b',
+                                    ]
+                                  ).length > 1 && (
                                     <button
                                       type='button'
                                       onClick={() => {
-                                        const newColors = (formData.decorationOptions?.colors || ['#ff3b3b','#33c1ff','#46f05a','#ffd33b']).filter((_: string,i: number)=>i!==idx);
+                                        const newColors = (
+                                          formData.decorationOptions
+                                            ?.colors || [
+                                            '#ff3b3b',
+                                            '#33c1ff',
+                                            '#46f05a',
+                                            '#ffd33b',
+                                          ]
+                                        ).filter(
+                                          (_: string, i: number) => i !== idx
+                                        );
                                         setFormData({
                                           ...formData,
                                           decorationOptions: {
-                                            ...(formData.decorationOptions || {}),
+                                            ...(formData.decorationOptions ||
+                                              {}),
                                             colors: newColors,
                                           },
                                         });
@@ -1955,10 +2035,26 @@ export default function EditCalendar({
                               <button
                                 type='button'
                                 onClick={() => {
-                                  const existing = formData.decorationOptions?.colors || ['#ff3b3b','#33c1ff','#46f05a','#ffd33b'];
+                                  const existing = formData.decorationOptions
+                                    ?.colors || [
+                                    '#ff3b3b',
+                                    '#33c1ff',
+                                    '#46f05a',
+                                    '#ffd33b',
+                                  ];
                                   if (existing.length >= 8) return;
-                                  const defaults = ['#ff3b3b','#33c1ff','#46f05a','#ffd33b','#ff6edb','#9b59ff','#ffffff','#ffa640'];
-                                  const next = defaults[existing.length] || '#ffffff';
+                                  const defaults = [
+                                    '#ff3b3b',
+                                    '#33c1ff',
+                                    '#46f05a',
+                                    '#ffd33b',
+                                    '#ff6edb',
+                                    '#9b59ff',
+                                    '#ffffff',
+                                    '#ffa640',
+                                  ];
+                                  const next =
+                                    defaults[existing.length] || '#ffffff';
                                   setFormData({
                                     ...formData,
                                     decorationOptions: {
@@ -1972,7 +2068,9 @@ export default function EditCalendar({
                                 + Add Color
                               </button>
                             </div>
-                            <div className='mt-2 text-[11px] text-gray-500'>Up to 8 colors. Lights cycle through in order.</div>
+                            <div className='mt-2 text-[11px] text-gray-500'>
+                              Up to 8 colors. Lights cycle through in order.
+                            </div>
                           </div>
                         </div>
                       )}
@@ -2066,7 +2164,9 @@ export default function EditCalendar({
                                 min={0.2}
                                 max={1.5}
                                 step={0.1}
-                                value={formData.decorationOptions?.density ?? 0.6}
+                                value={
+                                  formData.decorationOptions?.density ?? 0.6
+                                }
                                 onChange={(e) =>
                                   setFormData({
                                     ...formData,
@@ -2079,7 +2179,9 @@ export default function EditCalendar({
                                 className='w-full accent-green-500'
                               />
                               <div className='text-xs text-gray-600 mt-1'>
-                                {String(formData.decorationOptions?.density ?? 0.6)}
+                                {String(
+                                  formData.decorationOptions?.density ?? 0.6
+                                )}
                               </div>
                             </div>
                             <div>
@@ -2109,15 +2211,37 @@ export default function EditCalendar({
                             </div>
                           </div>
                           <div>
-                            <label className='block text-xs font-medium text-gray-600 mb-2'>Confetti Colors</label>
+                            <label className='block text-xs font-medium text-gray-600 mb-2'>
+                              Confetti Colors
+                            </label>
                             <div className='flex flex-wrap gap-3'>
-                              {(formData.decorationOptions?.colors || ['#ff3b3b','#33c1ff','#46f05a','#ffd33b','#ff6edb']).map((c: string, idx: number) => (
-                                <div key={idx} className='flex items-center gap-2'>
+                              {(
+                                formData.decorationOptions?.colors || [
+                                  '#ff3b3b',
+                                  '#33c1ff',
+                                  '#46f05a',
+                                  '#ffd33b',
+                                  '#ff6edb',
+                                ]
+                              ).map((c: string, idx: number) => (
+                                <div
+                                  key={idx}
+                                  className='flex items-center gap-2'
+                                >
                                   <input
                                     type='color'
                                     value={c}
                                     onChange={(e) => {
-                                      const newColors = [...(formData.decorationOptions?.colors || ['#ff3b3b','#33c1ff','#46f05a','#ffd33b','#ff6edb'])];
+                                      const newColors = [
+                                        ...(formData.decorationOptions
+                                          ?.colors || [
+                                          '#ff3b3b',
+                                          '#33c1ff',
+                                          '#46f05a',
+                                          '#ffd33b',
+                                          '#ff6edb',
+                                        ]),
+                                      ];
                                       newColors[idx] = e.target.value;
                                       setFormData({
                                         ...formData,
@@ -2129,15 +2253,35 @@ export default function EditCalendar({
                                     }}
                                     className='h-10 w-10 border rounded'
                                   />
-                                  {(formData.decorationOptions?.colors || ['#ff3b3b','#33c1ff','#46f05a','#ffd33b','#ff6edb']).length > 1 && (
+                                  {(
+                                    formData.decorationOptions?.colors || [
+                                      '#ff3b3b',
+                                      '#33c1ff',
+                                      '#46f05a',
+                                      '#ffd33b',
+                                      '#ff6edb',
+                                    ]
+                                  ).length > 1 && (
                                     <button
                                       type='button'
                                       onClick={() => {
-                                        const newColors = (formData.decorationOptions?.colors || ['#ff3b3b','#33c1ff','#46f05a','#ffd33b','#ff6edb']).filter((_: string,i: number)=>i!==idx);
+                                        const newColors = (
+                                          formData.decorationOptions
+                                            ?.colors || [
+                                            '#ff3b3b',
+                                            '#33c1ff',
+                                            '#46f05a',
+                                            '#ffd33b',
+                                            '#ff6edb',
+                                          ]
+                                        ).filter(
+                                          (_: string, i: number) => i !== idx
+                                        );
                                         setFormData({
                                           ...formData,
                                           decorationOptions: {
-                                            ...(formData.decorationOptions || {}),
+                                            ...(formData.decorationOptions ||
+                                              {}),
                                             colors: newColors,
                                           },
                                         });
@@ -2152,10 +2296,27 @@ export default function EditCalendar({
                               <button
                                 type='button'
                                 onClick={() => {
-                                  const existing = formData.decorationOptions?.colors || ['#ff3b3b','#33c1ff','#46f05a','#ffd33b','#ff6edb'];
+                                  const existing = formData.decorationOptions
+                                    ?.colors || [
+                                    '#ff3b3b',
+                                    '#33c1ff',
+                                    '#46f05a',
+                                    '#ffd33b',
+                                    '#ff6edb',
+                                  ];
                                   if (existing.length >= 8) return;
-                                  const defaults = ['#ff3b3b','#33c1ff','#46f05a','#ffd33b','#ff6edb','#9b59ff','#ffffff','#ffa640'];
-                                  const next = defaults[existing.length] || '#ffffff';
+                                  const defaults = [
+                                    '#ff3b3b',
+                                    '#33c1ff',
+                                    '#46f05a',
+                                    '#ffd33b',
+                                    '#ff6edb',
+                                    '#9b59ff',
+                                    '#ffffff',
+                                    '#ffa640',
+                                  ];
+                                  const next =
+                                    defaults[existing.length] || '#ffffff';
                                   setFormData({
                                     ...formData,
                                     decorationOptions: {
@@ -2182,7 +2343,9 @@ export default function EditCalendar({
                             </label>
                             <input
                               type='color'
-                              value={formData.decorationOptions?.color ?? '#ffd33b'}
+                              value={
+                                formData.decorationOptions?.color ?? '#ffd33b'
+                              }
                               onChange={(e) =>
                                 setFormData({
                                   ...formData,
@@ -2242,7 +2405,9 @@ export default function EditCalendar({
                               className='w-full accent-green-500'
                             />
                             <div className='text-xs text-gray-600 mt-1'>
-                              {String(formData.decorationOptions?.density ?? 0.5)}
+                              {String(
+                                formData.decorationOptions?.density ?? 0.5
+                              )}
                             </div>
                           </div>
                           <div>
@@ -2254,7 +2419,9 @@ export default function EditCalendar({
                               min={0.5}
                               max={2.0}
                               step={0.1}
-                              value={formData.decorationOptions?.twinkleSpeed ?? 1}
+                              value={
+                                formData.decorationOptions?.twinkleSpeed ?? 1
+                              }
                               onChange={(e) =>
                                 setFormData({
                                   ...formData,
@@ -2267,7 +2434,9 @@ export default function EditCalendar({
                               className='w-full accent-green-500'
                             />
                             <div className='text-xs text-gray-600 mt-1'>
-                              {String(formData.decorationOptions?.twinkleSpeed ?? 1)}
+                              {String(
+                                formData.decorationOptions?.twinkleSpeed ?? 1
+                              )}
                             </div>
                           </div>
                         </div>
@@ -2307,7 +2476,10 @@ export default function EditCalendar({
                             </label>
                             <input
                               type='color'
-                              value={formData.decorationOptions?.flameColor ?? '#ff6600'}
+                              value={
+                                formData.decorationOptions?.flameColor ??
+                                '#ff6600'
+                              }
                               onChange={(e) =>
                                 setFormData({
                                   ...formData,
@@ -2342,7 +2514,9 @@ export default function EditCalendar({
                               className='w-full accent-green-500'
                             />
                             <div className='text-xs text-gray-600 mt-1'>
-                              {String(formData.decorationOptions?.intensity ?? 1)}
+                              {String(
+                                formData.decorationOptions?.intensity ?? 1
+                              )}
                             </div>
                           </div>
                         </div>
@@ -2386,7 +2560,9 @@ export default function EditCalendar({
                                 min={0.3}
                                 max={1.5}
                                 step={0.1}
-                                value={formData.decorationOptions?.intensity ?? 0.7}
+                                value={
+                                  formData.decorationOptions?.intensity ?? 0.7
+                                }
                                 onChange={(e) =>
                                   setFormData({
                                     ...formData,
@@ -2399,20 +2575,40 @@ export default function EditCalendar({
                                 className='w-full accent-green-500'
                               />
                               <div className='text-xs text-gray-600 mt-1'>
-                                {String(formData.decorationOptions?.intensity ?? 0.7)}
+                                {String(
+                                  formData.decorationOptions?.intensity ?? 0.7
+                                )}
                               </div>
                             </div>
                           </div>
                           <div>
-                            <label className='block text-xs font-medium text-gray-600 mb-2'>Aurora Colors</label>
+                            <label className='block text-xs font-medium text-gray-600 mb-2'>
+                              Aurora Colors
+                            </label>
                             <div className='flex flex-wrap gap-3'>
-                              {(formData.decorationOptions?.colors || ['#00ff87','#60efff','#b967ff']).map((c: string, idx: number) => (
-                                <div key={idx} className='flex items-center gap-2'>
+                              {(
+                                formData.decorationOptions?.colors || [
+                                  '#00ff87',
+                                  '#60efff',
+                                  '#b967ff',
+                                ]
+                              ).map((c: string, idx: number) => (
+                                <div
+                                  key={idx}
+                                  className='flex items-center gap-2'
+                                >
                                   <input
                                     type='color'
                                     value={c}
                                     onChange={(e) => {
-                                      const newColors = [...(formData.decorationOptions?.colors || ['#00ff87','#60efff','#b967ff'])];
+                                      const newColors = [
+                                        ...(formData.decorationOptions
+                                          ?.colors || [
+                                          '#00ff87',
+                                          '#60efff',
+                                          '#b967ff',
+                                        ]),
+                                      ];
                                       newColors[idx] = e.target.value;
                                       setFormData({
                                         ...formData,
@@ -2424,15 +2620,31 @@ export default function EditCalendar({
                                     }}
                                     className='h-10 w-10 border rounded'
                                   />
-                                  {(formData.decorationOptions?.colors || ['#00ff87','#60efff','#b967ff']).length > 2 && (
+                                  {(
+                                    formData.decorationOptions?.colors || [
+                                      '#00ff87',
+                                      '#60efff',
+                                      '#b967ff',
+                                    ]
+                                  ).length > 2 && (
                                     <button
                                       type='button'
                                       onClick={() => {
-                                        const newColors = (formData.decorationOptions?.colors || ['#00ff87','#60efff','#b967ff']).filter((_: string,i: number)=>i!==idx);
+                                        const newColors = (
+                                          formData.decorationOptions
+                                            ?.colors || [
+                                            '#00ff87',
+                                            '#60efff',
+                                            '#b967ff',
+                                          ]
+                                        ).filter(
+                                          (_: string, i: number) => i !== idx
+                                        );
                                         setFormData({
                                           ...formData,
                                           decorationOptions: {
-                                            ...(formData.decorationOptions || {}),
+                                            ...(formData.decorationOptions ||
+                                              {}),
                                             colors: newColors,
                                           },
                                         });
@@ -2447,10 +2659,22 @@ export default function EditCalendar({
                               <button
                                 type='button'
                                 onClick={() => {
-                                  const existing = formData.decorationOptions?.colors || ['#00ff87','#60efff','#b967ff'];
+                                  const existing = formData.decorationOptions
+                                    ?.colors || [
+                                    '#00ff87',
+                                    '#60efff',
+                                    '#b967ff',
+                                  ];
                                   if (existing.length >= 5) return;
-                                  const defaults = ['#00ff87','#60efff','#b967ff','#ff3b8e','#ffaa00'];
-                                  const next = defaults[existing.length] || '#00ff87';
+                                  const defaults = [
+                                    '#00ff87',
+                                    '#60efff',
+                                    '#b967ff',
+                                    '#ff3b8e',
+                                    '#ffaa00',
+                                  ];
+                                  const next =
+                                    defaults[existing.length] || '#00ff87';
                                   setFormData({
                                     ...formData,
                                     decorationOptions: {
@@ -2464,7 +2688,9 @@ export default function EditCalendar({
                                 + Add Color
                               </button>
                             </div>
-                            <div className='mt-2 text-[11px] text-gray-500'>2-5 colors for wave layers</div>
+                            <div className='mt-2 text-[11px] text-gray-500'>
+                              2-5 colors for wave layers
+                            </div>
                           </div>
                         </div>
                       )}
@@ -2525,15 +2751,33 @@ export default function EditCalendar({
                             </div>
                           </div>
                           <div>
-                            <label className='block text-xs font-medium text-gray-600 mb-2'>Ribbon Colors</label>
+                            <label className='block text-xs font-medium text-gray-600 mb-2'>
+                              Ribbon Colors
+                            </label>
                             <div className='flex flex-wrap gap-3'>
-                              {(formData.decorationOptions?.colors || ['#ff3b3b','#33c1ff','#46f05a']).map((c: string, idx: number) => (
-                                <div key={idx} className='flex items-center gap-2'>
+                              {(
+                                formData.decorationOptions?.colors || [
+                                  '#ff3b3b',
+                                  '#33c1ff',
+                                  '#46f05a',
+                                ]
+                              ).map((c: string, idx: number) => (
+                                <div
+                                  key={idx}
+                                  className='flex items-center gap-2'
+                                >
                                   <input
                                     type='color'
                                     value={c}
                                     onChange={(e) => {
-                                      const newColors = [...(formData.decorationOptions?.colors || ['#ff3b3b','#33c1ff','#46f05a'])];
+                                      const newColors = [
+                                        ...(formData.decorationOptions
+                                          ?.colors || [
+                                          '#ff3b3b',
+                                          '#33c1ff',
+                                          '#46f05a',
+                                        ]),
+                                      ];
                                       newColors[idx] = e.target.value;
                                       setFormData({
                                         ...formData,
@@ -2545,15 +2789,31 @@ export default function EditCalendar({
                                     }}
                                     className='h-10 w-10 border rounded'
                                   />
-                                  {(formData.decorationOptions?.colors || ['#ff3b3b','#33c1ff','#46f05a']).length > 1 && (
+                                  {(
+                                    formData.decorationOptions?.colors || [
+                                      '#ff3b3b',
+                                      '#33c1ff',
+                                      '#46f05a',
+                                    ]
+                                  ).length > 1 && (
                                     <button
                                       type='button'
                                       onClick={() => {
-                                        const newColors = (formData.decorationOptions?.colors || ['#ff3b3b','#33c1ff','#46f05a']).filter((_: string,i: number)=>i!==idx);
+                                        const newColors = (
+                                          formData.decorationOptions
+                                            ?.colors || [
+                                            '#ff3b3b',
+                                            '#33c1ff',
+                                            '#46f05a',
+                                          ]
+                                        ).filter(
+                                          (_: string, i: number) => i !== idx
+                                        );
                                         setFormData({
                                           ...formData,
                                           decorationOptions: {
-                                            ...(formData.decorationOptions || {}),
+                                            ...(formData.decorationOptions ||
+                                              {}),
                                             colors: newColors,
                                           },
                                         });
@@ -2568,10 +2828,23 @@ export default function EditCalendar({
                               <button
                                 type='button'
                                 onClick={() => {
-                                  const existing = formData.decorationOptions?.colors || ['#ff3b3b','#33c1ff','#46f05a'];
+                                  const existing = formData.decorationOptions
+                                    ?.colors || [
+                                    '#ff3b3b',
+                                    '#33c1ff',
+                                    '#46f05a',
+                                  ];
                                   if (existing.length >= 6) return;
-                                  const defaults = ['#ff3b3b','#33c1ff','#46f05a','#ffd33b','#ff6edb','#9b59ff'];
-                                  const next = defaults[existing.length] || '#ff3b3b';
+                                  const defaults = [
+                                    '#ff3b3b',
+                                    '#33c1ff',
+                                    '#46f05a',
+                                    '#ffd33b',
+                                    '#ff6edb',
+                                    '#9b59ff',
+                                  ];
+                                  const next =
+                                    defaults[existing.length] || '#ff3b3b';
                                   setFormData({
                                     ...formData,
                                     decorationOptions: {

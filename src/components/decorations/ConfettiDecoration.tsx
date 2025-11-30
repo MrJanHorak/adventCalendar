@@ -1,5 +1,5 @@
-"use client";
-import React, { useEffect, useRef } from "react";
+'use client';
+import React, { useEffect, useRef } from 'react';
 
 type ConfettiDecorationProps = {
   colors?: string[];
@@ -8,7 +8,7 @@ type ConfettiDecorationProps = {
 };
 
 export default function ConfettiDecoration({
-  colors = ["#ff3b3b", "#33c1ff", "#46f05a", "#ffd33b", "#ff6edb", "#9b59ff"],
+  colors = ['#ff3b3b', '#33c1ff', '#46f05a', '#ffd33b', '#ff6edb', '#9b59ff'],
   density = 0.6,
   speed = 1,
 }: ConfettiDecorationProps) {
@@ -17,15 +17,15 @@ export default function ConfettiDecoration({
 
   useEffect(() => {
     const prefersReduced =
-      typeof window !== "undefined" &&
+      typeof window !== 'undefined' &&
       window.matchMedia &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     if (prefersReduced) return;
 
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
     function resize() {
@@ -101,17 +101,17 @@ export default function ConfettiDecoration({
     function onResize() {
       resize();
     }
-    window.addEventListener("resize", onResize);
+    window.addEventListener('resize', onResize);
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
-      window.removeEventListener("resize", onResize);
+      window.removeEventListener('resize', onResize);
     };
   }, [colors, density, speed]);
 
   return (
     <canvas
       ref={canvasRef}
-      className="pointer-events-none absolute inset-0 z-10"
+      className='pointer-events-none absolute inset-0 z-10'
     />
   );
 }

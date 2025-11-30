@@ -1,5 +1,5 @@
-"use client";
-import React, { useEffect, useRef } from "react";
+'use client';
+import React, { useEffect, useRef } from 'react';
 
 type RibbonsDecorationProps = {
   colors?: string[];
@@ -8,7 +8,7 @@ type RibbonsDecorationProps = {
 };
 
 export default function RibbonsDecoration({
-  colors = ["#ff3b3b", "#ffd700", "#33c1ff"],
+  colors = ['#ff3b3b', '#ffd700', '#33c1ff'],
   count = 3,
   speed = 0.8,
 }: RibbonsDecorationProps) {
@@ -17,13 +17,13 @@ export default function RibbonsDecoration({
 
   useEffect(() => {
     const prefersReduced =
-      typeof window !== "undefined" &&
+      typeof window !== 'undefined' &&
       window.matchMedia &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
     function resize() {
@@ -71,10 +71,12 @@ export default function RibbonsDecoration({
         // Draw flowing ribbon with sine wave
         ctx.save();
         ctx.globalAlpha = 0.7;
-        
+
         const gradient = ctx.createLinearGradient(
-          r.xStart - r.width / 2, 0,
-          r.xStart + r.width / 2, 0
+          r.xStart - r.width / 2,
+          0,
+          r.xStart + r.width / 2,
+          0
         );
         gradient.addColorStop(0, hexToRgba(r.color, 0.3));
         gradient.addColorStop(0.5, hexToRgba(r.color, 1));
@@ -83,8 +85,9 @@ export default function RibbonsDecoration({
 
         ctx.beginPath();
         for (let y = -10; y <= canvas.height + 10; y += 2) {
-          const waveX = Math.sin(y * 0.02 + r.phase) * 30 + 
-                        Math.sin(y * 0.01 - r.phase * 0.5) * 15;
+          const waveX =
+            Math.sin(y * 0.02 + r.phase) * 30 +
+            Math.sin(y * 0.01 - r.phase * 0.5) * 15;
           const x = r.xStart + waveX;
           if (y === -10) {
             ctx.moveTo(x - r.width / 2, y);
@@ -94,8 +97,9 @@ export default function RibbonsDecoration({
         }
 
         for (let y = canvas.height + 10; y >= -10; y -= 2) {
-          const waveX = Math.sin(y * 0.02 + r.phase) * 30 + 
-                        Math.sin(y * 0.01 - r.phase * 0.5) * 15;
+          const waveX =
+            Math.sin(y * 0.02 + r.phase) * 30 +
+            Math.sin(y * 0.01 - r.phase * 0.5) * 15;
           const x = r.xStart + waveX;
           ctx.lineTo(x + r.width / 2, y);
         }
@@ -106,17 +110,20 @@ export default function RibbonsDecoration({
         // Add shine/highlight
         ctx.globalAlpha = 0.3;
         const shineGradient = ctx.createLinearGradient(
-          r.xStart - r.width / 3, 0,
-          r.xStart, 0
+          r.xStart - r.width / 3,
+          0,
+          r.xStart,
+          0
         );
-        shineGradient.addColorStop(0, "rgba(255,255,255,0)");
-        shineGradient.addColorStop(1, "rgba(255,255,255,0.6)");
+        shineGradient.addColorStop(0, 'rgba(255,255,255,0)');
+        shineGradient.addColorStop(1, 'rgba(255,255,255,0.6)');
         ctx.fillStyle = shineGradient;
 
         ctx.beginPath();
         for (let y = -10; y <= canvas.height + 10; y += 2) {
-          const waveX = Math.sin(y * 0.02 + r.phase) * 30 + 
-                        Math.sin(y * 0.01 - r.phase * 0.5) * 15;
+          const waveX =
+            Math.sin(y * 0.02 + r.phase) * 30 +
+            Math.sin(y * 0.01 - r.phase * 0.5) * 15;
           const x = r.xStart + waveX;
           if (y === -10) {
             ctx.moveTo(x - r.width / 3, y);
@@ -125,8 +132,9 @@ export default function RibbonsDecoration({
           }
         }
         for (let y = canvas.height + 10; y >= -10; y -= 2) {
-          const waveX = Math.sin(y * 0.02 + r.phase) * 30 + 
-                        Math.sin(y * 0.01 - r.phase * 0.5) * 15;
+          const waveX =
+            Math.sin(y * 0.02 + r.phase) * 30 +
+            Math.sin(y * 0.01 - r.phase * 0.5) * 15;
           const x = r.xStart + waveX;
           ctx.lineTo(x, y);
         }
@@ -143,23 +151,23 @@ export default function RibbonsDecoration({
     function onResize() {
       resize();
     }
-    window.addEventListener("resize", onResize);
+    window.addEventListener('resize', onResize);
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
-      window.removeEventListener("resize", onResize);
+      window.removeEventListener('resize', onResize);
     };
   }, [colors, count, speed]);
 
   return (
     <canvas
       ref={canvasRef}
-      className="pointer-events-none absolute inset-0 z-10"
+      className='pointer-events-none absolute inset-0 z-10'
     />
   );
 }
 
 function hexToRgba(hex: string, alpha: number) {
-  const m = hex.replace("#", "").match(/.{1,2}/g);
+  const m = hex.replace('#', '').match(/.{1,2}/g);
   if (!m) return `rgba(255,255,255,${alpha})`;
   const [r, g, b] = m.map((x) => parseInt(x, 16));
   return `rgba(${r},${g},${b},${alpha})`;

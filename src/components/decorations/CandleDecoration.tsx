@@ -1,5 +1,5 @@
-"use client";
-import React, { useEffect, useRef } from "react";
+'use client';
+import React, { useEffect, useRef } from 'react';
 
 type CandleDecorationProps = {
   count?: number; // 2 - 8
@@ -9,7 +9,7 @@ type CandleDecorationProps = {
 
 export default function CandleDecoration({
   count = 4,
-  flameColor = "#ff6b35",
+  flameColor = '#ff6b35',
   intensity = 1,
 }: CandleDecorationProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -17,13 +17,13 @@ export default function CandleDecoration({
 
   useEffect(() => {
     const prefersReduced =
-      typeof window !== "undefined" &&
+      typeof window !== 'undefined' &&
       window.matchMedia &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
     function resize() {
@@ -47,14 +47,14 @@ export default function CandleDecoration({
 
     // Position candles around perimeter (corners and midpoints)
     const spots = [
-      { x: 0.1, y: 0.05 },  // top-left
-      { x: 0.5, y: 0.05 },  // top-center
-      { x: 0.9, y: 0.05 },  // top-right
-      { x: 0.9, y: 0.95 },  // bottom-right
-      { x: 0.5, y: 0.95 },  // bottom-center
-      { x: 0.1, y: 0.95 },  // bottom-left
-      { x: 0.05, y: 0.5 },  // left-center
-      { x: 0.95, y: 0.5 },  // right-center
+      { x: 0.1, y: 0.05 }, // top-left
+      { x: 0.5, y: 0.05 }, // top-center
+      { x: 0.9, y: 0.05 }, // top-right
+      { x: 0.9, y: 0.95 }, // bottom-right
+      { x: 0.5, y: 0.95 }, // bottom-center
+      { x: 0.1, y: 0.95 }, // bottom-left
+      { x: 0.05, y: 0.5 }, // left-center
+      { x: 0.95, y: 0.5 }, // right-center
     ];
 
     for (let i = 0; i < positions; i++) {
@@ -86,7 +86,14 @@ export default function CandleDecoration({
         const flameWidth = 12 * intensity;
 
         // Glow halo
-        const grd = ctx.createRadialGradient(x, y - flameHeight / 2, 0, x, y - flameHeight / 2, flameWidth * 2);
+        const grd = ctx.createRadialGradient(
+          x,
+          y - flameHeight / 2,
+          0,
+          x,
+          y - flameHeight / 2,
+          flameWidth * 2
+        );
         grd.addColorStop(0, hexToRgba(flameColor, 0.6 * flicker));
         grd.addColorStop(1, hexToRgba(flameColor, 0));
         ctx.fillStyle = grd;
@@ -99,35 +106,47 @@ export default function CandleDecoration({
         ctx.beginPath();
         ctx.moveTo(x, y);
         ctx.bezierCurveTo(
-          x - flameWidth / 2, y - flameHeight / 3,
-          x - flameWidth / 2, y - flameHeight * 0.7,
-          x, y - flameHeight
+          x - flameWidth / 2,
+          y - flameHeight / 3,
+          x - flameWidth / 2,
+          y - flameHeight * 0.7,
+          x,
+          y - flameHeight
         );
         ctx.bezierCurveTo(
-          x + flameWidth / 2, y - flameHeight * 0.7,
-          x + flameWidth / 2, y - flameHeight / 3,
-          x, y
+          x + flameWidth / 2,
+          y - flameHeight * 0.7,
+          x + flameWidth / 2,
+          y - flameHeight / 3,
+          x,
+          y
         );
         ctx.fill();
 
         // Inner flame
-        ctx.fillStyle = hexToRgba("#ffd700", 0.8 * flicker);
+        ctx.fillStyle = hexToRgba('#ffd700', 0.8 * flicker);
         ctx.beginPath();
         ctx.moveTo(x, y);
         ctx.bezierCurveTo(
-          x - flameWidth / 4, y - flameHeight / 4,
-          x - flameWidth / 4, y - flameHeight * 0.5,
-          x, y - flameHeight * 0.7
+          x - flameWidth / 4,
+          y - flameHeight / 4,
+          x - flameWidth / 4,
+          y - flameHeight * 0.5,
+          x,
+          y - flameHeight * 0.7
         );
         ctx.bezierCurveTo(
-          x + flameWidth / 4, y - flameHeight * 0.5,
-          x + flameWidth / 4, y - flameHeight / 4,
-          x, y
+          x + flameWidth / 4,
+          y - flameHeight * 0.5,
+          x + flameWidth / 4,
+          y - flameHeight / 4,
+          x,
+          y
         );
         ctx.fill();
 
         // Candle stick
-        ctx.fillStyle = "rgba(200,180,150,0.8)";
+        ctx.fillStyle = 'rgba(200,180,150,0.8)';
         ctx.fillRect(x - 4, y, 8, 15);
       }
 
@@ -138,24 +157,24 @@ export default function CandleDecoration({
     function onResize() {
       resize();
     }
-    window.addEventListener("resize", onResize);
+    window.addEventListener('resize', onResize);
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
-      window.removeEventListener("resize", onResize);
+      window.removeEventListener('resize', onResize);
     };
   }, [count, flameColor, intensity]);
 
   return (
     <canvas
       ref={canvasRef}
-      className="pointer-events-none absolute inset-0 z-10"
-      style={{ mixBlendMode: "screen" }}
+      className='pointer-events-none absolute inset-0 z-10'
+      style={{ mixBlendMode: 'screen' }}
     />
   );
 }
 
 function hexToRgba(hex: string, alpha: number) {
-  const m = hex.replace("#", "").match(/.{1,2}/g);
+  const m = hex.replace('#', '').match(/.{1,2}/g);
   if (!m) return `rgba(255,255,255,${alpha})`;
   const [r, g, b] = m.map((x) => parseInt(x, 16));
   return `rgba(${r},${g},${b},${alpha})`;

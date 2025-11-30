@@ -43,7 +43,15 @@ interface CalendarEntry {
   borderGradientEnabled?: boolean;
   borderGradientColor2?: string;
   decorationEnabled?: boolean;
-  decorationType?: 'SNOW' | 'LIGHTS' | 'GLOW' | 'CONFETTI' | 'STARS' | 'CANDLE' | 'AURORA' | 'RIBBONS';
+  decorationType?:
+    | 'SNOW'
+    | 'LIGHTS'
+    | 'GLOW'
+    | 'CONFETTI'
+    | 'STARS'
+    | 'CANDLE'
+    | 'AURORA'
+    | 'RIBBONS';
   decorationOptions?: {
     // Snow, Confetti
     density?: number;
@@ -471,15 +479,14 @@ export default function SharedCalendar({
               role='dialog'
               aria-modal='true'
             >
-              <div 
+              <div
                 className='max-h-[90vh] overflow-y-auto p-8 scrollbar-rounded relative'
                 style={{
                   background: selectedEntry.backgroundGradientEnabled
                     ? `linear-gradient(135deg, ${
                         selectedEntry.backgroundColor || '#ffffff'
                       }, ${
-                        selectedEntry.backgroundGradientColor2 ||
-                        '#ffffff'
+                        selectedEntry.backgroundGradientColor2 || '#ffffff'
                       })`
                     : selectedEntry.backgroundColor || 'transparent',
                 }}

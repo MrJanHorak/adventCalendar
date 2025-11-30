@@ -1,5 +1,5 @@
-"use client";
-import React, { useEffect, useRef } from "react";
+'use client';
+import React, { useEffect, useRef } from 'react';
 
 type StarsDecorationProps = {
   color?: string;
@@ -9,7 +9,7 @@ type StarsDecorationProps = {
 };
 
 export default function StarsDecoration({
-  color = "#ffd700",
+  color = '#ffd700',
   size = 1,
   density = 0.6,
   twinkleSpeed = 1,
@@ -19,13 +19,13 @@ export default function StarsDecoration({
 
   useEffect(() => {
     const prefersReduced =
-      typeof window !== "undefined" &&
+      typeof window !== 'undefined' &&
       window.matchMedia &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
     function resize() {
@@ -69,10 +69,19 @@ export default function StarsDecoration({
         if (!prefersReduced) {
           s.phase += dt * s.speed;
         }
-        const alpha = prefersReduced ? 0.8 : 0.3 + 0.7 * Math.abs(Math.sin(s.phase));
+        const alpha = prefersReduced
+          ? 0.8
+          : 0.3 + 0.7 * Math.abs(Math.sin(s.phase));
 
         // Glow
-        const grd = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, s.radius * 3);
+        const grd = ctx.createRadialGradient(
+          s.x,
+          s.y,
+          0,
+          s.x,
+          s.y,
+          s.radius * 3
+        );
         grd.addColorStop(0, hexToRgba(color, alpha * 0.6));
         grd.addColorStop(1, hexToRgba(color, 0));
         ctx.fillStyle = grd;
@@ -105,24 +114,24 @@ export default function StarsDecoration({
     function onResize() {
       resize();
     }
-    window.addEventListener("resize", onResize);
+    window.addEventListener('resize', onResize);
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
-      window.removeEventListener("resize", onResize);
+      window.removeEventListener('resize', onResize);
     };
   }, [color, size, density, twinkleSpeed]);
 
   return (
     <canvas
       ref={canvasRef}
-      className="pointer-events-none absolute inset-0 z-10"
-      style={{ mixBlendMode: "screen" }}
+      className='pointer-events-none absolute inset-0 z-10'
+      style={{ mixBlendMode: 'screen' }}
     />
   );
 }
 
 function hexToRgba(hex: string, alpha: number) {
-  const m = hex.replace("#", "").match(/.{1,2}/g);
+  const m = hex.replace('#', '').match(/.{1,2}/g);
   if (!m) return `rgba(255,255,255,${alpha})`;
   const [r, g, b] = m.map((x) => parseInt(x, 16));
   return `rgba(${r},${g},${b},${alpha})`;

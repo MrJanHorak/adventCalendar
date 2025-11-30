@@ -1,11 +1,13 @@
 # Decoration Feature Expansion - Phase 3+
 
 ## Overview
+
 Expanded the decoration system from 3 to 8 decoration types with new visual effects.
 
 ## New Decorations Added
 
 ### 1. **Confetti** 🎊
+
 - **Type**: Full-modal overlay
 - **Description**: Falling colored paper pieces with rotation physics
 - **Controls**:
@@ -15,6 +17,7 @@ Expanded the decoration system from 3 to 8 decoration types with new visual effe
 - **Technical**: Particle system with rotation, horizontal drift, wrapping
 
 ### 2. **Twinkling Stars** ⭐
+
 - **Type**: Full-modal overlay
 - **Description**: Static starfield with pulsing/twinkling animation
 - **Controls**:
@@ -25,6 +28,7 @@ Expanded the decoration system from 3 to 8 decoration types with new visual effe
 - **Technical**: 5-point star shapes with sine wave alpha, radial glow
 
 ### 3. **Candles** 🕯️
+
 - **Type**: Full-modal overlay
 - **Description**: Flickering candle flames positioned around perimeter
 - **Controls**:
@@ -34,6 +38,7 @@ Expanded the decoration system from 3 to 8 decoration types with new visual effe
 - **Technical**: Bezier curve teardrop shapes, 8 fixed positions (corners + midpoints)
 
 ### 4. **Aurora** 🌌
+
 - **Type**: Full-modal overlay
 - **Description**: Northern Lights flowing gradient waves
 - **Controls**:
@@ -43,6 +48,7 @@ Expanded the decoration system from 3 to 8 decoration types with new visual effe
 - **Technical**: Multi-layer sine waves with linear gradients
 
 ### 5. **Ribbons** 🎀
+
 - **Type**: Content box constrained
 - **Description**: Vertical flowing fabric ribbons with shine
 - **Controls**:
@@ -54,6 +60,7 @@ Expanded the decoration system from 3 to 8 decoration types with new visual effe
 ## Technical Implementation
 
 ### Components Created
+
 - `src/components/decorations/ConfettiDecoration.tsx` (117 lines)
 - `src/components/decorations/StarsDecoration.tsx` (130 lines)
 - `src/components/decorations/CandleDecoration.tsx` (145 lines)
@@ -61,7 +68,9 @@ Expanded the decoration system from 3 to 8 decoration types with new visual effe
 - `src/components/decorations/RibbonsDecoration.tsx` (150 lines)
 
 ### Schema Changes
+
 Updated `prisma/schema.prisma`:
+
 ```prisma
 enum DecorationType {
   SNOW
@@ -76,7 +85,9 @@ enum DecorationType {
 ```
 
 ### UI Integration
+
 1. **Editor** (`src/app/calendar/[id]/edit/page.tsx`):
+
    - Added imports for all 5 new components
    - Added dropdown options for each type
    - Added live preview rendering
@@ -92,6 +103,7 @@ enum DecorationType {
 ## Common Patterns
 
 All decorations follow these patterns:
+
 - **Canvas-based rendering** with `useRef` and `useEffect`
 - **RequestAnimationFrame loops** for smooth 60fps animation
 - **Accessibility**: Respect `prefers-reduced-motion`
@@ -102,12 +114,14 @@ All decorations follow these patterns:
 ## Rendering Strategy
 
 **Full-Modal Decorations** (cover entire modal):
+
 - Snow, Confetti, Stars, Candle, Aurora
 - Rendered in absolute positioned div at modal root
 - z-index: 30 (above content but below close button)
 - pointer-events: none (allows clicking through)
 
 **Content-Box Decorations** (constrained to content):
+
 - Lights, Glow, Ribbons
 - Rendered inside content div with relative positioning
 - Respects border radius and padding of content box
