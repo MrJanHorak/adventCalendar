@@ -5,6 +5,8 @@ import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { getThemeStyles, getButtonStyles } from '@/lib/themes';
 import SnowfallDecoration from '@/components/decorations/SnowfallDecoration';
+import LightsDecoration from '@/components/decorations/LightsDecoration';
+import GlowDecoration from '@/components/decorations/GlowDecoration';
 
 type EntryType = 'TEXT' | 'POEM' | 'IMAGE' | 'VIDEO';
 
@@ -37,7 +39,18 @@ interface CalendarEntry {
   borderGradientColor2?: string;
   decorationEnabled?: boolean;
   decorationType?: 'SNOW' | 'LIGHTS' | 'GLOW';
-  decorationOptions?: { density?: number; speed?: number } | null;
+  decorationOptions?: {
+    // Snow
+    density?: number;
+    speed?: number;
+    // Lights
+    brightness?: number;
+    colors?: string[];
+    // Glow
+    color?: string;
+    intensity?: number;
+    pulse?: boolean;
+  } | null;
 }
 
 interface Calendar {
@@ -448,13 +461,15 @@ export default function SharedCalendar({
               aria-modal='true'
             >
               <div className='max-h-[90vh] overflow-y-auto p-8 scrollbar-rounded relative'>
-                {/* Decorations overlay (phase 1: snowfall) */}
+                {/* Snowfall covers entire modal content area */}
                 {selectedEntry.decorationEnabled &&
                   selectedEntry.decorationType === 'SNOW' && (
-                    <SnowfallDecoration
-                      density={selectedEntry.decorationOptions?.density ?? 0.6}
-                      speed={selectedEntry.decorationOptions?.speed ?? 1}
-                    />
+                    <div className='absolute inset-0 pointer-events-none z-30'>
+                      <SnowfallDecoration
+                        density={selectedEntry.decorationOptions?.density ?? 0.6}
+                        speed={selectedEntry.decorationOptions?.speed ?? 1}
+                      />
+                    </div>
                   )}
 
                 <div className='flex justify-between items-start mb-6'>
@@ -515,7 +530,7 @@ export default function SharedCalendar({
                     }}
                   >
                     <div
-                      className='whitespace-pre-wrap flex flex-col'
+                      className='whitespace-pre-wrap flex flex-col relative overflow-hidden'
                       style={{
                         fontFamily: selectedEntry.fontFamily || 'Inter',
                         fontSize: selectedEntry.fontSize || '16px',
@@ -564,6 +579,23 @@ export default function SharedCalendar({
                         }),
                       }}
                     >
+                      {/* Lights & Glow constrained to content box */}
+                      {selectedEntry.decorationEnabled &&
+                        selectedEntry.decorationType === 'LIGHTS' && (
+                          <LightsDecoration
+                            colors={selectedEntry.decorationOptions?.colors ?? undefined}
+                            speed={selectedEntry.decorationOptions?.speed ?? 1}
+                            brightness={selectedEntry.decorationOptions?.brightness ?? 1}
+                          />
+                        )}
+                      {selectedEntry.decorationEnabled &&
+                        selectedEntry.decorationType === 'GLOW' && (
+                          <GlowDecoration
+                            color={selectedEntry.decorationOptions?.color ?? '#ffd33b'}
+                            intensity={selectedEntry.decorationOptions?.intensity ?? 0.7}
+                            pulse={selectedEntry.decorationOptions?.pulse ?? true}
+                          />
+                        )}
                       {selectedEntry.content}
                     </div>
                   </div>
