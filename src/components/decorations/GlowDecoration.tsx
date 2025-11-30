@@ -1,5 +1,5 @@
-"use client";
-import React, { useEffect, useRef } from "react";
+'use client';
+import React, { useEffect, useRef } from 'react';
 
 type GlowDecorationProps = {
   color?: string; // glow color
@@ -9,7 +9,7 @@ type GlowDecorationProps = {
 
 // Ambient glow overlay for the entry content area.
 export default function GlowDecoration({
-  color = "#ffd33b",
+  color = '#ffd33b',
   intensity = 0.7,
   pulse = true,
 }: GlowDecorationProps) {
@@ -18,13 +18,13 @@ export default function GlowDecoration({
 
   useEffect(() => {
     const prefersReduced =
-      typeof window !== "undefined" &&
+      typeof window !== 'undefined' &&
       window.matchMedia &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
     function resize() {
@@ -49,9 +49,11 @@ export default function GlowDecoration({
       const parentStyle = canvas.parentElement
         ? getComputedStyle(canvas.parentElement)
         : ({} as CSSStyleDeclaration);
-      const borderRadius = parseFloat(parentStyle.borderRadius || "0") || 0;
+      const borderRadius = parseFloat(parentStyle.borderRadius || '0') || 0;
       const innerR = Math.max(1, Math.min(canvas.width, canvas.height) * 0.12);
-      const outerR = Math.sqrt(canvas.width * canvas.width + canvas.height * canvas.height) * 0.55;
+      const outerR =
+        Math.sqrt(canvas.width * canvas.width + canvas.height * canvas.height) *
+        0.55;
       const grd = ctx.createRadialGradient(
         canvas.width / 2,
         canvas.height / 2,
@@ -79,24 +81,24 @@ export default function GlowDecoration({
     function onResize() {
       resize();
     }
-    window.addEventListener("resize", onResize);
+    window.addEventListener('resize', onResize);
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
-      window.removeEventListener("resize", onResize);
+      window.removeEventListener('resize', onResize);
     };
   }, [color, intensity, pulse]);
 
   return (
     <canvas
       ref={canvasRef}
-      className="pointer-events-none absolute inset-0 z-10"
-      style={{ mixBlendMode: "screen" }}
+      className='pointer-events-none absolute inset-0 z-10'
+      style={{ mixBlendMode: 'screen' }}
     />
   );
 }
 
 function hexToRgba(hex: string, alpha: number) {
-  const m = hex.replace("#", "").match(/.{1,2}/g);
+  const m = hex.replace('#', '').match(/.{1,2}/g);
   if (!m) return `rgba(255,255,255,${alpha})`;
   const [r, g, b] = m.map((x) => parseInt(x, 16));
   return `rgba(${r},${g},${b},${alpha})`;

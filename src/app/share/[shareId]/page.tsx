@@ -466,7 +466,9 @@ export default function SharedCalendar({
                   selectedEntry.decorationType === 'SNOW' && (
                     <div className='absolute inset-0 pointer-events-none z-30'>
                       <SnowfallDecoration
-                        density={selectedEntry.decorationOptions?.density ?? 0.6}
+                        density={
+                          selectedEntry.decorationOptions?.density ?? 0.6
+                        }
                         speed={selectedEntry.decorationOptions?.speed ?? 1}
                       />
                     </div>
@@ -583,17 +585,29 @@ export default function SharedCalendar({
                       {selectedEntry.decorationEnabled &&
                         selectedEntry.decorationType === 'LIGHTS' && (
                           <LightsDecoration
-                            colors={selectedEntry.decorationOptions?.colors ?? undefined}
+                            colors={
+                              selectedEntry.decorationOptions?.colors ??
+                              undefined
+                            }
                             speed={selectedEntry.decorationOptions?.speed ?? 1}
-                            brightness={selectedEntry.decorationOptions?.brightness ?? 1}
+                            brightness={
+                              selectedEntry.decorationOptions?.brightness ?? 1
+                            }
                           />
                         )}
                       {selectedEntry.decorationEnabled &&
                         selectedEntry.decorationType === 'GLOW' && (
                           <GlowDecoration
-                            color={selectedEntry.decorationOptions?.color ?? '#ffd33b'}
-                            intensity={selectedEntry.decorationOptions?.intensity ?? 0.7}
-                            pulse={selectedEntry.decorationOptions?.pulse ?? true}
+                            color={
+                              selectedEntry.decorationOptions?.color ??
+                              '#ffd33b'
+                            }
+                            intensity={
+                              selectedEntry.decorationOptions?.intensity ?? 0.7
+                            }
+                            pulse={
+                              selectedEntry.decorationOptions?.pulse ?? true
+                            }
                           />
                         )}
                       {selectedEntry.content}

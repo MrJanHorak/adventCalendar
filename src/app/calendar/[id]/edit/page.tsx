@@ -1405,26 +1405,31 @@ export default function EditCalendar({
                     }}
                   >
                     {/* Live decoration preview */}
-                    {formData.decorationEnabled && (
-                      formData.decorationType === 'SNOW' ? (
+                    {formData.decorationEnabled &&
+                      (formData.decorationType === 'SNOW' ? (
                         <SnowfallDecoration
                           density={formData.decorationOptions?.density ?? 0.6}
                           speed={formData.decorationOptions?.speed ?? 1}
                         />
                       ) : formData.decorationType === 'LIGHTS' ? (
                         <LightsDecoration
-                          colors={formData.decorationOptions?.colors ?? undefined}
+                          colors={
+                            formData.decorationOptions?.colors ?? undefined
+                          }
                           speed={formData.decorationOptions?.speed ?? 1}
-                          brightness={formData.decorationOptions?.brightness ?? 1}
+                          brightness={
+                            formData.decorationOptions?.brightness ?? 1
+                          }
                         />
                       ) : formData.decorationType === 'GLOW' ? (
                         <GlowDecoration
                           color={formData.decorationOptions?.color ?? '#ffd33b'}
-                          intensity={formData.decorationOptions?.intensity ?? 0.7}
+                          intensity={
+                            formData.decorationOptions?.intensity ?? 0.7
+                          }
                           pulse={formData.decorationOptions?.pulse ?? true}
                         />
-                      ) : null
-                    )}
+                      ) : null)}
                     <div
                       className='w-full'
                       style={{
@@ -1679,10 +1684,13 @@ export default function EditCalendar({
                               ...formData,
                               decorationEnabled: e.target.checked,
                               decorationType: e.target.checked
-                                ? (formData.decorationType || 'SNOW')
+                                ? formData.decorationType || 'SNOW'
                                 : null,
                               decorationOptions: e.target.checked
-                                ? formData.decorationOptions || { density: 0.6, speed: 1 }
+                                ? formData.decorationOptions || {
+                                    density: 0.6,
+                                    speed: 1,
+                                  }
                                 : null,
                             })
                           }
@@ -1695,7 +1703,10 @@ export default function EditCalendar({
                       <select
                         value={formData.decorationType || 'SNOW'}
                         onChange={(e) => {
-                          const newType = e.target.value as 'SNOW' | 'LIGHTS' | 'GLOW';
+                          const newType = e.target.value as
+                            | 'SNOW'
+                            | 'LIGHTS'
+                            | 'GLOW';
                           setFormData({
                             ...formData,
                             decorationType: newType,
@@ -1704,7 +1715,11 @@ export default function EditCalendar({
                                 ? { density: 0.6, speed: 1 }
                                 : newType === 'LIGHTS'
                                 ? { speed: 1, brightness: 1 }
-                                : { color: '#ffd33b', intensity: 0.7, pulse: true },
+                                : {
+                                    color: '#ffd33b',
+                                    intensity: 0.7,
+                                    pulse: true,
+                                  },
                           });
                         }}
                         className='px-3 py-2 text-sm border border-gray-300 rounded-lg'
@@ -1715,7 +1730,8 @@ export default function EditCalendar({
                       </select>
                     </div>
 
-                    {formData.decorationEnabled && formData.decorationType === 'SNOW' && (
+                    {formData.decorationEnabled &&
+                      formData.decorationType === 'SNOW' && (
                         <div className='grid grid-cols-2 gap-3 mt-3'>
                           <div>
                             <label className='block text-xs font-medium text-gray-600 mb-1'>
@@ -1770,129 +1786,143 @@ export default function EditCalendar({
                             </div>
                           </div>
                         </div>
-                    )}
+                      )}
 
-                    {formData.decorationEnabled && formData.decorationType === 'LIGHTS' && (
-                      <div className='grid grid-cols-2 gap-3 mt-3'>
-                        <div>
-                          <label className='block text-xs font-medium text-gray-600 mb-1'>
-                            Animation Speed
-                          </label>
-                          <input
-                            type='range'
-                            min={0.5}
-                            max={2.0}
-                            step={0.1}
-                            value={formData.decorationOptions?.speed ?? 1}
-                            onChange={(e) =>
-                              setFormData({
-                                ...formData,
-                                decorationOptions: {
-                                  ...(formData.decorationOptions || {}),
-                                  speed: parseFloat(e.target.value),
-                                },
-                              })
-                            }
-                            className='w-full accent-green-500'
-                          />
-                          <div className='text-xs text-gray-600 mt-1'>
-                            {String(formData.decorationOptions?.speed ?? 1)}
-                          </div>
-                        </div>
-                        <div>
-                          <label className='block text-xs font-medium text-gray-600 mb-1'>
-                            Brightness
-                          </label>
-                          <input
-                            type='range'
-                            min={0.5}
-                            max={1.5}
-                            step={0.05}
-                            value={formData.decorationOptions?.brightness ?? 1}
-                            onChange={(e) =>
-                              setFormData({
-                                ...formData,
-                                decorationOptions: {
-                                  ...(formData.decorationOptions || {}),
-                                  brightness: parseFloat(e.target.value),
-                                },
-                              })
-                            }
-                            className='w-full accent-green-500'
-                          />
-                          <div className='text-xs text-gray-600 mt-1'>
-                            {String(formData.decorationOptions?.brightness ?? 1)}
-                          </div>
-                        </div>
-                      </div>
-                    )}
-
-                    {formData.decorationEnabled && formData.decorationType === 'GLOW' && (
-                      <div className='grid grid-cols-2 gap-3 mt-3'>
-                        <div>
-                          <label className='block text-xs font-medium text-gray-600 mb-1'>
-                            Color
-                          </label>
-                          <input
-                            type='color'
-                            value={formData.decorationOptions?.color ?? '#ffd33b'}
-                            onChange={(e) =>
-                              setFormData({
-                                ...formData,
-                                decorationOptions: {
-                                  ...(formData.decorationOptions || {}),
-                                  color: e.target.value,
-                                },
-                              })
-                            }
-                            className='w-20 h-10 p-1 border rounded'
-                          />
-                        </div>
-                        <div>
-                          <label className='block text-xs font-medium text-gray-600 mb-1'>
-                            Intensity
-                          </label>
-                          <input
-                            type='range'
-                            min={0.2}
-                            max={1.5}
-                            step={0.05}
-                            value={formData.decorationOptions?.intensity ?? 0.7}
-                            onChange={(e) =>
-                              setFormData({
-                                ...formData,
-                                decorationOptions: {
-                                  ...(formData.decorationOptions || {}),
-                                  intensity: parseFloat(e.target.value),
-                                },
-                              })
-                            }
-                            className='w-full accent-green-500'
-                          />
-                          <div className='text-xs text-gray-600 mt-1'>
-                            {String(formData.decorationOptions?.intensity ?? 0.7)}
-                          </div>
-                        </div>
-                        <div className='col-span-2'>
-                          <label className='inline-flex items-center gap-2 text-xs font-medium text-gray-600'>
+                    {formData.decorationEnabled &&
+                      formData.decorationType === 'LIGHTS' && (
+                        <div className='grid grid-cols-2 gap-3 mt-3'>
+                          <div>
+                            <label className='block text-xs font-medium text-gray-600 mb-1'>
+                              Animation Speed
+                            </label>
                             <input
-                              type='checkbox'
-                              checked={formData.decorationOptions?.pulse ?? true}
+                              type='range'
+                              min={0.5}
+                              max={2.0}
+                              step={0.1}
+                              value={formData.decorationOptions?.speed ?? 1}
                               onChange={(e) =>
                                 setFormData({
                                   ...formData,
                                   decorationOptions: {
                                     ...(formData.decorationOptions || {}),
-                                    pulse: e.target.checked,
+                                    speed: parseFloat(e.target.value),
                                   },
                                 })
                               }
+                              className='w-full accent-green-500'
                             />
-                            Pulse
-                          </label>
+                            <div className='text-xs text-gray-600 mt-1'>
+                              {String(formData.decorationOptions?.speed ?? 1)}
+                            </div>
+                          </div>
+                          <div>
+                            <label className='block text-xs font-medium text-gray-600 mb-1'>
+                              Brightness
+                            </label>
+                            <input
+                              type='range'
+                              min={0.5}
+                              max={1.5}
+                              step={0.05}
+                              value={
+                                formData.decorationOptions?.brightness ?? 1
+                              }
+                              onChange={(e) =>
+                                setFormData({
+                                  ...formData,
+                                  decorationOptions: {
+                                    ...(formData.decorationOptions || {}),
+                                    brightness: parseFloat(e.target.value),
+                                  },
+                                })
+                              }
+                              className='w-full accent-green-500'
+                            />
+                            <div className='text-xs text-gray-600 mt-1'>
+                              {String(
+                                formData.decorationOptions?.brightness ?? 1
+                              )}
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    )}
+                      )}
+
+                    {formData.decorationEnabled &&
+                      formData.decorationType === 'GLOW' && (
+                        <div className='grid grid-cols-2 gap-3 mt-3'>
+                          <div>
+                            <label className='block text-xs font-medium text-gray-600 mb-1'>
+                              Color
+                            </label>
+                            <input
+                              type='color'
+                              value={
+                                formData.decorationOptions?.color ?? '#ffd33b'
+                              }
+                              onChange={(e) =>
+                                setFormData({
+                                  ...formData,
+                                  decorationOptions: {
+                                    ...(formData.decorationOptions || {}),
+                                    color: e.target.value,
+                                  },
+                                })
+                              }
+                              className='w-20 h-10 p-1 border rounded'
+                            />
+                          </div>
+                          <div>
+                            <label className='block text-xs font-medium text-gray-600 mb-1'>
+                              Intensity
+                            </label>
+                            <input
+                              type='range'
+                              min={0.2}
+                              max={1.5}
+                              step={0.05}
+                              value={
+                                formData.decorationOptions?.intensity ?? 0.7
+                              }
+                              onChange={(e) =>
+                                setFormData({
+                                  ...formData,
+                                  decorationOptions: {
+                                    ...(formData.decorationOptions || {}),
+                                    intensity: parseFloat(e.target.value),
+                                  },
+                                })
+                              }
+                              className='w-full accent-green-500'
+                            />
+                            <div className='text-xs text-gray-600 mt-1'>
+                              {String(
+                                formData.decorationOptions?.intensity ?? 0.7
+                              )}
+                            </div>
+                          </div>
+                          <div className='col-span-2'>
+                            <label className='inline-flex items-center gap-2 text-xs font-medium text-gray-600'>
+                              <input
+                                type='checkbox'
+                                checked={
+                                  formData.decorationOptions?.pulse ?? true
+                                }
+                                onChange={(e) =>
+                                  setFormData({
+                                    ...formData,
+                                    decorationOptions: {
+                                      ...(formData.decorationOptions || {}),
+                                      pulse: e.target.checked,
+                                    },
+                                  })
+                                }
+                              />
+                              Pulse
+                            </label>
+                          </div>
+                        </div>
+                      )}
                   </div>
 
                   <div className='grid grid-cols-2 gap-3'>

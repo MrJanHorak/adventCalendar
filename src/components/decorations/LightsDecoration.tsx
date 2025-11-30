@@ -1,5 +1,5 @@
-"use client";
-import React, { useEffect, useRef } from "react";
+'use client';
+import React, { useEffect, useRef } from 'react';
 
 type LightsDecorationProps = {
   colors?: string[]; // array of light bulb colors
@@ -10,7 +10,7 @@ type LightsDecorationProps = {
 // Animated holiday lights around the entry container border.
 // Uses canvas to draw bulbs along the perimeter and animates blink/glow.
 export default function LightsDecoration({
-  colors = ["#ff3b3b", "#33c1ff", "#46f05a", "#ffd33b"],
+  colors = ['#ff3b3b', '#33c1ff', '#46f05a', '#ffd33b'],
   speed = 1,
   brightness = 1,
 }: LightsDecorationProps) {
@@ -19,12 +19,12 @@ export default function LightsDecoration({
 
   useEffect(() => {
     const prefersReduced =
-      typeof window !== "undefined" &&
+      typeof window !== 'undefined' &&
       window.matchMedia &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
     function resize() {
@@ -40,14 +40,15 @@ export default function LightsDecoration({
     const parentStyle = canvas.parentElement
       ? getComputedStyle(canvas.parentElement)
       : ({} as CSSStyleDeclaration);
-    const parentBorderWidth = parseFloat(parentStyle.borderWidth || "0") || 0;
-    const parentRadius = parseFloat(parentStyle.borderRadius || "0") || 0;
+    const parentBorderWidth = parseFloat(parentStyle.borderWidth || '0') || 0;
+    const parentRadius = parseFloat(parentStyle.borderRadius || '0') || 0;
 
     const bulbGap = 36; // px distance between bulbs
     const bulbRadius = 6; // base radius
     // Keep bulbs fully visible: inset includes radius + halo + parent border
     const edgeInset = bulbRadius + 6 + parentBorderWidth;
-    const perimeter = () => 2 * ((canvas.width - 2 * edgeInset) + (canvas.height - 2 * edgeInset));
+    const perimeter = () =>
+      2 * (canvas.width - 2 * edgeInset + (canvas.height - 2 * edgeInset));
 
     // Build bulb positions around rectangle perimeter
     const bulbs: { x: number; y: number; phase: number; color: string }[] = [];
@@ -61,7 +62,8 @@ export default function LightsDecoration({
       let posOnSide = 0;
       for (let i = 0; i < total; i++) {
         const t = posOnSide / sides[sideIdx];
-        let x = 0, y = 0;
+        let x = 0,
+          y = 0;
         switch (sideIdx) {
           case 0: // top: left -> right
             x = edgeInset + t * effectiveW;
@@ -102,7 +104,7 @@ export default function LightsDecoration({
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       // wire (rounded rectangle if parent has radius)
-      ctx.strokeStyle = "rgba(50,50,50,0.55)";
+      ctx.strokeStyle = 'rgba(50,50,50,0.55)';
       ctx.lineWidth = 2;
       ctx.beginPath();
       roundedRect(
@@ -121,7 +123,14 @@ export default function LightsDecoration({
         const r = bulbRadius * (1 + 0.25 * Math.sin(b.phase));
 
         // glow halo
-        const grd = ctx.createRadialGradient(b.x, b.y, r * 0.6, b.x, b.y, r * 3);
+        const grd = ctx.createRadialGradient(
+          b.x,
+          b.y,
+          r * 0.6,
+          b.x,
+          b.y,
+          r * 3
+        );
         grd.addColorStop(0, hexToRgba(b.color, 0.35 * brightness * glow));
         grd.addColorStop(1, hexToRgba(b.color, 0));
         ctx.fillStyle = grd;
@@ -134,7 +143,7 @@ export default function LightsDecoration({
         ctx.beginPath();
         ctx.arc(b.x, b.y, r, 0, Math.PI * 2);
         ctx.fill();
-        ctx.fillStyle = "rgba(30,30,30,0.7)";
+        ctx.fillStyle = 'rgba(30,30,30,0.7)';
         ctx.fillRect(b.x - r * 0.5, b.y - r * 0.5, r, r * 0.2);
       }
 
@@ -146,24 +155,24 @@ export default function LightsDecoration({
       resize();
       layoutBulbs();
     }
-    window.addEventListener("resize", onResize);
+    window.addEventListener('resize', onResize);
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
-      window.removeEventListener("resize", onResize);
+      window.removeEventListener('resize', onResize);
     };
   }, [colors, speed, brightness]);
 
   return (
     <canvas
       ref={canvasRef}
-      className="pointer-events-none absolute inset-0 z-10"
-      style={{ mixBlendMode: "screen" }}
+      className='pointer-events-none absolute inset-0 z-10'
+      style={{ mixBlendMode: 'screen' }}
     />
   );
 }
 
 function hexToRgba(hex: string, alpha: number) {
-  const m = hex.replace("#", "").match(/.{1,2}/g);
+  const m = hex.replace('#', '').match(/.{1,2}/g);
   if (!m) return `rgba(255,255,255,${alpha})`;
   const [r, g, b] = m.map((x) => parseInt(x, 16));
   return `rgba(${r},${g},${b},${alpha})`;
