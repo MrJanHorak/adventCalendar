@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { auth } from '@/lib/auth';
 import IdeasSection from '@/components/IdeasSection';
 
@@ -19,9 +20,16 @@ export default async function Home() {
         <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
           <div className='flex justify-between items-center h-16'>
             <div className='flex items-center space-x-2'>
-              <span className='text-3xl'>🎄</span>
-              <span className='text-2xl font-bold text-red-600'>
-                Doorly Advent
+              <Image
+                src='/doorlyadvent.png'
+                alt='Doorly Advent Logo'
+                width={40}
+                height={40}
+                className='object-contain'
+              />
+              <span className='text-2xl font-bold'>
+                <span className='text-red-600'>Doorly</span>{' '}
+                <span className='text-green-600'>Advent</span>
               </span>
             </div>
             <div className='flex items-center space-x-4'>

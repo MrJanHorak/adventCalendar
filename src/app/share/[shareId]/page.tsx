@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { getThemeStyles, getButtonStyles } from '@/lib/themes';
 import SnowfallDecoration from '@/components/decorations/SnowfallDecoration';
 import LightsDecoration from '@/components/decorations/LightsDecoration';
@@ -345,9 +346,16 @@ export default function SharedCalendar({
         <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
           <div className='flex justify-between items-center h-16'>
             <Link href='/' className='flex items-center space-x-2'>
-              <span className='text-3xl'>🎄</span>
-              <span className='text-2xl font-bold text-red-600'>
-                Doorly Advent
+              <Image
+                src='/doorlyadvent.png'
+                alt='Doorly Advent Logo'
+                width={40}
+                height={40}
+                className='object-contain'
+              />
+              <span className='text-2xl font-bold'>
+                <span className='text-red-600'>Doorly</span>{' '}
+                <span className='text-green-600'>Advent</span>
               </span>
             </Link>
           </div>
@@ -569,12 +577,16 @@ export default function SharedCalendar({
                   )}
 
                 <div className='flex justify-between items-start mb-6'>
-                  <h2 className='text-3xl font-bold text-gray-800'>
+                  <h2
+                    className='text-3xl font-bold'
+                    style={{ color: selectedEntry.textColor || '#374151' }}
+                  >
                     Day {selectedDay}: {selectedEntry.title}
                   </h2>
                   <button
                     onClick={() => setSelectedDay(null)}
-                    className='text-gray-500 hover:text-gray-700 text-3xl'
+                    className='text-3xl transition-opacity hover:opacity-70'
+                    style={{ color: selectedEntry.textColor || '#374151' }}
                   >
                     ×
                   </button>

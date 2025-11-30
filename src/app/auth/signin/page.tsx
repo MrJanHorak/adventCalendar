@@ -4,6 +4,7 @@ import { signIn } from 'next-auth/react';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function SignIn() {
   const router = useRouter();
@@ -41,8 +42,16 @@ export default function SignIn() {
     <div className='min-h-screen flex items-center justify-center bg-gradient-to-br from-red-100 via-white to-green-100'>
       <div className='bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md border-4 border-red-200'>
         <div className='text-center mb-8'>
-          <h1 className='text-4xl font-bold text-red-600 mb-2'>
-            🎄 Doorly Advent
+          <h1 className='text-4xl font-bold mb-2 flex items-center justify-center gap-2'>
+            <Image
+              src='/doorlyadvent.png'
+              alt='Doorly Advent Logo'
+              width={48}
+              height={48}
+              className='object-contain'
+            />
+            <span className='text-red-600'>Doorly</span>{' '}
+            <span className='text-green-600'>Advent</span>
           </h1>
           <p className='text-gray-600'>
             Sign in to create your magical calendar

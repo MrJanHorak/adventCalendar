@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { getThemeStyles, getThemePreset } from '@/lib/themes';
 
 // Demo calendar data
@@ -452,9 +453,16 @@ export default function DemoCalendar() {
         <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
           <div className='flex justify-between items-center h-16'>
             <Link href='/' className='flex items-center space-x-2'>
-              <span className='text-3xl'>🎄</span>
-              <span className='text-2xl font-bold text-red-600'>
-                Doorly Advent
+              <Image
+                src='/doorlyadvent.png'
+                alt='Doorly Advent Logo'
+                width={40}
+                height={40}
+                className='object-contain'
+              />
+              <span className='text-2xl font-bold'>
+                <span className='text-red-600'>Doorly</span>{' '}
+                <span className='text-green-600'>Advent</span>
               </span>
             </Link>
             <div className='flex items-center gap-4'>

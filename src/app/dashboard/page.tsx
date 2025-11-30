@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import CopyShareLink from '@/components/CopyShareLink';
+import Image from 'next/image';
 
 export default async function Dashboard() {
   const session = await auth();
@@ -46,17 +47,24 @@ export default async function Dashboard() {
         <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
           <div className='flex justify-between items-center h-16'>
             <Link href='/' className='flex items-center space-x-2'>
-              <span className='text-3xl'>🎄</span>
-              <span className='text-2xl font-bold text-red-600'>
-                Doorly Advent
+              <Image
+                src='/doorlyadvent.png'
+                alt='Doorly Advent Logo'
+                width={40}
+                height={40}
+                className='object-contain'
+              />
+              <span className='text-2xl font-bold'>
+                <span className='text-red-600'>Doorly</span>{' '}
+                <span className='text-green-600'>Advent</span>
               </span>
             </Link>
-            <div className='flex items-center space-x-4'>
-              <span className='text-gray-700'>
+            <div className='flex items-center space-x-3'>
+              <span className='hidden sm:inline text-gray-700 truncate max-w-[140px]'>
                 Hello, {session.user.name || session.user.email}!
               </span>
               <form action='/api/auth/signout' method='POST'>
-                <button className='bg-red-500 text-white px-6 py-2 rounded-full hover:bg-red-600 transition font-medium'>
+                <button className='bg-red-500 text-white px-4 py-2 sm:px-6 sm:py-2 rounded-full hover:bg-red-600 transition font-medium text-sm sm:text-base'>
                   Sign Out
                 </button>
               </form>
@@ -66,11 +74,13 @@ export default async function Dashboard() {
       </nav>
 
       <main className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex-grow'>
-        <div className='flex justify-between items-center mb-8'>
-          <h1 className='text-4xl font-bold text-gray-800'>My Calendars</h1>
+        <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8'>
+          <h1 className='text-3xl sm:text-4xl font-bold text-gray-800'>
+            My Calendars
+          </h1>
           <Link
             href='/calendar/create'
-            className='bg-gradient-to-r from-red-500 to-green-500 text-white px-6 py-3 rounded-full hover:from-red-600 hover:to-green-600 transition font-semibold shadow-lg'
+            className='bg-gradient-to-r from-red-500 to-green-500 text-white px-5 py-3 rounded-full hover:from-red-600 hover:to-green-600 transition font-semibold shadow-lg text-center'
           >
             + Create New Calendar
           </Link>
@@ -126,7 +136,7 @@ export default async function Dashboard() {
             </div>
           </div>
         ) : (
-          <div className='grid md:grid-cols-2 lg:grid-cols-3 gap-6'>
+          <div className='grid gap-5 sm:gap-6 md:grid-cols-2 lg:grid-cols-3 justify-center'>
             {calendars.map(
               (calendar: {
                 id: string;
@@ -137,19 +147,21 @@ export default async function Dashboard() {
               }) => (
                 <div
                   key={calendar.id}
-                  className='bg-white rounded-2xl shadow-lg p-6 border-2 border-gray-100 hover:border-red-300 transition'
+                  className='bg-white rounded-2xl shadow-lg p-4 sm:p-6 border-2 border-gray-100 hover:border-red-300 transition flex flex-col w-full max-w-[20.5rem] mx-auto sm:max-w-none sm:mx-0'
                 >
-                  <h3 className='text-xl font-bold text-gray-800 mb-2'>
+                  <h3 className='text-base sm:text-xl font-bold text-gray-800 mb-2 truncate'>
                     {calendar.title}
                   </h3>
                   {calendar.description && (
-                    <p className='text-gray-600 mb-4'>{calendar.description}</p>
+                    <p className='text-gray-600 mb-3 text-sm sm:text-base break-words'>
+                      {calendar.description}
+                    </p>
                   )}
-                  <div className='flex items-center justify-between mb-4'>
+                  <div className='flex items-center justify-between mb-3 sm:mb-4 gap-3'>
                     <span className='text-sm text-gray-500'>
                       {calendar._count.entries} / 25 days filled
                     </span>
-                    <div className='w-24 bg-gray-200 rounded-full h-2'>
+                    <div className='w-20 sm:w-24 bg-gray-200 rounded-full h-2 flex-shrink-0'>
                       <div
                         className='bg-gradient-to-r from-red-500 to-green-500 h-2 rounded-full'
                         style={{
@@ -158,22 +170,22 @@ export default async function Dashboard() {
                       />
                     </div>
                   </div>
-                  <div className='flex space-x-2'>
+                  <div className='flex flex-col sm:flex-row gap-2'>
                     <Link
                       href={`/calendar/${calendar.id}/edit`}
-                      className='flex-1 text-center bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition font-medium'
+                      className='flex-1 text-center bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition font-medium text-sm sm:text-base'
                     >
                       Edit
                     </Link>
                     <Link
                       href={`/share/${calendar.shareId}`}
-                      className='flex-1 text-center bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 transition font-medium'
+                      className='flex-1 text-center bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 transition font-medium text-sm sm:text-base'
                     >
                       View
                     </Link>
                   </div>
                   <div className='mt-3 pt-3 border-t border-gray-100'>
-                    <p className='text-xs text-gray-500 mb-2'>Share:</p>
+                    <p className='text-xs text-gray-500 mb-1'>Share:</p>
                     <CopyShareLink
                       shareId={calendar.shareId}
                       className='w-full'
