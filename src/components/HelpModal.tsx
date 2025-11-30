@@ -14,16 +14,16 @@ export default function HelpModal({ isOpen, onClose }: HelpModalProps) {
 
   return (
     <div
-      className='fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50'
+      className='fixed inset-0 bg-black/50 grid place-items-center z-50 p-4 min-h-[100svh]'
       onClick={onClose}
     >
       <div
-        className='bg-white rounded-3xl shadow-2xl max-w-4xl w-full max-h-[85vh] overflow-hidden'
+        className='bg-white rounded-3xl shadow-2xl w-full max-w-[calc(100vw-2rem)] sm:max-w-3xl lg:max-w-4xl max-h-[85svh] overflow-hidden mx-auto translate-x-[-2vw] translate-y-[-2vh] sm:translate-x-0 sm:translate-y-0'
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className='bg-gradient-to-r from-red-500 to-green-500 text-white p-6 flex justify-between items-center'>
-          <h2 className='text-3xl font-bold'>📚 Help & Guide</h2>
+        <div className='bg-gradient-to-r from-red-500 to-green-500 text-white p-4 sm:p-6 flex justify-between items-center'>
+          <h2 className='text-2xl sm:text-3xl font-bold'>📚 Help & Guide</h2>
           <button
             onClick={onClose}
             className='text-white hover:text-gray-200 text-3xl'
@@ -58,7 +58,7 @@ export default function HelpModal({ isOpen, onClose }: HelpModalProps) {
         </div>
 
         {/* Tab Content */}
-        <div className='p-8 overflow-y-auto max-h-[60vh]'>
+        <div className='p-4 sm:p-6 md:p-8 overflow-y-auto max-h-[60vh]'>
           {activeTab === 'getting-started' && (
             <div className='space-y-6'>
               <h3 className='text-2xl font-bold text-gray-800'>
