@@ -132,6 +132,24 @@ export default function EditCalendar({
   const [showImageField, setShowImageField] = useState(false);
   const [showVideoField, setShowVideoField] = useState(false);
   const [showLinkField, setShowLinkField] = useState(false);
+  const [isSavingEntry, setIsSavingEntry] = useState(false);
+  const [isSavingTheme, setIsSavingTheme] = useState(false);
+  const [toast, setToast] = useState<{
+    show: boolean;
+    message: string;
+    type: 'success' | 'error';
+  }>({ show: false, message: '', type: 'success' });
+
+  const showToast = (
+    message: string,
+    type: 'success' | 'error' = 'success'
+  ) => {
+    setToast({ show: true, message, type });
+    setTimeout(
+      () => setToast({ show: false, message: '', type: 'success' }),
+      3000
+    );
+  };
 
   useEffect(() => {
     params.then(setResolvedParams);
@@ -306,6 +324,7 @@ export default function EditCalendar({
           : null,
     };
 
+    setIsSavingEntry(true);
     try {
       if (existingEntry) {
         // Update existing entry
@@ -321,11 +340,13 @@ export default function EditCalendar({
         if (!response.ok) {
           const error = await response.json();
           console.error('Save error:', error);
-          alert(error.error || 'Failed to save entry');
+          showToast(error.error || 'Failed to save entry', 'error');
+          setIsSavingEntry(false);
           return;
         }
 
-        fetchCalendar();
+        await fetchCalendar();
+        showToast('Entry saved successfully!');
         setSelectedDay(null);
       } else {
         // Create new entry
@@ -341,16 +362,20 @@ export default function EditCalendar({
         if (!response.ok) {
           const error = await response.json();
           console.error('Save error:', error);
-          alert(error.error || 'Failed to save entry');
+          showToast(error.error || 'Failed to save entry', 'error');
+          setIsSavingEntry(false);
           return;
         }
 
-        fetchCalendar();
+        await fetchCalendar();
+        showToast('Entry created successfully!');
         setSelectedDay(null);
       }
     } catch (error) {
       console.error('Error saving entry:', error);
-      alert('Failed to save entry');
+      showToast('Failed to save entry', 'error');
+    } finally {
+      setIsSavingEntry(false);
     }
   };
 
@@ -407,6 +432,7 @@ export default function EditCalendar({
   const handleSaveTheme = async () => {
     if (!resolvedParams) return;
 
+    setIsSavingTheme(true);
     try {
       const response = await fetch(`/api/calendars/${resolvedParams.id}`, {
         method: 'PATCH',
@@ -416,11 +442,15 @@ export default function EditCalendar({
 
       if (response.ok) {
         await fetchCalendar();
-        alert('Theme saved successfully!');
+        showToast('Theme saved successfully!');
+      } else {
+        showToast('Failed to save theme', 'error');
       }
     } catch (error) {
       console.error('Error saving theme:', error);
-      alert('Failed to save theme');
+      showToast('Failed to save theme', 'error');
+    } finally {
+      setIsSavingTheme(false);
     }
   };
 
@@ -1113,9 +1143,32 @@ export default function EditCalendar({
               <div className='pt-4 border-t'>
                 <button
                   onClick={handleSaveTheme}
-                  className='w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 rounded-lg font-semibold hover:from-purple-600 hover:to-pink-600 transition'
+                  disabled={isSavingTheme}
+                  className='w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 rounded-lg font-semibold hover:from-purple-600 hover:to-pink-600 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2'
                 >
-                  💾 Save Theme Settings
+                  {isSavingTheme ? (
+                    <>
+                      <svg className='animate-spin h-5 w-5' viewBox='0 0 24 24'>
+                        <circle
+                          className='opacity-25'
+                          cx='12'
+                          cy='12'
+                          r='10'
+                          stroke='currentColor'
+                          strokeWidth='4'
+                          fill='none'
+                        />
+                        <path
+                          className='opacity-75'
+                          fill='currentColor'
+                          d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z'
+                        />
+                      </svg>
+                      Saving...
+                    </>
+                  ) : (
+                    <>💾 Save Theme Settings</>
+                  )}
                 </button>
               </div>
             </div>
@@ -1868,9 +1921,35 @@ export default function EditCalendar({
                 <div className='flex space-x-3 pt-4'>
                   <button
                     onClick={handleSaveEntry}
-                    className='flex-1 bg-green-500 text-white py-3 rounded-lg hover:bg-green-600 transition font-semibold'
+                    disabled={isSavingEntry}
+                    className='flex-1 bg-green-500 text-white py-3 rounded-lg hover:bg-green-600 transition font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2'
                   >
-                    Save Entry
+                    {isSavingEntry ? (
+                      <>
+                        <svg
+                          className='animate-spin h-5 w-5'
+                          viewBox='0 0 24 24'
+                        >
+                          <circle
+                            className='opacity-25'
+                            cx='12'
+                            cy='12'
+                            r='10'
+                            stroke='currentColor'
+                            strokeWidth='4'
+                            fill='none'
+                          />
+                          <path
+                            className='opacity-75'
+                            fill='currentColor'
+                            d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z'
+                          />
+                        </svg>
+                        Saving...
+                      </>
+                    ) : (
+                      'Save Entry'
+                    )}
                   </button>
                   {calendar.entries.some((e) => e.day === selectedDay) && (
                     <button
@@ -1892,6 +1971,38 @@ export default function EditCalendar({
           )}
         </div>
       </main>
+
+      {/* Toast Notification */}
+      {toast.show && (
+        <div
+          className={`fixed top-4 right-4 z-50 px-6 py-4 rounded-lg shadow-lg transition-all duration-300 animate-slide-in ${
+            toast.type === 'success'
+              ? 'bg-green-500 text-white'
+              : 'bg-red-500 text-white'
+          }`}
+        >
+          <div className='flex items-center gap-2'>
+            {toast.type === 'success' ? (
+              <svg className='w-5 h-5' fill='currentColor' viewBox='0 0 20 20'>
+                <path
+                  fillRule='evenodd'
+                  d='M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z'
+                  clipRule='evenodd'
+                />
+              </svg>
+            ) : (
+              <svg className='w-5 h-5' fill='currentColor' viewBox='0 0 20 20'>
+                <path
+                  fillRule='evenodd'
+                  d='M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z'
+                  clipRule='evenodd'
+                />
+              </svg>
+            )}
+            <span className='font-medium'>{toast.message}</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

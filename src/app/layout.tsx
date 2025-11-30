@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Holiday Advent Calendar - Create Your Magical Calendar',
+  title: 'Doorly Advent - Create Your Magical Calendar',
   description:
     'Create and share personalized advent calendars with your loved ones. Open a new surprise each day in December!',
 };
