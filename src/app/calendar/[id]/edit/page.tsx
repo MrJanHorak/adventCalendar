@@ -10,6 +10,11 @@ import IdeasModal from '@/components/IdeasModal';
 import SnowfallDecoration from '@/components/decorations/SnowfallDecoration';
 import LightsDecoration from '@/components/decorations/LightsDecoration';
 import GlowDecoration from '@/components/decorations/GlowDecoration';
+import ConfettiDecoration from '@/components/decorations/ConfettiDecoration';
+import StarsDecoration from '@/components/decorations/StarsDecoration';
+import CandleDecoration from '@/components/decorations/CandleDecoration';
+import AuroraDecoration from '@/components/decorations/AuroraDecoration';
+import RibbonsDecoration from '@/components/decorations/RibbonsDecoration';
 
 // Legacy entry type retained for backward compatibility with existing records
 type EntryType = 'TEXT' | 'POEM' | 'IMAGE' | 'VIDEO';
@@ -133,7 +138,7 @@ export default function EditCalendar({
     // Decorations (Phase 1)
     decorationEnabled: false,
     decorationType: 'SNOW',
-    decorationOptions: { density: 0.6, speed: 1 },
+    decorationOptions: { density: 0.6, speed: 1 } as any,
   });
   const [copyFeedback, setCopyFeedback] = useState(false);
   const [showImageField, setShowImageField] = useState(false);
@@ -1429,6 +1434,43 @@ export default function EditCalendar({
                           }
                           pulse={formData.decorationOptions?.pulse ?? true}
                         />
+                      ) : formData.decorationType === 'CONFETTI' ? (
+                        <ConfettiDecoration
+                          colors={
+                            formData.decorationOptions?.colors ?? undefined
+                          }
+                          density={formData.decorationOptions?.density ?? 0.6}
+                          speed={formData.decorationOptions?.speed ?? 1}
+                        />
+                      ) : formData.decorationType === 'STARS' ? (
+                        <StarsDecoration
+                          color={formData.decorationOptions?.color ?? '#ffd33b'}
+                          size={formData.decorationOptions?.size ?? 1}
+                          density={formData.decorationOptions?.density ?? 0.5}
+                          twinkleSpeed={formData.decorationOptions?.twinkleSpeed ?? 1}
+                        />
+                      ) : formData.decorationType === 'CANDLE' ? (
+                        <CandleDecoration
+                          count={formData.decorationOptions?.count ?? 4}
+                          flameColor={formData.decorationOptions?.flameColor ?? '#ff6600'}
+                          intensity={formData.decorationOptions?.intensity ?? 1}
+                        />
+                      ) : formData.decorationType === 'AURORA' ? (
+                        <AuroraDecoration
+                          colors={
+                            formData.decorationOptions?.colors ?? undefined
+                          }
+                          speed={formData.decorationOptions?.speed ?? 1}
+                          intensity={formData.decorationOptions?.intensity ?? 0.7}
+                        />
+                      ) : formData.decorationType === 'RIBBONS' ? (
+                        <RibbonsDecoration
+                          colors={
+                            formData.decorationOptions?.colors ?? undefined
+                          }
+                          count={formData.decorationOptions?.count ?? 4}
+                          speed={formData.decorationOptions?.speed ?? 1}
+                        />
                       ) : null)}
                     <div
                       className='w-full'
@@ -1706,7 +1748,12 @@ export default function EditCalendar({
                           const newType = e.target.value as
                             | 'SNOW'
                             | 'LIGHTS'
-                            | 'GLOW';
+                            | 'GLOW'
+                            | 'CONFETTI'
+                            | 'STARS'
+                            | 'CANDLE'
+                            | 'AURORA'
+                            | 'RIBBONS';
                           setFormData({
                             ...formData,
                             decorationType: newType,
@@ -1714,12 +1761,24 @@ export default function EditCalendar({
                               newType === 'SNOW'
                                 ? { density: 0.6, speed: 1 }
                                 : newType === 'LIGHTS'
-                                ? { speed: 1, brightness: 1 }
-                                : {
+                                ? { speed: 1, brightness: 1, colors: ['#ff3b3b', '#33c1ff', '#46f05a', '#ffd33b'] }
+                                : newType === 'GLOW'
+                                ? {
                                     color: '#ffd33b',
                                     intensity: 0.7,
                                     pulse: true,
-                                  },
+                                  }
+                                : newType === 'CONFETTI'
+                                ? { density: 0.6, speed: 1, colors: ['#ff3b3b', '#33c1ff', '#46f05a', '#ffd33b', '#ff6edb'] }
+                                : newType === 'STARS'
+                                ? { color: '#ffd33b', size: 1, density: 0.5, twinkleSpeed: 1 }
+                                : newType === 'CANDLE'
+                                ? { count: 4, flameColor: '#ff6600', intensity: 1 }
+                                : newType === 'AURORA'
+                                ? { colors: ['#00ff87', '#60efff', '#b967ff'], speed: 1, intensity: 0.7 }
+                                : newType === 'RIBBONS'
+                                ? { colors: ['#ff3b3b', '#33c1ff', '#46f05a'], count: 4, speed: 1 }
+                                : {},
                           });
                         }}
                         className='px-3 py-2 text-sm border border-gray-300 rounded-lg'
@@ -1727,6 +1786,11 @@ export default function EditCalendar({
                         <option value='SNOW'>Snowfall</option>
                         <option value='LIGHTS'>Blinking Lights</option>
                         <option value='GLOW'>Ambient Glow</option>
+                        <option value='CONFETTI'>Confetti</option>
+                        <option value='STARS'>Twinkling Stars</option>
+                        <option value='CANDLE'>Candles</option>
+                        <option value='AURORA'>Aurora</option>
+                        <option value='RIBBONS'>Ribbons</option>
                       </select>
                     </div>
 
@@ -1790,60 +1854,125 @@ export default function EditCalendar({
 
                     {formData.decorationEnabled &&
                       formData.decorationType === 'LIGHTS' && (
-                        <div className='grid grid-cols-2 gap-3 mt-3'>
-                          <div>
-                            <label className='block text-xs font-medium text-gray-600 mb-1'>
-                              Animation Speed
-                            </label>
-                            <input
-                              type='range'
-                              min={0.5}
-                              max={2.0}
-                              step={0.1}
-                              value={formData.decorationOptions?.speed ?? 1}
-                              onChange={(e) =>
-                                setFormData({
-                                  ...formData,
-                                  decorationOptions: {
-                                    ...(formData.decorationOptions || {}),
-                                    speed: parseFloat(e.target.value),
-                                  },
-                                })
-                              }
-                              className='w-full accent-green-500'
-                            />
-                            <div className='text-xs text-gray-600 mt-1'>
-                              {String(formData.decorationOptions?.speed ?? 1)}
+                        <div className='space-y-4 mt-3'>
+                          <div className='grid grid-cols-2 gap-3'>
+                            <div>
+                              <label className='block text-xs font-medium text-gray-600 mb-1'>
+                                Animation Speed
+                              </label>
+                              <input
+                                type='range'
+                                min={0.5}
+                                max={2.0}
+                                step={0.1}
+                                value={formData.decorationOptions?.speed ?? 1}
+                                onChange={(e) =>
+                                  setFormData({
+                                    ...formData,
+                                    decorationOptions: {
+                                      ...(formData.decorationOptions || {}),
+                                      speed: parseFloat(e.target.value),
+                                    },
+                                  })
+                                }
+                                className='w-full accent-green-500'
+                              />
+                              <div className='text-xs text-gray-600 mt-1'>
+                                {String(formData.decorationOptions?.speed ?? 1)}
+                              </div>
+                            </div>
+                            <div>
+                              <label className='block text-xs font-medium text-gray-600 mb-1'>
+                                Brightness
+                              </label>
+                              <input
+                                type='range'
+                                min={0.5}
+                                max={1.5}
+                                step={0.05}
+                                value={
+                                  formData.decorationOptions?.brightness ?? 1
+                                }
+                                onChange={(e) =>
+                                  setFormData({
+                                    ...formData,
+                                    decorationOptions: {
+                                      ...(formData.decorationOptions || {}),
+                                      brightness: parseFloat(e.target.value),
+                                    },
+                                  })
+                                }
+                                className='w-full accent-green-500'
+                              />
+                              <div className='text-xs text-gray-600 mt-1'>
+                                {String(
+                                  formData.decorationOptions?.brightness ?? 1
+                                )}
+                              </div>
                             </div>
                           </div>
                           <div>
-                            <label className='block text-xs font-medium text-gray-600 mb-1'>
-                              Brightness
-                            </label>
-                            <input
-                              type='range'
-                              min={0.5}
-                              max={1.5}
-                              step={0.05}
-                              value={
-                                formData.decorationOptions?.brightness ?? 1
-                              }
-                              onChange={(e) =>
-                                setFormData({
-                                  ...formData,
-                                  decorationOptions: {
-                                    ...(formData.decorationOptions || {}),
-                                    brightness: parseFloat(e.target.value),
-                                  },
-                                })
-                              }
-                              className='w-full accent-green-500'
-                            />
-                            <div className='text-xs text-gray-600 mt-1'>
-                              {String(
-                                formData.decorationOptions?.brightness ?? 1
-                              )}
+                            <label className='block text-xs font-medium text-gray-600 mb-2'>Light Colors</label>
+                            <div className='flex flex-wrap gap-3'>
+                              {(formData.decorationOptions?.colors || ['#ff3b3b','#33c1ff','#46f05a','#ffd33b']).map((c: string, idx: number) => (
+                                <div key={idx} className='flex items-center gap-2'>
+                                  <input
+                                    type='color'
+                                    value={c}
+                                    onChange={(e) => {
+                                      const newColors = [...(formData.decorationOptions?.colors || ['#ff3b3b','#33c1ff','#46f05a','#ffd33b'])];
+                                      newColors[idx] = e.target.value;
+                                      setFormData({
+                                        ...formData,
+                                        decorationOptions: {
+                                          ...(formData.decorationOptions || {}),
+                                          colors: newColors,
+                                        },
+                                      });
+                                    }}
+                                    className='h-10 w-10 border rounded'
+                                  />
+                                  { (formData.decorationOptions?.colors || ['#ff3b3b','#33c1ff','#46f05a','#ffd33b']).length > 1 && (
+                                    <button
+                                      type='button'
+                                      onClick={() => {
+                                        const newColors = (formData.decorationOptions?.colors || ['#ff3b3b','#33c1ff','#46f05a','#ffd33b']).filter((_: string,i: number)=>i!==idx);
+                                        setFormData({
+                                          ...formData,
+                                          decorationOptions: {
+                                            ...(formData.decorationOptions || {}),
+                                            colors: newColors,
+                                          },
+                                        });
+                                      }}
+                                      className='text-xs px-2 py-1 bg-red-100 text-red-600 rounded hover:bg-red-200'
+                                    >
+                                      ✕
+                                    </button>
+                                  )}
+                                </div>
+                              ))}
+                              <button
+                                type='button'
+                                onClick={() => {
+                                  const existing = formData.decorationOptions?.colors || ['#ff3b3b','#33c1ff','#46f05a','#ffd33b'];
+                                  if (existing.length >= 8) return;
+                                  const defaults = ['#ff3b3b','#33c1ff','#46f05a','#ffd33b','#ff6edb','#9b59ff','#ffffff','#ffa640'];
+                                  const next = defaults[existing.length] || '#ffffff';
+                                  setFormData({
+                                    ...formData,
+                                    decorationOptions: {
+                                      ...(formData.decorationOptions || {}),
+                                      colors: [...existing, next],
+                                    },
+                                  });
+                                }}
+                                className='text-xs px-3 py-2 bg-green-100 text-green-700 rounded hover:bg-green-200'
+                              >
+                                + Add Color
+                              </button>
                             </div>
+                            <div className='mt-2 text-[11px] text-gray-500'>Up to 8 colors. Lights cycle through in order.</div>
                           </div>
                         </div>
                       )}
@@ -1920,6 +2049,542 @@ export default function EditCalendar({
                               />
                               Pulse
                             </label>
+                          </div>
+                        </div>
+                      )}
+
+                    {formData.decorationEnabled &&
+                      formData.decorationType === 'CONFETTI' && (
+                        <div className='space-y-3 mt-3'>
+                          <div className='grid grid-cols-2 gap-3'>
+                            <div>
+                              <label className='block text-xs font-medium text-gray-600 mb-1'>
+                                Density
+                              </label>
+                              <input
+                                type='range'
+                                min={0.2}
+                                max={1.5}
+                                step={0.1}
+                                value={formData.decorationOptions?.density ?? 0.6}
+                                onChange={(e) =>
+                                  setFormData({
+                                    ...formData,
+                                    decorationOptions: {
+                                      ...(formData.decorationOptions || {}),
+                                      density: parseFloat(e.target.value),
+                                    },
+                                  })
+                                }
+                                className='w-full accent-green-500'
+                              />
+                              <div className='text-xs text-gray-600 mt-1'>
+                                {String(formData.decorationOptions?.density ?? 0.6)}
+                              </div>
+                            </div>
+                            <div>
+                              <label className='block text-xs font-medium text-gray-600 mb-1'>
+                                Fall Speed
+                              </label>
+                              <input
+                                type='range'
+                                min={0.5}
+                                max={2.0}
+                                step={0.1}
+                                value={formData.decorationOptions?.speed ?? 1}
+                                onChange={(e) =>
+                                  setFormData({
+                                    ...formData,
+                                    decorationOptions: {
+                                      ...(formData.decorationOptions || {}),
+                                      speed: parseFloat(e.target.value),
+                                    },
+                                  })
+                                }
+                                className='w-full accent-green-500'
+                              />
+                              <div className='text-xs text-gray-600 mt-1'>
+                                {String(formData.decorationOptions?.speed ?? 1)}
+                              </div>
+                            </div>
+                          </div>
+                          <div>
+                            <label className='block text-xs font-medium text-gray-600 mb-2'>Confetti Colors</label>
+                            <div className='flex flex-wrap gap-3'>
+                              {(formData.decorationOptions?.colors || ['#ff3b3b','#33c1ff','#46f05a','#ffd33b','#ff6edb']).map((c: string, idx: number) => (
+                                <div key={idx} className='flex items-center gap-2'>
+                                  <input
+                                    type='color'
+                                    value={c}
+                                    onChange={(e) => {
+                                      const newColors = [...(formData.decorationOptions?.colors || ['#ff3b3b','#33c1ff','#46f05a','#ffd33b','#ff6edb'])];
+                                      newColors[idx] = e.target.value;
+                                      setFormData({
+                                        ...formData,
+                                        decorationOptions: {
+                                          ...(formData.decorationOptions || {}),
+                                          colors: newColors,
+                                        },
+                                      });
+                                    }}
+                                    className='h-10 w-10 border rounded'
+                                  />
+                                  {(formData.decorationOptions?.colors || ['#ff3b3b','#33c1ff','#46f05a','#ffd33b','#ff6edb']).length > 1 && (
+                                    <button
+                                      type='button'
+                                      onClick={() => {
+                                        const newColors = (formData.decorationOptions?.colors || ['#ff3b3b','#33c1ff','#46f05a','#ffd33b','#ff6edb']).filter((_: string,i: number)=>i!==idx);
+                                        setFormData({
+                                          ...formData,
+                                          decorationOptions: {
+                                            ...(formData.decorationOptions || {}),
+                                            colors: newColors,
+                                          },
+                                        });
+                                      }}
+                                      className='text-xs px-2 py-1 bg-red-100 text-red-600 rounded hover:bg-red-200'
+                                    >
+                                      ✕
+                                    </button>
+                                  )}
+                                </div>
+                              ))}
+                              <button
+                                type='button'
+                                onClick={() => {
+                                  const existing = formData.decorationOptions?.colors || ['#ff3b3b','#33c1ff','#46f05a','#ffd33b','#ff6edb'];
+                                  if (existing.length >= 8) return;
+                                  const defaults = ['#ff3b3b','#33c1ff','#46f05a','#ffd33b','#ff6edb','#9b59ff','#ffffff','#ffa640'];
+                                  const next = defaults[existing.length] || '#ffffff';
+                                  setFormData({
+                                    ...formData,
+                                    decorationOptions: {
+                                      ...(formData.decorationOptions || {}),
+                                      colors: [...existing, next],
+                                    },
+                                  });
+                                }}
+                                className='text-xs px-3 py-2 bg-green-100 text-green-700 rounded hover:bg-green-200'
+                              >
+                                + Add Color
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                    {formData.decorationEnabled &&
+                      formData.decorationType === 'STARS' && (
+                        <div className='grid grid-cols-2 gap-3 mt-3'>
+                          <div>
+                            <label className='block text-xs font-medium text-gray-600 mb-1'>
+                              Star Color
+                            </label>
+                            <input
+                              type='color'
+                              value={formData.decorationOptions?.color ?? '#ffd33b'}
+                              onChange={(e) =>
+                                setFormData({
+                                  ...formData,
+                                  decorationOptions: {
+                                    ...(formData.decorationOptions || {}),
+                                    color: e.target.value,
+                                  },
+                                })
+                              }
+                              className='w-20 h-10 p-1 border rounded'
+                            />
+                          </div>
+                          <div>
+                            <label className='block text-xs font-medium text-gray-600 mb-1'>
+                              Star Size
+                            </label>
+                            <input
+                              type='range'
+                              min={0.5}
+                              max={2.0}
+                              step={0.1}
+                              value={formData.decorationOptions?.size ?? 1}
+                              onChange={(e) =>
+                                setFormData({
+                                  ...formData,
+                                  decorationOptions: {
+                                    ...(formData.decorationOptions || {}),
+                                    size: parseFloat(e.target.value),
+                                  },
+                                })
+                              }
+                              className='w-full accent-green-500'
+                            />
+                            <div className='text-xs text-gray-600 mt-1'>
+                              {String(formData.decorationOptions?.size ?? 1)}
+                            </div>
+                          </div>
+                          <div>
+                            <label className='block text-xs font-medium text-gray-600 mb-1'>
+                              Density
+                            </label>
+                            <input
+                              type='range'
+                              min={0.2}
+                              max={1.5}
+                              step={0.1}
+                              value={formData.decorationOptions?.density ?? 0.5}
+                              onChange={(e) =>
+                                setFormData({
+                                  ...formData,
+                                  decorationOptions: {
+                                    ...(formData.decorationOptions || {}),
+                                    density: parseFloat(e.target.value),
+                                  },
+                                })
+                              }
+                              className='w-full accent-green-500'
+                            />
+                            <div className='text-xs text-gray-600 mt-1'>
+                              {String(formData.decorationOptions?.density ?? 0.5)}
+                            </div>
+                          </div>
+                          <div>
+                            <label className='block text-xs font-medium text-gray-600 mb-1'>
+                              Twinkle Speed
+                            </label>
+                            <input
+                              type='range'
+                              min={0.5}
+                              max={2.0}
+                              step={0.1}
+                              value={formData.decorationOptions?.twinkleSpeed ?? 1}
+                              onChange={(e) =>
+                                setFormData({
+                                  ...formData,
+                                  decorationOptions: {
+                                    ...(formData.decorationOptions || {}),
+                                    twinkleSpeed: parseFloat(e.target.value),
+                                  },
+                                })
+                              }
+                              className='w-full accent-green-500'
+                            />
+                            <div className='text-xs text-gray-600 mt-1'>
+                              {String(formData.decorationOptions?.twinkleSpeed ?? 1)}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                    {formData.decorationEnabled &&
+                      formData.decorationType === 'CANDLE' && (
+                        <div className='grid grid-cols-2 gap-3 mt-3'>
+                          <div>
+                            <label className='block text-xs font-medium text-gray-600 mb-1'>
+                              Number of Candles
+                            </label>
+                            <input
+                              type='range'
+                              min={2}
+                              max={8}
+                              step={1}
+                              value={formData.decorationOptions?.count ?? 4}
+                              onChange={(e) =>
+                                setFormData({
+                                  ...formData,
+                                  decorationOptions: {
+                                    ...(formData.decorationOptions || {}),
+                                    count: parseInt(e.target.value),
+                                  },
+                                })
+                              }
+                              className='w-full accent-green-500'
+                            />
+                            <div className='text-xs text-gray-600 mt-1'>
+                              {String(formData.decorationOptions?.count ?? 4)}
+                            </div>
+                          </div>
+                          <div>
+                            <label className='block text-xs font-medium text-gray-600 mb-1'>
+                              Flame Color
+                            </label>
+                            <input
+                              type='color'
+                              value={formData.decorationOptions?.flameColor ?? '#ff6600'}
+                              onChange={(e) =>
+                                setFormData({
+                                  ...formData,
+                                  decorationOptions: {
+                                    ...(formData.decorationOptions || {}),
+                                    flameColor: e.target.value,
+                                  },
+                                })
+                              }
+                              className='w-20 h-10 p-1 border rounded'
+                            />
+                          </div>
+                          <div className='col-span-2'>
+                            <label className='block text-xs font-medium text-gray-600 mb-1'>
+                              Flicker Intensity
+                            </label>
+                            <input
+                              type='range'
+                              min={0.5}
+                              max={2.0}
+                              step={0.1}
+                              value={formData.decorationOptions?.intensity ?? 1}
+                              onChange={(e) =>
+                                setFormData({
+                                  ...formData,
+                                  decorationOptions: {
+                                    ...(formData.decorationOptions || {}),
+                                    intensity: parseFloat(e.target.value),
+                                  },
+                                })
+                              }
+                              className='w-full accent-green-500'
+                            />
+                            <div className='text-xs text-gray-600 mt-1'>
+                              {String(formData.decorationOptions?.intensity ?? 1)}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                    {formData.decorationEnabled &&
+                      formData.decorationType === 'AURORA' && (
+                        <div className='space-y-3 mt-3'>
+                          <div className='grid grid-cols-2 gap-3'>
+                            <div>
+                              <label className='block text-xs font-medium text-gray-600 mb-1'>
+                                Flow Speed
+                              </label>
+                              <input
+                                type='range'
+                                min={0.2}
+                                max={2.0}
+                                step={0.1}
+                                value={formData.decorationOptions?.speed ?? 1}
+                                onChange={(e) =>
+                                  setFormData({
+                                    ...formData,
+                                    decorationOptions: {
+                                      ...(formData.decorationOptions || {}),
+                                      speed: parseFloat(e.target.value),
+                                    },
+                                  })
+                                }
+                                className='w-full accent-green-500'
+                              />
+                              <div className='text-xs text-gray-600 mt-1'>
+                                {String(formData.decorationOptions?.speed ?? 1)}
+                              </div>
+                            </div>
+                            <div>
+                              <label className='block text-xs font-medium text-gray-600 mb-1'>
+                                Intensity
+                              </label>
+                              <input
+                                type='range'
+                                min={0.3}
+                                max={1.5}
+                                step={0.1}
+                                value={formData.decorationOptions?.intensity ?? 0.7}
+                                onChange={(e) =>
+                                  setFormData({
+                                    ...formData,
+                                    decorationOptions: {
+                                      ...(formData.decorationOptions || {}),
+                                      intensity: parseFloat(e.target.value),
+                                    },
+                                  })
+                                }
+                                className='w-full accent-green-500'
+                              />
+                              <div className='text-xs text-gray-600 mt-1'>
+                                {String(formData.decorationOptions?.intensity ?? 0.7)}
+                              </div>
+                            </div>
+                          </div>
+                          <div>
+                            <label className='block text-xs font-medium text-gray-600 mb-2'>Aurora Colors</label>
+                            <div className='flex flex-wrap gap-3'>
+                              {(formData.decorationOptions?.colors || ['#00ff87','#60efff','#b967ff']).map((c: string, idx: number) => (
+                                <div key={idx} className='flex items-center gap-2'>
+                                  <input
+                                    type='color'
+                                    value={c}
+                                    onChange={(e) => {
+                                      const newColors = [...(formData.decorationOptions?.colors || ['#00ff87','#60efff','#b967ff'])];
+                                      newColors[idx] = e.target.value;
+                                      setFormData({
+                                        ...formData,
+                                        decorationOptions: {
+                                          ...(formData.decorationOptions || {}),
+                                          colors: newColors,
+                                        },
+                                      });
+                                    }}
+                                    className='h-10 w-10 border rounded'
+                                  />
+                                  {(formData.decorationOptions?.colors || ['#00ff87','#60efff','#b967ff']).length > 2 && (
+                                    <button
+                                      type='button'
+                                      onClick={() => {
+                                        const newColors = (formData.decorationOptions?.colors || ['#00ff87','#60efff','#b967ff']).filter((_: string,i: number)=>i!==idx);
+                                        setFormData({
+                                          ...formData,
+                                          decorationOptions: {
+                                            ...(formData.decorationOptions || {}),
+                                            colors: newColors,
+                                          },
+                                        });
+                                      }}
+                                      className='text-xs px-2 py-1 bg-red-100 text-red-600 rounded hover:bg-red-200'
+                                    >
+                                      ✕
+                                    </button>
+                                  )}
+                                </div>
+                              ))}
+                              <button
+                                type='button'
+                                onClick={() => {
+                                  const existing = formData.decorationOptions?.colors || ['#00ff87','#60efff','#b967ff'];
+                                  if (existing.length >= 5) return;
+                                  const defaults = ['#00ff87','#60efff','#b967ff','#ff3b8e','#ffaa00'];
+                                  const next = defaults[existing.length] || '#00ff87';
+                                  setFormData({
+                                    ...formData,
+                                    decorationOptions: {
+                                      ...(formData.decorationOptions || {}),
+                                      colors: [...existing, next],
+                                    },
+                                  });
+                                }}
+                                className='text-xs px-3 py-2 bg-green-100 text-green-700 rounded hover:bg-green-200'
+                              >
+                                + Add Color
+                              </button>
+                            </div>
+                            <div className='mt-2 text-[11px] text-gray-500'>2-5 colors for wave layers</div>
+                          </div>
+                        </div>
+                      )}
+
+                    {formData.decorationEnabled &&
+                      formData.decorationType === 'RIBBONS' && (
+                        <div className='space-y-3 mt-3'>
+                          <div className='grid grid-cols-2 gap-3'>
+                            <div>
+                              <label className='block text-xs font-medium text-gray-600 mb-1'>
+                                Number of Ribbons
+                              </label>
+                              <input
+                                type='range'
+                                min={2}
+                                max={6}
+                                step={1}
+                                value={formData.decorationOptions?.count ?? 4}
+                                onChange={(e) =>
+                                  setFormData({
+                                    ...formData,
+                                    decorationOptions: {
+                                      ...(formData.decorationOptions || {}),
+                                      count: parseInt(e.target.value),
+                                    },
+                                  })
+                                }
+                                className='w-full accent-green-500'
+                              />
+                              <div className='text-xs text-gray-600 mt-1'>
+                                {String(formData.decorationOptions?.count ?? 4)}
+                              </div>
+                            </div>
+                            <div>
+                              <label className='block text-xs font-medium text-gray-600 mb-1'>
+                                Flow Speed
+                              </label>
+                              <input
+                                type='range'
+                                min={0.3}
+                                max={2.0}
+                                step={0.1}
+                                value={formData.decorationOptions?.speed ?? 1}
+                                onChange={(e) =>
+                                  setFormData({
+                                    ...formData,
+                                    decorationOptions: {
+                                      ...(formData.decorationOptions || {}),
+                                      speed: parseFloat(e.target.value),
+                                    },
+                                  })
+                                }
+                                className='w-full accent-green-500'
+                              />
+                              <div className='text-xs text-gray-600 mt-1'>
+                                {String(formData.decorationOptions?.speed ?? 1)}
+                              </div>
+                            </div>
+                          </div>
+                          <div>
+                            <label className='block text-xs font-medium text-gray-600 mb-2'>Ribbon Colors</label>
+                            <div className='flex flex-wrap gap-3'>
+                              {(formData.decorationOptions?.colors || ['#ff3b3b','#33c1ff','#46f05a']).map((c: string, idx: number) => (
+                                <div key={idx} className='flex items-center gap-2'>
+                                  <input
+                                    type='color'
+                                    value={c}
+                                    onChange={(e) => {
+                                      const newColors = [...(formData.decorationOptions?.colors || ['#ff3b3b','#33c1ff','#46f05a'])];
+                                      newColors[idx] = e.target.value;
+                                      setFormData({
+                                        ...formData,
+                                        decorationOptions: {
+                                          ...(formData.decorationOptions || {}),
+                                          colors: newColors,
+                                        },
+                                      });
+                                    }}
+                                    className='h-10 w-10 border rounded'
+                                  />
+                                  {(formData.decorationOptions?.colors || ['#ff3b3b','#33c1ff','#46f05a']).length > 1 && (
+                                    <button
+                                      type='button'
+                                      onClick={() => {
+                                        const newColors = (formData.decorationOptions?.colors || ['#ff3b3b','#33c1ff','#46f05a']).filter((_: string,i: number)=>i!==idx);
+                                        setFormData({
+                                          ...formData,
+                                          decorationOptions: {
+                                            ...(formData.decorationOptions || {}),
+                                            colors: newColors,
+                                          },
+                                        });
+                                      }}
+                                      className='text-xs px-2 py-1 bg-red-100 text-red-600 rounded hover:bg-red-200'
+                                    >
+                                      ✕
+                                    </button>
+                                  )}
+                                </div>
+                              ))}
+                              <button
+                                type='button'
+                                onClick={() => {
+                                  const existing = formData.decorationOptions?.colors || ['#ff3b3b','#33c1ff','#46f05a'];
+                                  if (existing.length >= 6) return;
+                                  const defaults = ['#ff3b3b','#33c1ff','#46f05a','#ffd33b','#ff6edb','#9b59ff'];
+                                  const next = defaults[existing.length] || '#ff3b3b';
+                                  setFormData({
+                                    ...formData,
+                                    decorationOptions: {
+                                      ...(formData.decorationOptions || {}),
+                                      colors: [...existing, next],
+                                    },
+                                  });
+                                }}
+                                className='text-xs px-3 py-2 bg-green-100 text-green-700 rounded hover:bg-green-200'
+                              >
+                                + Add Color
+                              </button>
+                            </div>
                           </div>
                         </div>
                       )}

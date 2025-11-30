@@ -7,6 +7,11 @@ import { getThemeStyles, getButtonStyles } from '@/lib/themes';
 import SnowfallDecoration from '@/components/decorations/SnowfallDecoration';
 import LightsDecoration from '@/components/decorations/LightsDecoration';
 import GlowDecoration from '@/components/decorations/GlowDecoration';
+import ConfettiDecoration from '@/components/decorations/ConfettiDecoration';
+import StarsDecoration from '@/components/decorations/StarsDecoration';
+import CandleDecoration from '@/components/decorations/CandleDecoration';
+import AuroraDecoration from '@/components/decorations/AuroraDecoration';
+import RibbonsDecoration from '@/components/decorations/RibbonsDecoration';
 
 type EntryType = 'TEXT' | 'POEM' | 'IMAGE' | 'VIDEO';
 
@@ -38,9 +43,9 @@ interface CalendarEntry {
   borderGradientEnabled?: boolean;
   borderGradientColor2?: string;
   decorationEnabled?: boolean;
-  decorationType?: 'SNOW' | 'LIGHTS' | 'GLOW';
+  decorationType?: 'SNOW' | 'LIGHTS' | 'GLOW' | 'CONFETTI' | 'STARS' | 'CANDLE' | 'AURORA' | 'RIBBONS';
   decorationOptions?: {
-    // Snow
+    // Snow, Confetti
     density?: number;
     speed?: number;
     // Lights
@@ -50,6 +55,12 @@ interface CalendarEntry {
     color?: string;
     intensity?: number;
     pulse?: boolean;
+    // Stars
+    size?: number;
+    twinkleSpeed?: number;
+    // Candle, Ribbons
+    count?: number;
+    flameColor?: string;
   } | null;
 }
 
@@ -460,17 +471,93 @@ export default function SharedCalendar({
               role='dialog'
               aria-modal='true'
             >
-              <div className='max-h-[90vh] overflow-y-auto p-8 scrollbar-rounded relative'>
-                {/* Snowfall covers entire modal content area */}
+              <div 
+                className='max-h-[90vh] overflow-y-auto p-8 scrollbar-rounded relative'
+                style={{
+                  background: selectedEntry.backgroundGradientEnabled
+                    ? `linear-gradient(135deg, ${
+                        selectedEntry.backgroundColor || '#ffffff'
+                      }, ${
+                        selectedEntry.backgroundGradientColor2 ||
+                        '#ffffff'
+                      })`
+                    : selectedEntry.backgroundColor || 'transparent',
+                }}
+              >
+                {/* Full-modal decorations (Snowfall, Confetti, Stars, Candle, Aurora, Ribbons) */}
                 {selectedEntry.decorationEnabled &&
-                  selectedEntry.decorationType === 'SNOW' && (
+                  (selectedEntry.decorationType === 'SNOW' ||
+                    selectedEntry.decorationType === 'CONFETTI' ||
+                    selectedEntry.decorationType === 'STARS' ||
+                    selectedEntry.decorationType === 'CANDLE' ||
+                    selectedEntry.decorationType === 'AURORA' ||
+                    selectedEntry.decorationType === 'RIBBONS') && (
                     <div className='absolute inset-0 pointer-events-none z-30'>
-                      <SnowfallDecoration
-                        density={
-                          selectedEntry.decorationOptions?.density ?? 0.6
-                        }
-                        speed={selectedEntry.decorationOptions?.speed ?? 1}
-                      />
+                      {selectedEntry.decorationType === 'SNOW' && (
+                        <SnowfallDecoration
+                          density={
+                            selectedEntry.decorationOptions?.density ?? 0.6
+                          }
+                          speed={selectedEntry.decorationOptions?.speed ?? 1}
+                        />
+                      )}
+                      {selectedEntry.decorationType === 'CONFETTI' && (
+                        <ConfettiDecoration
+                          colors={
+                            selectedEntry.decorationOptions?.colors ?? undefined
+                          }
+                          density={
+                            selectedEntry.decorationOptions?.density ?? 0.6
+                          }
+                          speed={selectedEntry.decorationOptions?.speed ?? 1}
+                        />
+                      )}
+                      {selectedEntry.decorationType === 'STARS' && (
+                        <StarsDecoration
+                          color={
+                            selectedEntry.decorationOptions?.color ?? '#ffd33b'
+                          }
+                          size={selectedEntry.decorationOptions?.size ?? 1}
+                          density={
+                            selectedEntry.decorationOptions?.density ?? 0.5
+                          }
+                          twinkleSpeed={
+                            selectedEntry.decorationOptions?.twinkleSpeed ?? 1
+                          }
+                        />
+                      )}
+                      {selectedEntry.decorationType === 'CANDLE' && (
+                        <CandleDecoration
+                          count={selectedEntry.decorationOptions?.count ?? 4}
+                          flameColor={
+                            selectedEntry.decorationOptions?.flameColor ??
+                            '#ff6600'
+                          }
+                          intensity={
+                            selectedEntry.decorationOptions?.intensity ?? 1
+                          }
+                        />
+                      )}
+                      {selectedEntry.decorationType === 'AURORA' && (
+                        <AuroraDecoration
+                          colors={
+                            selectedEntry.decorationOptions?.colors ?? undefined
+                          }
+                          speed={selectedEntry.decorationOptions?.speed ?? 1}
+                          intensity={
+                            selectedEntry.decorationOptions?.intensity ?? 0.7
+                          }
+                        />
+                      )}
+                      {selectedEntry.decorationType === 'RIBBONS' && (
+                        <RibbonsDecoration
+                          colors={
+                            selectedEntry.decorationOptions?.colors ?? undefined
+                          }
+                          count={selectedEntry.decorationOptions?.count ?? 4}
+                          speed={selectedEntry.decorationOptions?.speed ?? 1}
+                        />
+                      )}
                     </div>
                   )}
 
@@ -537,14 +624,7 @@ export default function SharedCalendar({
                         fontFamily: selectedEntry.fontFamily || 'Inter',
                         fontSize: selectedEntry.fontSize || '16px',
                         color: selectedEntry.textColor || '#374151',
-                        background: selectedEntry.backgroundGradientEnabled
-                          ? `linear-gradient(135deg, ${
-                              selectedEntry.backgroundColor || '#ffffff'
-                            }, ${
-                              selectedEntry.backgroundGradientColor2 ||
-                              '#ffffff'
-                            })`
-                          : selectedEntry.backgroundColor || 'transparent',
+                        background: 'transparent',
                         textAlign: (selectedEntry.textAlign || 'center') as any,
                         borderColor: selectedEntry.borderGradientEnabled
                           ? 'transparent'

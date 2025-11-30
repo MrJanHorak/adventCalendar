@@ -128,4 +128,9 @@ enum DecorationType {
   SNOW
   LIGHTS
   GLOW
+  CONFETTI
+  STARS
+  CANDLE
+  AURORA
+  RIBBONS
 }
