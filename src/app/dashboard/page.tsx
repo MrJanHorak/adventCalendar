@@ -40,7 +40,7 @@ export default async function Dashboard() {
   }
 
   return (
-    <div className='min-h-screen bg-gradient-to-br from-red-50 via-white to-green-50'>
+    <div className='min-h-screen bg-gradient-to-br from-red-50 via-white to-green-50 flex flex-col'>
       {/* Navigation */}
       <nav className='bg-white/80 backdrop-blur-sm border-b border-red-100 sticky top-0 z-50'>
         <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
@@ -65,7 +65,7 @@ export default async function Dashboard() {
         </div>
       </nav>
 
-      <main className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12'>
+      <main className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex-grow'>
         <div className='flex justify-between items-center mb-8'>
           <h1 className='text-4xl font-bold text-gray-800'>My Calendars</h1>
           <Link
@@ -185,6 +185,34 @@ export default async function Dashboard() {
           </div>
         )}
       </main>
+
+      {/* Footer */}
+      <footer className='bg-white border-t border-gray-200 mt-16'>
+        <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8'>
+          <div className='flex flex-col md:flex-row justify-between items-center gap-4 text-gray-600'>
+            <p className='text-center md:text-left'>
+              Made with ❤️ for the holiday season
+            </p>
+            <div className='flex flex-wrap justify-center gap-6 text-sm'>
+              <Link
+                href='/privacy'
+                className='hover:text-red-600 transition'
+              >
+                Privacy Policy
+              </Link>
+              <Link href='/terms' className='hover:text-red-600 transition'>
+                Terms of Service
+              </Link>
+              <Link href='/imprint' className='hover:text-red-600 transition'>
+                Imprint
+              </Link>
+            </div>
+          </div>
+          <div className='text-center text-sm text-gray-500 mt-4'>
+            © {new Date().getFullYear()} Doorly Advent. All rights reserved.
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
