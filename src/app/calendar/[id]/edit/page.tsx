@@ -482,7 +482,7 @@ export default function EditCalendar({
             <Link href='/dashboard' className='flex items-center space-x-2'>
               <span className='text-3xl'>🎄</span>
               <span className='text-2xl font-bold text-red-600'>
-                Advent Calendar
+                Doorly Advent
               </span>
             </Link>
             <div className='flex items-center gap-4'>
@@ -1013,20 +1013,26 @@ export default function EditCalendar({
 
                       <div>
                         <label className='block text-xs font-medium text-gray-600 mb-2'>
-                          Border Radius
+                          Border Radius: {themeData.dateBorderRadius}
                         </label>
                         <input
-                          type='text'
-                          value={themeData.dateBorderRadius}
+                          type='range'
+                          min='0'
+                          max='32'
+                          step='2'
+                          value={parseInt(themeData.dateBorderRadius) || 16}
                           onChange={(e) =>
                             setThemeData({
                               ...themeData,
-                              dateBorderRadius: e.target.value,
+                              dateBorderRadius: `${e.target.value}px`,
                             })
                           }
-                          placeholder='e.g., 16px'
-                          className='w-full px-3 py-2 border-2 border-gray-200 rounded-lg focus:border-purple-400 focus:outline-none'
+                          className='w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-500'
                         />
+                        <div className='flex justify-between text-xs text-gray-500 mt-1'>
+                          <span>Sharp</span>
+                          <span>Rounded</span>
+                        </div>
                       </div>
                     </div>
                   </div>

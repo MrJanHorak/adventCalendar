@@ -42,7 +42,7 @@ export default function SignIn() {
       <div className='bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md border-4 border-red-200'>
         <div className='text-center mb-8'>
           <h1 className='text-4xl font-bold text-red-600 mb-2'>
-            🎄 Advent Calendar
+            🎄 Doorly Advent
           </h1>
           <p className='text-gray-600'>
             Sign in to create your magical calendar

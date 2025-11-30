@@ -48,7 +48,7 @@ export default async function Dashboard() {
             <Link href='/' className='flex items-center space-x-2'>
               <span className='text-3xl'>🎄</span>
               <span className='text-2xl font-bold text-red-600'>
-                Advent Calendar
+                Doorly Advent
               </span>
             </Link>
             <div className='flex items-center space-x-4'>
@@ -172,8 +172,12 @@ export default async function Dashboard() {
                       View
                     </Link>
                   </div>
-                  <div className='mt-3 text-xs text-gray-500 text-center'>
-                    Share: <CopyShareLink shareId={calendar.shareId} />
+                  <div className='mt-3 pt-3 border-t border-gray-100'>
+                    <p className='text-xs text-gray-500 mb-2'>Share:</p>
+                    <CopyShareLink
+                      shareId={calendar.shareId}
+                      className='w-full'
+                    />
                   </div>
                 </div>
               )

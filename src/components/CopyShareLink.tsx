@@ -43,14 +43,16 @@ export default function CopyShareLink({
 
   return (
     <span className={`inline-flex items-center gap-2 ${className}`.trim()}>
-      <code className='bg-white px-2 py-1 rounded'>{shareUrl}</code>
+      <code className='bg-gray-50 px-2 py-1 rounded text-xs border border-gray-200 flex-1 min-w-0 truncate'>
+        {shareUrl}
+      </code>
       <button
         type='button'
         onClick={handleCopy}
-        className='px-2 py-1 rounded bg-blue-600 text-white text-[11px] font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400'
+        className='px-3 py-1 rounded bg-blue-600 text-white text-xs font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 whitespace-nowrap flex-shrink-0'
         aria-label='Copy share link'
       >
-        {copied ? 'Copied!' : 'Copy'}
+        {copied ? '✓ Copied!' : 'Copy'}
       </button>
     </span>
   );

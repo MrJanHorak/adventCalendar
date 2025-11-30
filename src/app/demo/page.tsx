@@ -293,7 +293,7 @@ export default function DemoCalendar() {
             <Link href='/' className='flex items-center space-x-2'>
               <span className='text-3xl'>🎄</span>
               <span className='text-2xl font-bold text-red-600'>
-                Advent Calendar
+                Doorly Advent
               </span>
             </Link>
             <div className='flex items-center gap-4'>
