@@ -13,8 +13,14 @@ export default function HelpModal({ isOpen, onClose }: HelpModalProps) {
   if (!isOpen) return null;
 
   return (
-    <div className='fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50'>
-      <div className='bg-white rounded-3xl shadow-2xl max-w-4xl w-full max-h-[85vh] overflow-hidden'>
+    <div 
+      className='fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50'
+      onClick={onClose}
+    >
+      <div 
+        className='bg-white rounded-3xl shadow-2xl max-w-4xl w-full max-h-[85vh] overflow-hidden'
+        onClick={(e) => e.stopPropagation()}
+      >
         {/* Header */}
         <div className='bg-gradient-to-r from-red-500 to-green-500 text-white p-6 flex justify-between items-center'>
           <h2 className='text-3xl font-bold'>📚 Help & Guide</h2>
@@ -27,25 +33,26 @@ export default function HelpModal({ isOpen, onClose }: HelpModalProps) {
         </div>
 
         {/* Tab Navigation */}
-        <div className='flex border-b border-gray-200 overflow-x-auto'>
+        <div className='flex border-b border-gray-200'>
           {[
-            { id: 'getting-started', label: '🚀 Getting Started' },
-            { id: 'images', label: '🖼️ Adding Images' },
-            { id: 'videos', label: '🎥 Adding Videos' },
-            { id: 'links', label: '🔗 Adding Links' },
-            { id: 'formatting', label: '🎨 Formatting' },
-            { id: 'sharing', label: '🔗 Sharing' },
+            { id: 'getting-started', label: 'Getting Started', icon: '🚀' },
+            { id: 'images', label: 'Adding Images', icon: '🖼️' },
+            { id: 'videos', label: 'Adding Videos', icon: '🎥' },
+            { id: 'links', label: 'Adding Links', icon: '🔗' },
+            { id: 'formatting', label: 'Formatting', icon: '🎨' },
+            { id: 'sharing', label: 'Sharing', icon: '📤' },
           ].map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`px-6 py-4 font-medium whitespace-nowrap transition ${
+              className={`flex-1 px-2 sm:px-4 md:px-6 py-3 sm:py-4 font-medium transition ${
                 activeTab === tab.id
-                  ? 'border-b-2 border-red-500 text-red-600'
-                  : 'text-gray-600 hover:text-red-500'
+                  ? 'border-b-2 border-red-500 text-red-600 bg-red-50'
+                  : 'text-gray-600 hover:text-red-500 hover:bg-gray-50'
               }`}
+              title={tab.label}
             >
-              {tab.label}
+              <span className='text-2xl sm:text-3xl'>{tab.icon}</span>
             </button>
           ))}
         </div>
