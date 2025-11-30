@@ -1,6 +1,27 @@
-# 🎄 Holiday Advent Calendar
+# 🎄 Doorly Advent
 
 A festive web application that allows users to create personalized online advent calendars to share with family, friends, and loved ones. Each calendar contains 25 special entries that can be opened one day at a time throughout December!
+
+Branding: The site is branded as "Doorly Advent" with a red/green split title and a header logo image (`/public/doorlyadvent.png`).
+
+## Table of Contents
+
+- Features
+- Tech Stack
+- Prerequisites
+- Setup Instructions
+- Usage Guide
+- Project Structure
+- Customization
+  - Decorations & Themes
+- Responsive Design
+- Screenshots
+- Security Features
+- Troubleshooting
+- Deployment
+- Contributing
+- License
+- Credits
 
 ## ✨ Features
 
@@ -18,10 +39,13 @@ A festive web application that allows users to create personalized online advent
 - **Holiday Theme**: Beautiful festive UI with snowflake animations and holiday colors
 - **Responsive Design**: Works seamlessly on desktop and mobile devices
 - **Built-in Help System**: Comprehensive tooltips, quick tips, and help modal
+- **Decorations System**: Optional animated decorations including Snowfall, Lights, Glow, Confetti, Stars, Candle, Aurora, and Ribbons
+- **Owner/Share Views Polished**: Modal titles, close buttons, and backgrounds dynamically respect entry text/background colors
+- **Mobile UX**: Dashboard cards, modals, and share view tuned for small screens
 
 ## 🚀 Tech Stack
 
-- **Framework**: Next.js 14+ with TypeScript and App Router
+- **Framework**: Next.js 14+ (currently testing on 16.x Turbopack) with TypeScript and App Router
 - **Authentication**: NextAuth.js v5
 - **Database**: PostgreSQL with Prisma ORM
 - **Styling**: Tailwind CSS
@@ -153,6 +177,15 @@ The application now supports multi-content entries (text + image + video simulta
 
 **Migration Note**: In a future release, the `type` field may be removed entirely as it's no longer used by the UI. All entry rendering is now based on the presence of `content`, `imageUrl`, `videoUrl`, and the `isPoem` boolean flag.
 
+### Decorations & Themes
+
+Detailed docs on decorations and theme options:
+
+- `DECORATION_EXPANSION.md` — overview of animated decorations and their controls
+- `THEME_FEATURES.md` — theme presets, backgrounds, and customization guidance
+
+You can enable decorations per calendar and preview them live in the editor.
+
 ## 🔒 Security Features
 
 - Passwords hashed with bcrypt
@@ -168,6 +201,22 @@ The application is fully responsive and works on:
 - Desktop computers
 - Tablets
 - Mobile phones
+
+Notes:
+
+- Modals use visual viewport units (`svh`) and grid centering for consistent phone behavior.
+- Dashboard cards are width-constrained and button stacks adapt on small screens.
+
+## 🖼️ Screenshots
+
+Add screenshots to the `public/` folder and reference them here:
+
+- Dashboard (desktop): `![Dashboard Desktop](public/screenshots/dashboard-desktop.png)`
+- Dashboard (mobile): `![Dashboard Mobile](public/screenshots/dashboard-mobile.png)`
+- Share view with modal: `![Share Modal](public/screenshots/share-modal.png)`
+- Decorations examples: `![Decorations](public/screenshots/decorations.png)`
+
+Optional: include a short GIF showcasing opening doors and animations.
 
 ## 🐛 Troubleshooting
 
@@ -191,6 +240,8 @@ rm -rf .next
 rm -rf node_modules package-lock.json
 npm install
 ```
+
+If you use Turbopack (Next.js 16), you may see non-breaking source map warnings during dev; these do not affect functionality.
 
 ## 📦 Deployment
 
