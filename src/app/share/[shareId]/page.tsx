@@ -30,6 +30,10 @@ interface CalendarEntry {
   borderRadius?: string;
   padding?: string;
   boxShadow?: string;
+  backgroundGradientEnabled?: boolean;
+  backgroundGradientColor2?: string;
+  borderGradientEnabled?: boolean;
+  borderGradientColor2?: string;
 }
 
 interface Calendar {
@@ -482,43 +486,73 @@ export default function SharedCalendar({
                 {/* Text / Poem (if present) */}
                 {selectedEntry.content && (
                   <div
-                    className='whitespace-pre-wrap flex flex-col'
                     style={{
-                      fontFamily: selectedEntry.fontFamily || 'Inter',
-                      fontSize: selectedEntry.fontSize || '16px',
-                      color: selectedEntry.textColor || '#374151',
-                      backgroundColor:
-                        selectedEntry.backgroundColor || 'transparent',
-                      textAlign: (selectedEntry.textAlign || 'center') as any,
-                      borderColor: selectedEntry.borderColor,
-                      borderWidth: selectedEntry.borderWidth || '0px',
-                      borderStyle: (selectedEntry.borderStyle ||
-                        'solid') as any,
+                      padding: selectedEntry.borderGradientEnabled
+                        ? selectedEntry.borderWidth || '2px'
+                        : '0',
+                      background: selectedEntry.borderGradientEnabled
+                        ? `linear-gradient(135deg, ${
+                            selectedEntry.borderColor || '#000000'
+                          }, ${
+                            selectedEntry.borderGradientColor2 || '#000000'
+                          })`
+                        : 'transparent',
                       borderRadius: selectedEntry.borderRadius || '0px',
-                      padding: selectedEntry.padding || '16px',
                       boxShadow: selectedEntry.boxShadow || 'none',
-                      alignItems:
-                        selectedEntry.textAlign === 'left'
-                          ? 'flex-start'
-                          : selectedEntry.textAlign === 'right'
-                          ? 'flex-end'
-                          : selectedEntry.textAlign === 'justify'
-                          ? 'stretch'
-                          : 'center',
-                      justifyContent:
-                        selectedEntry.verticalAlign === 'top'
-                          ? 'flex-start'
-                          : selectedEntry.verticalAlign === 'bottom'
-                          ? 'flex-end'
-                          : 'center',
-                      minHeight: '200px',
-                      ...(selectedEntry.isPoem && {
-                        fontStyle: 'italic',
-                        lineHeight: '1.75',
-                      }),
                     }}
                   >
-                    {selectedEntry.content}
+                    <div
+                      className='whitespace-pre-wrap flex flex-col'
+                      style={{
+                        fontFamily: selectedEntry.fontFamily || 'Inter',
+                        fontSize: selectedEntry.fontSize || '16px',
+                        color: selectedEntry.textColor || '#374151',
+                        background: selectedEntry.backgroundGradientEnabled
+                          ? `linear-gradient(135deg, ${
+                              selectedEntry.backgroundColor || '#ffffff'
+                            }, ${
+                              selectedEntry.backgroundGradientColor2 ||
+                              '#ffffff'
+                            })`
+                          : selectedEntry.backgroundColor || 'transparent',
+                        textAlign: (selectedEntry.textAlign || 'center') as any,
+                        borderColor: selectedEntry.borderGradientEnabled
+                          ? 'transparent'
+                          : selectedEntry.borderColor,
+                        borderWidth: selectedEntry.borderGradientEnabled
+                          ? '0'
+                          : selectedEntry.borderWidth || '0px',
+                        borderStyle: (selectedEntry.borderStyle ||
+                          'solid') as any,
+                        borderRadius: selectedEntry.borderGradientEnabled
+                          ? `calc(${selectedEntry.borderRadius || '0px'} - ${
+                              selectedEntry.borderWidth || '2px'
+                            })`
+                          : selectedEntry.borderRadius || '0px',
+                        padding: selectedEntry.padding || '16px',
+                        alignItems:
+                          selectedEntry.textAlign === 'left'
+                            ? 'flex-start'
+                            : selectedEntry.textAlign === 'right'
+                            ? 'flex-end'
+                            : selectedEntry.textAlign === 'justify'
+                            ? 'stretch'
+                            : 'center',
+                        justifyContent:
+                          selectedEntry.verticalAlign === 'top'
+                            ? 'flex-start'
+                            : selectedEntry.verticalAlign === 'bottom'
+                            ? 'flex-end'
+                            : 'center',
+                        minHeight: '200px',
+                        ...(selectedEntry.isPoem && {
+                          fontStyle: 'italic',
+                          lineHeight: '1.75',
+                        }),
+                      }}
+                    >
+                      {selectedEntry.content}
+                    </div>
                   </div>
                 )}
 

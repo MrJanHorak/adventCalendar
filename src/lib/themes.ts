@@ -18,6 +18,7 @@ export interface ThemePreset {
   dateTextColor?: string;
   dateOpenedPrimaryColor?: string; // opened primary
   dateOpenedSecondaryColor?: string; // opened secondary
+  dateUnavailableColor?: string; // unavailable/future dates
   dateBorderRadius?: string; // e.g., '16px'
 }
 
@@ -41,6 +42,7 @@ export const themePresets: ThemePreset[] = [
     dateTextColor: '#ffffff',
     dateOpenedPrimaryColor: '#16a34a',
     dateOpenedSecondaryColor: '#22c55e',
+    dateUnavailableColor: '#d1d5db',
     dateBorderRadius: '16px',
   },
   {
@@ -62,6 +64,7 @@ export const themePresets: ThemePreset[] = [
     dateTextColor: '#ffffff',
     dateOpenedPrimaryColor: '#0ea5e9',
     dateOpenedSecondaryColor: '#3b82f6',
+    dateUnavailableColor: '#dbeafe',
     dateBorderRadius: '16px',
   },
   {
@@ -83,6 +86,7 @@ export const themePresets: ThemePreset[] = [
     dateTextColor: '#ffffff',
     dateOpenedPrimaryColor: '#15803d',
     dateOpenedSecondaryColor: '#16a34a',
+    dateUnavailableColor: '#fef3c7',
     dateBorderRadius: '18px',
   },
   {
@@ -104,6 +108,7 @@ export const themePresets: ThemePreset[] = [
     dateTextColor: '#ffffff',
     dateOpenedPrimaryColor: '#92400e',
     dateOpenedSecondaryColor: '#f59e0b',
+    dateUnavailableColor: '#fed7aa',
     dateBorderRadius: '16px',
   },
   {
@@ -125,6 +130,7 @@ export const themePresets: ThemePreset[] = [
     dateTextColor: '#ffffff',
     dateOpenedPrimaryColor: '#475569',
     dateOpenedSecondaryColor: '#64748b',
+    dateUnavailableColor: '#e2e8f0',
     dateBorderRadius: '12px',
   },
   {
@@ -146,6 +152,7 @@ export const themePresets: ThemePreset[] = [
     dateTextColor: '#ffffff',
     dateOpenedPrimaryColor: '#e11d48',
     dateOpenedSecondaryColor: '#be185d',
+    dateUnavailableColor: '#fce7f3',
     dateBorderRadius: '16px',
   },
 ];

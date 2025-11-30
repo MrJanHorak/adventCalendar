@@ -26,9 +26,13 @@ interface CalendarEntry {
   fontSize?: string;
   textColor?: string;
   backgroundColor?: string;
+  backgroundGradientEnabled?: boolean;
+  backgroundGradientColor2?: string;
   textAlign?: string;
   verticalAlign?: string;
   borderColor?: string;
+  borderGradientEnabled?: boolean;
+  borderGradientColor2?: string;
   borderWidth?: string;
   borderStyle?: string;
   borderRadius?: string;
@@ -111,9 +115,13 @@ export default function EditCalendar({
     fontSize: '16px',
     textColor: '#000000',
     backgroundColor: '',
+    backgroundGradientEnabled: false,
+    backgroundGradientColor2: '#ffffff',
     textAlign: 'center',
     verticalAlign: 'middle',
     borderColor: '',
+    borderGradientEnabled: false,
+    borderGradientColor2: '#000000',
     borderWidth: '0px',
     borderStyle: 'solid',
     borderRadius: '0px',
@@ -205,9 +213,13 @@ export default function EditCalendar({
         fontSize: entry.fontSize || '16px',
         textColor: entry.textColor || '#000000',
         backgroundColor: entry.backgroundColor || '',
+        backgroundGradientEnabled: entry.backgroundGradientEnabled || false,
+        backgroundGradientColor2: entry.backgroundGradientColor2 || '#ffffff',
         textAlign: entry.textAlign || 'center',
         verticalAlign: entry.verticalAlign || 'middle',
         borderColor: entry.borderColor || '',
+        borderGradientEnabled: entry.borderGradientEnabled || false,
+        borderGradientColor2: entry.borderGradientColor2 || '#000000',
         borderWidth: entry.borderWidth || '0px',
         borderStyle: entry.borderStyle || 'solid',
         borderRadius: entry.borderRadius || '0px',
@@ -230,9 +242,13 @@ export default function EditCalendar({
         fontSize: '16px',
         textColor: '#000000',
         backgroundColor: '',
+        backgroundGradientEnabled: false,
+        backgroundGradientColor2: '#ffffff',
         textAlign: 'center',
         verticalAlign: 'middle',
         borderColor: '',
+        borderGradientEnabled: false,
+        borderGradientColor2: '#000000',
         borderWidth: '0px',
         borderStyle: 'solid',
         borderRadius: '0px',
@@ -1279,46 +1295,74 @@ export default function EditCalendar({
                     Content
                   </label>
                   <div
-                    className='w-full border-2 border-gray-200 rounded-lg overflow-hidden'
+                    className='w-full overflow-hidden'
                     style={{
-                      borderColor: formData.borderColor || '#e5e7eb',
-                      borderWidth: formData.borderWidth,
-                      borderStyle: formData.borderStyle as any,
+                      padding: formData.borderGradientEnabled
+                        ? formData.borderWidth || '2px'
+                        : '0',
+                      background: formData.borderGradientEnabled
+                        ? `linear-gradient(135deg, ${
+                            formData.borderColor || '#000000'
+                          }, ${formData.borderGradientColor2 || '#000000'})`
+                        : 'transparent',
                       borderRadius: formData.borderRadius,
                       boxShadow: formData.boxShadow,
-                      backgroundColor:
-                        formData.backgroundColor || 'transparent',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent:
-                        formData.verticalAlign === 'top'
-                          ? 'flex-start'
-                          : formData.verticalAlign === 'bottom'
-                          ? 'flex-end'
-                          : 'center',
-                      minHeight: '250px',
                     }}
                   >
-                    <textarea
-                      value={formData.content}
-                      onChange={(e) =>
-                        setFormData({ ...formData, content: e.target.value })
-                      }
-                      placeholder='Enter your message, poem, or description'
-                      className='w-full bg-transparent focus:outline-none resize-none border-0'
+                    <div
+                      className='w-full'
                       style={{
-                        fontFamily: formData.fontFamily,
-                        fontSize: formData.fontSize,
-                        color: formData.textColor,
-                        textAlign: formData.textAlign as any,
-                        padding: formData.padding,
-                        outline: 'none',
-                        ...(formData.isPoem && {
-                          fontStyle: 'italic',
-                          lineHeight: '1.75',
-                        }),
+                        borderColor: formData.borderGradientEnabled
+                          ? 'transparent'
+                          : formData.borderColor || '#e5e7eb',
+                        borderWidth: formData.borderGradientEnabled
+                          ? '0'
+                          : formData.borderWidth,
+                        borderStyle: formData.borderStyle as any,
+                        borderRadius: formData.borderGradientEnabled
+                          ? `calc(${formData.borderRadius} - ${
+                              formData.borderWidth || '2px'
+                            })`
+                          : formData.borderRadius,
+                        background: formData.backgroundGradientEnabled
+                          ? `linear-gradient(135deg, ${
+                              formData.backgroundColor || '#ffffff'
+                            }, ${
+                              formData.backgroundGradientColor2 || '#ffffff'
+                            })`
+                          : formData.backgroundColor || 'transparent',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent:
+                          formData.verticalAlign === 'top'
+                            ? 'flex-start'
+                            : formData.verticalAlign === 'bottom'
+                            ? 'flex-end'
+                            : 'center',
+                        minHeight: '250px',
                       }}
-                    />
+                    >
+                      <textarea
+                        value={formData.content}
+                        onChange={(e) =>
+                          setFormData({ ...formData, content: e.target.value })
+                        }
+                        placeholder='Enter your message, poem, or description'
+                        className='w-full bg-transparent focus:outline-none resize-none border-0'
+                        style={{
+                          fontFamily: formData.fontFamily,
+                          fontSize: formData.fontSize,
+                          color: formData.textColor,
+                          textAlign: formData.textAlign as any,
+                          padding: formData.padding,
+                          outline: 'none',
+                          ...(formData.isPoem && {
+                            fontStyle: 'italic',
+                            lineHeight: '1.75',
+                          }),
+                        }}
+                      />
+                    </div>
                   </div>
                 </div>
 
@@ -1370,13 +1414,13 @@ export default function EditCalendar({
                         }
                         className='w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:border-red-400 focus:outline-none'
                       >
-                        <option value='12px'>Small (12px)</option>
-                        <option value='14px'>Normal (14px)</option>
-                        <option value='16px'>Medium (16px)</option>
-                        <option value='18px'>Large (18px)</option>
-                        <option value='20px'>X-Large (20px)</option>
-                        <option value='24px'>XX-Large (24px)</option>
-                        <option value='28px'>Huge (28px)</option>
+                        <option value='12px'>Small</option>
+                        <option value='14px'>Normal</option>
+                        <option value='16px'>Medium</option>
+                        <option value='18px'>Large</option>
+                        <option value='20px'>X-Large</option>
+                        <option value='24px'>XX-Large</option>
+                        <option value='28px'>Huge</option>
                       </select>
                     </div>
 
@@ -1412,6 +1456,36 @@ export default function EditCalendar({
                         }
                         className='h-12 w-full border border-gray-300 rounded cursor-pointer'
                       />
+                      <label className='flex items-center gap-2 mt-2 cursor-pointer'>
+                        <input
+                          type='checkbox'
+                          checked={formData.backgroundGradientEnabled}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              backgroundGradientEnabled: e.target.checked,
+                            })
+                          }
+                          className='w-4 h-4 rounded'
+                        />
+                        <span className='text-xs text-gray-600'>
+                          Enable Gradient
+                        </span>
+                      </label>
+                      {formData.backgroundGradientEnabled && (
+                        <input
+                          type='color'
+                          value={formData.backgroundGradientColor2 || '#ffffff'}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              backgroundGradientColor2: e.target.value,
+                            })
+                          }
+                          className='h-12 w-full border border-gray-300 rounded cursor-pointer mt-2'
+                          title='Second gradient color'
+                        />
+                      )}
                     </div>
 
                     <div className='col-span-2'>
@@ -1514,12 +1588,12 @@ export default function EditCalendar({
                         }
                         className='w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:border-red-400 focus:outline-none'
                       >
-                        <option value='0px'>None (0px)</option>
-                        <option value='1px'>Thin (1px)</option>
-                        <option value='2px'>Medium (2px)</option>
-                        <option value='3px'>Thick (3px)</option>
-                        <option value='4px'>Extra Thick (4px)</option>
-                        <option value='6px'>Very Thick (6px)</option>
+                        <option value='0px'>None</option>
+                        <option value='1px'>Thin</option>
+                        <option value='2px'>Medium</option>
+                        <option value='3px'>Thick</option>
+                        <option value='4px'>Extra Thick</option>
+                        <option value='6px'>Very Thick</option>
                       </select>
                     </div>
 
@@ -1538,6 +1612,36 @@ export default function EditCalendar({
                         }
                         className='h-12 w-full border border-gray-300 rounded cursor-pointer'
                       />
+                      <label className='flex items-center gap-2 mt-2 cursor-pointer'>
+                        <input
+                          type='checkbox'
+                          checked={formData.borderGradientEnabled}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              borderGradientEnabled: e.target.checked,
+                            })
+                          }
+                          className='w-4 h-4 rounded'
+                        />
+                        <span className='text-xs text-gray-600'>
+                          Enable Gradient
+                        </span>
+                      </label>
+                      {formData.borderGradientEnabled && (
+                        <input
+                          type='color'
+                          value={formData.borderGradientColor2 || '#000000'}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              borderGradientColor2: e.target.value,
+                            })
+                          }
+                          className='h-12 w-full border border-gray-300 rounded cursor-pointer mt-2'
+                          title='Second gradient color'
+                        />
+                      )}
                     </div>
 
                     <div>
@@ -1554,12 +1658,12 @@ export default function EditCalendar({
                         }
                         className='w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:border-red-400 focus:outline-none'
                       >
-                        <option value='0px'>Sharp (0px)</option>
-                        <option value='4px'>Slightly Rounded (4px)</option>
-                        <option value='8px'>Rounded (8px)</option>
-                        <option value='12px'>Very Rounded (12px)</option>
-                        <option value='16px'>Extra Rounded (16px)</option>
-                        <option value='24px'>Pill-Shaped (24px)</option>
+                        <option value='0px'>Sharp</option>
+                        <option value='4px'>Slightly Rounded</option>
+                        <option value='8px'>Rounded</option>
+                        <option value='12px'>Very Rounded</option>
+                        <option value='16px'>Extra Rounded</option>
+                        <option value='24px'>Pill-Shaped</option>
                       </select>
                     </div>
 
@@ -1574,13 +1678,13 @@ export default function EditCalendar({
                         }
                         className='w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:border-red-400 focus:outline-none'
                       >
-                        <option value='0px'>None (0px)</option>
-                        <option value='8px'>Compact (8px)</option>
-                        <option value='12px'>Cozy (12px)</option>
-                        <option value='16px'>Normal (16px)</option>
-                        <option value='20px'>Comfortable (20px)</option>
-                        <option value='24px'>Spacious (24px)</option>
-                        <option value='32px'>Extra Spacious (32px)</option>
+                        <option value='0px'>None</option>
+                        <option value='8px'>Compact</option>
+                        <option value='12px'>Cozy</option>
+                        <option value='16px'>Normal</option>
+                        <option value='20px'>Comfortable</option>
+                        <option value='24px'>Spacious</option>
+                        <option value='32px'>Extra Spacious</option>
                       </select>
                     </div>
 

@@ -36,6 +36,10 @@ export async function POST(
       borderRadius,
       padding,
       boxShadow,
+      backgroundGradientEnabled,
+      backgroundGradientColor2,
+      borderGradientEnabled,
+      borderGradientColor2,
     } = await req.json();
 
     if (!day || day < 1 || day > 25) {
@@ -102,6 +106,10 @@ export async function POST(
         borderRadius: borderRadius || '0px',
         padding: padding || '16px',
         boxShadow: boxShadow || 'none',
+        backgroundGradientEnabled: !!backgroundGradientEnabled,
+        backgroundGradientColor2,
+        borderGradientEnabled: !!borderGradientEnabled,
+        borderGradientColor2,
         calendarId: id,
       },
     });

@@ -83,6 +83,10 @@ model CalendarEntry {
   borderRadius    String?  @default("0px")
   padding         String?  @default("16px")
   boxShadow       String?  @default("none")
+  backgroundGradientEnabled Boolean? @default(false)
+  backgroundGradientColor2 String?
+  borderGradientEnabled    Boolean? @default(false)
+  borderGradientColor2     String?
   calendarId      String
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
