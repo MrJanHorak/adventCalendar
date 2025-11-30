@@ -10,10 +10,10 @@ export default function HelpSection() {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="flex items-center gap-2 text-gray-700 hover:text-red-600 font-medium transition"
+        className='flex items-center gap-2 text-gray-700 hover:text-red-600 font-medium transition'
       >
-        <span className="text-xl">❓</span>
-        <span className="hidden sm:inline">Help</span>
+        <span className='text-xl'>❓</span>
+        <span className='hidden sm:inline'>Help</span>
       </button>
       <HelpModal isOpen={open} onClose={() => setOpen(false)} />
     </>

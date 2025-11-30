@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import { useState } from 'react';
 
 type Props = { id: string };
@@ -27,34 +27,35 @@ export default function DeleteCalendarButton({ id }: Props) {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="text-center bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition font-medium text-sm sm:text-base"
+        className='text-center bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition font-medium text-sm sm:text-base'
       >
         Delete
       </button>
 
       {open && (
-        <div className="fixed inset-0 z-[60] grid place-items-center bg-black/40">
-          <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-6">
-            <h3 className="text-lg font-bold mb-2">Delete Calendar</h3>
-            <p className="text-sm text-gray-700 mb-4">
-              This action is permanent. All entries associated with this calendar will be deleted.
+        <div className='fixed inset-0 z-[60] grid place-items-center bg-black/40'>
+          <div className='bg-white rounded-2xl shadow-xl w-full max-w-md p-6'>
+            <h3 className='text-lg font-bold mb-2'>Delete Calendar</h3>
+            <p className='text-sm text-gray-700 mb-4'>
+              This action is permanent. All entries associated with this
+              calendar will be deleted.
             </p>
             {error && (
-              <div className="mb-3 text-red-700 bg-red-50 border border-red-200 rounded px-3 py-2">
+              <div className='mb-3 text-red-700 bg-red-50 border border-red-200 rounded px-3 py-2'>
                 {error}
               </div>
             )}
-            <div className="flex gap-3 justify-end">
+            <div className='flex gap-3 justify-end'>
               <button
                 onClick={() => setOpen(false)}
-                className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100"
+                className='px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100'
                 disabled={loading}
               >
                 Cancel
               </button>
               <button
                 onClick={confirmDelete}
-                className="px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 disabled:opacity-50"
+                className='px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 disabled:opacity-50'
                 disabled={loading}
               >
                 {loading ? 'Deleting…' : 'Delete'}

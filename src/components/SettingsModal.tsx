@@ -65,10 +65,10 @@ export default function SettingsModal({ initialName }: Props) {
     <div>
       <button
         onClick={() => setOpen(true)}
-        className="flex items-center gap-2 text-gray-700 hover:text-gray-900 font-medium transition"
+        className='flex items-center gap-2 text-gray-700 hover:text-gray-900 font-medium transition'
       >
-        <span className="text-xl">⚙️</span>
-        <span className="hidden sm:inline">Settings</span>
+        <span className='text-xl'>⚙️</span>
+        <span className='hidden sm:inline'>Settings</span>
       </button>
 
       {open && (
