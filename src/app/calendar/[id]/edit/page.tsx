@@ -555,7 +555,8 @@ export default function EditCalendar({
                 Preview Calendar
               </Link>
               <p className='text-xs text-gray-400 mt-2'>
-                Save an entry before previewing to see changes reflected. As the owner, you can test all doors.
+                Save an entry before previewing to see changes reflected. As the
+                owner, you can test all doors.
               </p>
             </div>
           </div>
