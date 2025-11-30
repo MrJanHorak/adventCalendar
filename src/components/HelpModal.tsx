@@ -13,11 +13,11 @@ export default function HelpModal({ isOpen, onClose }: HelpModalProps) {
   if (!isOpen) return null;
 
   return (
-    <div 
+    <div
       className='fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50'
       onClick={onClose}
     >
-      <div 
+      <div
         className='bg-white rounded-3xl shadow-2xl max-w-4xl w-full max-h-[85vh] overflow-hidden'
         onClick={(e) => e.stopPropagation()}
       >
