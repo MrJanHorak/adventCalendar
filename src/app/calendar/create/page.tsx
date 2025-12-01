@@ -109,7 +109,7 @@ export default function CreateCalendar() {
                 onChange={(e) => setTitle(e.target.value)}
                 required
                 placeholder='e.g., Christmas 2025 for Sarah'
-                className='w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-red-400 focus:outline-none transition'
+                className='w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-red-400 focus:outline-none transition text-gray-900'
               />
             </div>
 
@@ -126,7 +126,7 @@ export default function CreateCalendar() {
                 onChange={(e) => setDescription(e.target.value)}
                 rows={3}
                 placeholder='Add a special message or description'
-                className='w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-red-400 focus:outline-none transition resize-none'
+                className='w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-red-400 focus:outline-none transition resize-none text-gray-900'
               />
             </div>
 

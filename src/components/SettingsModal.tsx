@@ -102,7 +102,7 @@ export default function SettingsModal({ initialName }: Props) {
               type='text'
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className='w-full border border-gray-300 rounded-lg px-3 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-red-300'
+              className='w-full border border-gray-300 rounded-lg px-3 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-red-300 text-gray-900'
               placeholder='Your name'
             />
             <button

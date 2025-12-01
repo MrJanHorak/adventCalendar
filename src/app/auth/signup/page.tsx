@@ -100,7 +100,7 @@ export default function SignUp() {
               onChange={(e) => setName(e.target.value)}
               required
               autoComplete='name'
-              className='w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-green-400 focus:outline-none transition'
+              className='w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-green-400 focus:outline-none transition text-gray-900'
               placeholder='Your name'
             />
           </div>
@@ -119,7 +119,7 @@ export default function SignUp() {
               onChange={(e) => setEmail(e.target.value)}
               required
               autoComplete='email'
-              className='w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-green-400 focus:outline-none transition'
+              className='w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-green-400 focus:outline-none transition text-gray-900'
               placeholder='your@email.com'
             />
           </div>
@@ -139,7 +139,7 @@ export default function SignUp() {
               required
               minLength={6}
               autoComplete='new-password'
-              className='w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-green-400 focus:outline-none transition'
+              className='w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-green-400 focus:outline-none transition text-gray-900'
               placeholder='••••••••'
             />
           </div>
@@ -159,7 +159,7 @@ export default function SignUp() {
               required
               minLength={6}
               autoComplete='new-password'
-              className='w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-green-400 focus:outline-none transition'
+              className='w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-green-400 focus:outline-none transition text-gray-900'
               placeholder='••••••••'
             />
           </div>

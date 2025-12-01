@@ -160,6 +160,8 @@ export default function EditCalendar({
     decorationOptions: { density: 0.6, speed: 1 } as DecorationOptions | null,
   });
   const [copyFeedback, setCopyFeedback] = useState(false);
+  const [calendarTitle, setCalendarTitle] = useState('');
+  const [calendarDescription, setCalendarDescription] = useState('');
   const [showImageField, setShowImageField] = useState(false);
   const [showVideoField, setShowVideoField] = useState(false);
   const [showLinkField, setShowLinkField] = useState(false);
@@ -170,6 +172,10 @@ export default function EditCalendar({
     message: string;
     type: 'success' | 'error';
   }>({ show: false, message: '', type: 'success' });
+  const [validationModal, setValidationModal] = useState<{
+    show: boolean;
+    message: string;
+  }>({ show: false, message: '' });
 
   const showToast = (
     message: string,
@@ -195,6 +201,8 @@ export default function EditCalendar({
         if (response.ok) {
           const data = await response.json();
           setCalendar(data);
+          setCalendarTitle(data.title || '');
+          setCalendarDescription(data.description || '');
           // Load theme data
           setThemeData({
             theme: data.theme || 'classic',
@@ -331,7 +339,7 @@ export default function EditCalendar({
 
     // Validate required fields
     if (!formData.title) {
-      alert('Title is required');
+      setValidationModal({ show: true, message: 'Title is required' });
       return;
     }
 
@@ -341,7 +349,10 @@ export default function EditCalendar({
       !formData.videoUrl.trim() &&
       !formData.linkUrl.trim()
     ) {
-      alert('Please add at least some content (text, image, video, or link)');
+      setValidationModal({ 
+        show: true, 
+        message: 'Please add at least some content (text, image, video, or link)' 
+      });
       return;
     }
 
@@ -548,6 +559,27 @@ export default function EditCalendar({
       <HelpModal isOpen={showHelp} onClose={() => setShowHelp(false)} />
       <IdeasModal isOpen={showIdeas} onClose={() => setShowIdeas(false)} />
 
+      {/* Validation Modal */}
+      {validationModal.show && (
+        <div className='fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4'>
+          <div className='bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 border-4 border-red-200'>
+            <div className='text-center mb-4'>
+              <div className='text-5xl mb-3'>⚠️</div>
+              <h3 className='text-xl font-bold text-gray-800 mb-2'>
+                Validation Error
+              </h3>
+              <p className='text-gray-600'>{validationModal.message}</p>
+            </div>
+            <button
+              onClick={() => setValidationModal({ show: false, message: '' })}
+              className='w-full bg-gradient-to-r from-red-500 to-red-600 text-white py-3 rounded-lg font-semibold hover:from-red-600 hover:to-red-700 transition'
+            >
+              Got it
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Navigation */}
       <nav className='bg-white/80 backdrop-blur-sm border-b border-red-100'>
         <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
@@ -587,11 +619,75 @@ export default function EditCalendar({
 
       <main className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12'>
         <div className='mb-8'>
-          <h1 className='text-4xl font-bold text-gray-800'>{calendar.title}</h1>
-          {calendar.description && (
-            <p className='text-gray-600 mt-2'>{calendar.description}</p>
-          )}
-          <div className='mt-4 text-sm text-gray-500 space-y-3'>
+          <h1 className='text-4xl font-bold text-gray-800 mb-4'>Edit Calendar Details</h1>
+          <div className='bg-white rounded-2xl shadow-lg p-6 border-2 border-red-200'>
+            <div className='grid gap-4 md:grid-cols-2'>
+              <div>
+                <label htmlFor='calendarTitle' className='block text-sm font-medium text-gray-700 mb-2'>
+                  Calendar Title
+                </label>
+                <input
+                  id='calendarTitle'
+                  type='text'
+                  value={calendarTitle}
+                  onChange={(e) => setCalendarTitle(e.target.value)}
+                  className='w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-red-400 focus:outline-none transition text-gray-900'
+                  placeholder='e.g., Christmas 2025 for Sarah'
+                />
+              </div>
+              <div>
+                <label htmlFor='calendarDescription' className='block text-sm font-medium text-gray-700 mb-2'>
+                  Description (optional)
+                </label>
+                <textarea
+                  id='calendarDescription'
+                  value={calendarDescription}
+                  onChange={(e) => setCalendarDescription(e.target.value)}
+                  rows={3}
+                  className='w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-red-400 focus:outline-none transition resize-none text-gray-900'
+                  placeholder='Add a special message or description'
+                />
+              </div>
+            </div>
+            <div className='mt-4 flex gap-3'>
+              <button
+                type='button'
+                onClick={async () => {
+                  try {
+                    const res = await fetch(`/api/calendars/${calendar.id}`, {
+                      method: 'PATCH',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ title: calendarTitle, description: calendarDescription }),
+                    });
+                    if (res.ok) {
+                      const updated = await res.json();
+                      setCalendar(updated);
+                      showToast('Calendar details saved', 'success');
+                    } else {
+                      const err = await res.json().catch(() => ({ error: 'Failed to save' }));
+                      showToast(err.error || 'Failed to save calendar', 'error');
+                    }
+                  } catch (e) {
+                    showToast('Network error while saving', 'error');
+                  }
+                }}
+                className='inline-flex items-center px-4 py-2 rounded-lg bg-gradient-to-r from-red-500 to-green-500 text-white text-sm font-semibold hover:from-red-600 hover:to-green-600 transition'
+              >
+                Save Details
+              </button>
+              <button
+                type='button'
+                onClick={() => {
+                  setCalendarTitle(calendar?.title || '');
+                  setCalendarDescription(calendar?.description || '');
+                }}
+                className='inline-flex items-center px-4 py-2 rounded-lg border-2 border-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-50 transition'
+              >
+                Reset
+              </button>
+            </div>
+          </div>
+          <div className='mt-6 text-sm text-gray-500 space-y-3'>
             <div>
               Share link:{' '}
               <code className='bg-white px-2 py-1 rounded'>
@@ -1415,7 +1511,7 @@ export default function EditCalendar({
                       setFormData({ ...formData, title: e.target.value })
                     }
                     placeholder='Enter a title'
-                    className='w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-red-400 focus:outline-none'
+                    className='w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-red-400 focus:outline-none text-gray-900'
                   />
                 </div>
 
@@ -3110,7 +3206,7 @@ export default function EditCalendar({
                         setFormData({ ...formData, imageUrl: e.target.value })
                       }
                       placeholder='https://i.imgur.com/example.jpg'
-                      className='w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-red-400 focus:outline-none'
+                      className='w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-red-400 focus:outline-none text-gray-900'
                     />
                     <p className='text-xs text-gray-500 mt-1'>
                       💡 Tip: Use a direct image link ending in .jpg, .png, or
@@ -3146,7 +3242,7 @@ export default function EditCalendar({
                         setFormData({ ...formData, videoUrl: e.target.value })
                       }
                       placeholder='https://www.youtube.com/watch?v=...'
-                      className='w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-red-400 focus:outline-none'
+                      className='w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-red-400 focus:outline-none text-gray-900'
                     />
                     <p className='text-xs text-gray-500 mt-1'>
                       💡 Paste a YouTube or Vimeo link - we&apos;ll convert it
@@ -3167,7 +3263,7 @@ export default function EditCalendar({
                         setFormData({ ...formData, linkUrl: e.target.value })
                       }
                       placeholder='https://example.com'
-                      className='w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-red-400 focus:outline-none'
+                      className='w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-red-400 focus:outline-none text-gray-900'
                     />
                     <label className='block text-sm font-medium text-gray-700 mb-2 mt-3'>
                       Link Button Text (optional)
@@ -3179,7 +3275,7 @@ export default function EditCalendar({
                         setFormData({ ...formData, linkText: e.target.value })
                       }
                       placeholder='Visit Website'
-                      className='w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-red-400 focus:outline-none'
+                      className='w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-red-400 focus:outline-none text-gray-900'
                     />
                     <p className='text-xs text-gray-500 mt-1'>
                       💡 Add links to websites, recipes, playlists, or anything
