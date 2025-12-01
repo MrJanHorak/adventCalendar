@@ -6,7 +6,7 @@ import CopyShareLink from '@/components/CopyShareLink';
 import Image from 'next/image';
 import SettingsModal from '@/components/SettingsModal';
 import DeleteCalendarButton from '@/components/DeleteCalendarButton';
-import IdeasSection from '@/components/IdeasSection';
+import IdeasButton from '@/components/IdeasButton';
 import HelpSection from '@/components/HelpSection';
 
 export default async function Dashboard() {
@@ -67,7 +67,7 @@ export default async function Dashboard() {
               <span className='hidden sm:inline text-gray-700 truncate max-w-[140px]'>
                 Hello, {session.user.name || session.user.email}!
               </span>
-              <IdeasSection />
+              <IdeasButton />
               <HelpSection />
               <SettingsModal initialName={session.user.name} />
               <Link
