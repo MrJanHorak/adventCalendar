@@ -7,12 +7,12 @@ import Link from 'next/link';
 export default function CharityBanner() {
   const [hidden, setHidden] = useState(false);
   const pathname = usePathname();
-  
+
   // Hide banner entirely on publicly shared calendar pages
   if (pathname?.startsWith('/share/')) {
     return null;
   }
-  
+
   if (hidden) return null;
 
   return (

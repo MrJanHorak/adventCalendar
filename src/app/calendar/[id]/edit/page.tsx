@@ -162,7 +162,8 @@ export default function EditCalendar({
   const [copyFeedback, setCopyFeedback] = useState(false);
   const [calendarTitle, setCalendarTitle] = useState('');
   const [calendarDescription, setCalendarDescription] = useState('');
-  const [isEditingCalendarDetails, setIsEditingCalendarDetails] = useState(false);
+  const [isEditingCalendarDetails, setIsEditingCalendarDetails] =
+    useState(false);
   const [showImageField, setShowImageField] = useState(false);
   const [showVideoField, setShowVideoField] = useState(false);
   const [showLinkField, setShowLinkField] = useState(false);
@@ -688,17 +689,24 @@ export default function EditCalendar({
                     type='button'
                     onClick={async () => {
                       try {
-                        const res = await fetch(`/api/calendars/${calendar.id}`, {
-                          method: 'PATCH',
-                          headers: { 'Content-Type': 'application/json' },
-                          body: JSON.stringify({
-                            title: calendarTitle,
-                            description: calendarDescription,
-                          }),
-                        });
+                        const res = await fetch(
+                          `/api/calendars/${calendar.id}`,
+                          {
+                            method: 'PATCH',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                              title: calendarTitle,
+                              description: calendarDescription,
+                            }),
+                          }
+                        );
                         if (res.ok) {
                           const updated = await res.json();
-                          setCalendar({ ...calendar, ...updated, entries: calendar.entries });
+                          setCalendar({
+                            ...calendar,
+                            ...updated,
+                            entries: calendar.entries,
+                          });
                           setIsEditingCalendarDetails(false);
                           showToast('Calendar details saved', 'success');
                         } else {
