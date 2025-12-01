@@ -673,7 +673,8 @@ export default function EditCalendar({
                     });
                     if (res.ok) {
                       const updated = await res.json();
-                      setCalendar(updated);
+                      // PATCH response does not include entries; preserve existing entries
+                      setCalendar({ ...calendar, ...updated, entries: calendar.entries });
                       showToast('Calendar details saved', 'success');
                     } else {
                       const err = await res
