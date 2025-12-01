@@ -22,7 +22,7 @@ export async function middleware(request: NextRequest) {
 
   // Check for ANY NextAuth session cookie (works in both dev and production)
   const cookieHeader = request.headers.get('cookie') || '';
-  const hasSessionToken = 
+  const hasSessionToken =
     cookieHeader.includes('next-auth.session-token=') ||
     cookieHeader.includes('__Secure-next-auth.session-token=') ||
     cookieHeader.includes('authjs.session-token=') ||

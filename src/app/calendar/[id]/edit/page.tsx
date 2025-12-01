@@ -349,9 +349,10 @@ export default function EditCalendar({
       !formData.videoUrl.trim() &&
       !formData.linkUrl.trim()
     ) {
-      setValidationModal({ 
-        show: true, 
-        message: 'Please add at least some content (text, image, video, or link)' 
+      setValidationModal({
+        show: true,
+        message:
+          'Please add at least some content (text, image, video, or link)',
       });
       return;
     }
@@ -619,11 +620,16 @@ export default function EditCalendar({
 
       <main className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12'>
         <div className='mb-8'>
-          <h1 className='text-4xl font-bold text-gray-800 mb-4'>Edit Calendar Details</h1>
+          <h1 className='text-4xl font-bold text-gray-800 mb-4'>
+            Edit Calendar Details
+          </h1>
           <div className='bg-white rounded-2xl shadow-lg p-6 border-2 border-red-200'>
             <div className='grid gap-4 md:grid-cols-2'>
               <div>
-                <label htmlFor='calendarTitle' className='block text-sm font-medium text-gray-700 mb-2'>
+                <label
+                  htmlFor='calendarTitle'
+                  className='block text-sm font-medium text-gray-700 mb-2'
+                >
                   Calendar Title
                 </label>
                 <input
@@ -636,7 +642,10 @@ export default function EditCalendar({
                 />
               </div>
               <div>
-                <label htmlFor='calendarDescription' className='block text-sm font-medium text-gray-700 mb-2'>
+                <label
+                  htmlFor='calendarDescription'
+                  className='block text-sm font-medium text-gray-700 mb-2'
+                >
                   Description (optional)
                 </label>
                 <textarea
@@ -657,15 +666,23 @@ export default function EditCalendar({
                     const res = await fetch(`/api/calendars/${calendar.id}`, {
                       method: 'PATCH',
                       headers: { 'Content-Type': 'application/json' },
-                      body: JSON.stringify({ title: calendarTitle, description: calendarDescription }),
+                      body: JSON.stringify({
+                        title: calendarTitle,
+                        description: calendarDescription,
+                      }),
                     });
                     if (res.ok) {
                       const updated = await res.json();
                       setCalendar(updated);
                       showToast('Calendar details saved', 'success');
                     } else {
-                      const err = await res.json().catch(() => ({ error: 'Failed to save' }));
-                      showToast(err.error || 'Failed to save calendar', 'error');
+                      const err = await res
+                        .json()
+                        .catch(() => ({ error: 'Failed to save' }));
+                      showToast(
+                        err.error || 'Failed to save calendar',
+                        'error'
+                      );
                     }
                   } catch (e) {
                     showToast('Network error while saving', 'error');
