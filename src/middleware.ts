@@ -1,9 +1,8 @@
-import { auth } from '@/lib/auth';
 import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
 
-export default auth((req) => {
-  const { pathname } = req.nextUrl;
-  const isLoggedIn = !!req.auth;
+export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
 
   // Public paths that don't need auth
   const isPublicPath =
@@ -17,19 +16,31 @@ export default auth((req) => {
     pathname.startsWith('/terms') ||
     pathname.startsWith('/imprint');
 
-  // Protected paths - redirect to signin if not logged in
-  const isProtectedPath =
-    pathname.startsWith('/dashboard') || pathname.startsWith('/calendar');
+  if (isPublicPath) {
+    return NextResponse.next();
+  }
 
-  if (isProtectedPath && !isLoggedIn) {
-    const url = req.nextUrl.clone();
+  // Check for ANY NextAuth session cookie (works in both dev and production)
+  const cookieHeader = request.headers.get('cookie') || '';
+  const hasSessionToken = 
+    cookieHeader.includes('next-auth.session-token=') ||
+    cookieHeader.includes('__Secure-next-auth.session-token=') ||
+    cookieHeader.includes('authjs.session-token=') ||
+    cookieHeader.includes('__Secure-authjs.session-token=');
+
+  // Protected paths - redirect to signin if no token
+  if (
+    !hasSessionToken &&
+    (pathname.startsWith('/dashboard') || pathname.startsWith('/calendar'))
+  ) {
+    const url = request.nextUrl.clone();
     url.pathname = '/auth/signin';
     url.searchParams.set('callbackUrl', pathname);
     return NextResponse.redirect(url);
   }
 
   return NextResponse.next();
-});
+}
 
 // Only run middleware on specific paths to reduce bundle size
 export const config = {
