@@ -34,14 +34,30 @@ export async function POST(
     const isOwner = session?.user?.id === calendar.userId;
     const allowForceOpen = force === true && isOwner;
 
-    // Check if door should be openable (December 1-25 only)
-    // Skip this check if owner is forcing open
+    // Date gating rules:
+    // - During December: allow doors up to today's date.
+    // - After December (any other month): allow catch-up (all days).
+    // - Before December (earlier months before the season): keep locked.
+    // Skip this check if owner is forcing open.
     if (!allowForceOpen) {
       const now = new Date();
-      const currentMonth = now.getMonth() + 1; // 0-indexed
-      const currentDay = now.getDate();
+      const month = now.getMonth(); // 0-based (11 = December)
+      const today = now.getDate();
 
-      if (currentMonth !== 12 || day > currentDay) {
+      let allowed = false;
+      if (month === 11) {
+        // December window
+        allowed = day <= today;
+      } else if (month !== 11 && month > 11) {
+        // This condition would never hit (month > 11 invalid). Left for clarity.
+        allowed = true;
+      } else if (month !== 11 && month < 11) {
+        // Months after the season has passed (Jan-Nov of following year): allow catch-up.
+        // We treat any non-December month as post-season for simplicity.
+        allowed = true;
+      }
+
+      if (!allowed) {
         return NextResponse.json(
           { error: 'This door cannot be opened yet!' },
           { status: 403 }

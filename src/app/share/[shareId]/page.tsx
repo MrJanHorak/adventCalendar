@@ -253,11 +253,14 @@ export default function SharedCalendar({
     }
 
     const now = new Date();
-    const currentMonth = now.getMonth() + 1;
-    const currentDay = now.getDate();
+    const month = now.getMonth(); // 0-based (11 = December)
+    const today = now.getDate();
 
-    // Allow opening if it's December and the day has arrived
-    return currentMonth === 12 && day <= currentDay;
+    // During December allow all doors up to today
+    if (month === 11) return day <= today;
+
+    // After December (January and beyond) allow catch-up on any day
+    return true;
   };
 
   const isDoorOpened = (day: number) => {

@@ -1,17 +1,18 @@
 'use client';
 
 import { useState } from 'react';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
 export default function CharityBanner() {
   const [hidden, setHidden] = useState(false);
+  const pathname = usePathname();
+  
   // Hide banner entirely on publicly shared calendar pages
-  if (typeof window !== 'undefined') {
-    const path = window.location.pathname;
-    if (path.startsWith('/share/')) {
-      return null;
-    }
+  if (pathname?.startsWith('/share/')) {
+    return null;
   }
+  
   if (hidden) return null;
 
   return (
