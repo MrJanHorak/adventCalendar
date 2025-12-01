@@ -162,6 +162,7 @@ export default function EditCalendar({
   const [copyFeedback, setCopyFeedback] = useState(false);
   const [calendarTitle, setCalendarTitle] = useState('');
   const [calendarDescription, setCalendarDescription] = useState('');
+  const [isEditingCalendarDetails, setIsEditingCalendarDetails] = useState(false);
   const [showImageField, setShowImageField] = useState(false);
   const [showVideoField, setShowVideoField] = useState(false);
   const [showLinkField, setShowLinkField] = useState(false);
@@ -620,90 +621,115 @@ export default function EditCalendar({
 
       <main className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12'>
         <div className='mb-8'>
-          <h1 className='text-4xl font-bold text-gray-800 mb-4'>
-            Edit Calendar Details
-          </h1>
           <div className='bg-white rounded-2xl shadow-lg p-6 border-2 border-red-200'>
-            <div className='grid gap-4 md:grid-cols-2'>
+            {!isEditingCalendarDetails ? (
+              // Display mode
               <div>
-                <label
-                  htmlFor='calendarTitle'
-                  className='block text-sm font-medium text-gray-700 mb-2'
+                <h1 className='text-4xl font-bold text-gray-800 mb-2'>
+                  {calendar.title}
+                </h1>
+                {calendar.description && (
+                  <p className='text-gray-600 mb-4'>{calendar.description}</p>
+                )}
+                <button
+                  type='button'
+                  onClick={() => {
+                    setCalendarTitle(calendar.title);
+                    setCalendarDescription(calendar.description || '');
+                    setIsEditingCalendarDetails(true);
+                  }}
+                  className='inline-flex items-center px-4 py-2 rounded-lg border-2 border-gray-300 text-gray-700 text-sm font-semibold hover:bg-gray-50 transition'
                 >
-                  Calendar Title
-                </label>
-                <input
-                  id='calendarTitle'
-                  type='text'
-                  value={calendarTitle}
-                  onChange={(e) => setCalendarTitle(e.target.value)}
-                  className='w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-red-400 focus:outline-none transition text-gray-900'
-                  placeholder='e.g., Christmas 2025 for Sarah'
-                />
+                  ✏️ Edit Details
+                </button>
               </div>
+            ) : (
+              // Edit mode
               <div>
-                <label
-                  htmlFor='calendarDescription'
-                  className='block text-sm font-medium text-gray-700 mb-2'
-                >
-                  Description (optional)
-                </label>
-                <textarea
-                  id='calendarDescription'
-                  value={calendarDescription}
-                  onChange={(e) => setCalendarDescription(e.target.value)}
-                  rows={3}
-                  className='w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-red-400 focus:outline-none transition resize-none text-gray-900'
-                  placeholder='Add a special message or description'
-                />
+                <h2 className='text-2xl font-bold text-gray-800 mb-4'>
+                  Edit Calendar Details
+                </h2>
+                <div className='grid gap-4 md:grid-cols-2'>
+                  <div>
+                    <label
+                      htmlFor='calendarTitle'
+                      className='block text-sm font-medium text-gray-700 mb-2'
+                    >
+                      Calendar Title
+                    </label>
+                    <input
+                      id='calendarTitle'
+                      type='text'
+                      value={calendarTitle}
+                      onChange={(e) => setCalendarTitle(e.target.value)}
+                      className='w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-red-400 focus:outline-none transition text-gray-900'
+                      placeholder='e.g., Christmas 2025 for Sarah'
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor='calendarDescription'
+                      className='block text-sm font-medium text-gray-700 mb-2'
+                    >
+                      Description (optional)
+                    </label>
+                    <textarea
+                      id='calendarDescription'
+                      value={calendarDescription}
+                      onChange={(e) => setCalendarDescription(e.target.value)}
+                      rows={3}
+                      className='w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-red-400 focus:outline-none transition resize-none text-gray-900'
+                      placeholder='Add a special message or description'
+                    />
+                  </div>
+                </div>
+                <div className='mt-4 flex gap-3'>
+                  <button
+                    type='button'
+                    onClick={async () => {
+                      try {
+                        const res = await fetch(`/api/calendars/${calendar.id}`, {
+                          method: 'PATCH',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({
+                            title: calendarTitle,
+                            description: calendarDescription,
+                          }),
+                        });
+                        if (res.ok) {
+                          const updated = await res.json();
+                          setCalendar({ ...calendar, ...updated, entries: calendar.entries });
+                          setIsEditingCalendarDetails(false);
+                          showToast('Calendar details saved', 'success');
+                        } else {
+                          const err = await res
+                            .json()
+                            .catch(() => ({ error: 'Failed to save' }));
+                          showToast(
+                            err.error || 'Failed to save calendar',
+                            'error'
+                          );
+                        }
+                      } catch (e) {
+                        showToast('Network error while saving', 'error');
+                      }
+                    }}
+                    className='inline-flex items-center px-4 py-2 rounded-lg bg-gradient-to-r from-red-500 to-green-500 text-white text-sm font-semibold hover:from-red-600 hover:to-green-600 transition'
+                  >
+                    Save Details
+                  </button>
+                  <button
+                    type='button'
+                    onClick={() => {
+                      setIsEditingCalendarDetails(false);
+                    }}
+                    className='inline-flex items-center px-4 py-2 rounded-lg border-2 border-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-50 transition'
+                  >
+                    Cancel
+                  </button>
+                </div>
               </div>
-            </div>
-            <div className='mt-4 flex gap-3'>
-              <button
-                type='button'
-                onClick={async () => {
-                  try {
-                    const res = await fetch(`/api/calendars/${calendar.id}`, {
-                      method: 'PATCH',
-                      headers: { 'Content-Type': 'application/json' },
-                      body: JSON.stringify({
-                        title: calendarTitle,
-                        description: calendarDescription,
-                      }),
-                    });
-                    if (res.ok) {
-                      const updated = await res.json();
-                      // PATCH response does not include entries; preserve existing entries
-                      setCalendar({ ...calendar, ...updated, entries: calendar.entries });
-                      showToast('Calendar details saved', 'success');
-                    } else {
-                      const err = await res
-                        .json()
-                        .catch(() => ({ error: 'Failed to save' }));
-                      showToast(
-                        err.error || 'Failed to save calendar',
-                        'error'
-                      );
-                    }
-                  } catch (e) {
-                    showToast('Network error while saving', 'error');
-                  }
-                }}
-                className='inline-flex items-center px-4 py-2 rounded-lg bg-gradient-to-r from-red-500 to-green-500 text-white text-sm font-semibold hover:from-red-600 hover:to-green-600 transition'
-              >
-                Save Details
-              </button>
-              <button
-                type='button'
-                onClick={() => {
-                  setCalendarTitle(calendar?.title || '');
-                  setCalendarDescription(calendar?.description || '');
-                }}
-                className='inline-flex items-center px-4 py-2 rounded-lg border-2 border-gray-200 text-gray-700 text-sm font-semibold hover:bg-gray-50 transition'
-              >
-                Reset
-              </button>
-            </div>
+            )}
           </div>
           <div className='mt-6 text-sm text-gray-500 space-y-3'>
             <div>
