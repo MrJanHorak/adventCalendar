@@ -1,9 +1,9 @@
+import { auth } from '@/lib/auth';
 import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
 
-// Minimal middleware - only handle auth redirects
-export async function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
+export default auth((req) => {
+  const { pathname } = req.nextUrl;
+  const isLoggedIn = !!req.auth;
 
   // Public paths that don't need auth
   const isPublicPath =
@@ -17,28 +17,19 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith('/terms') ||
     pathname.startsWith('/imprint');
 
-  if (isPublicPath) {
-    return NextResponse.next();
-  }
+  // Protected paths - redirect to signin if not logged in
+  const isProtectedPath =
+    pathname.startsWith('/dashboard') || pathname.startsWith('/calendar');
 
-  // Check for session token (simple check without full NextAuth import)
-  const sessionToken =
-    request.cookies.get('next-auth.session-token')?.value ||
-    request.cookies.get('__Secure-next-auth.session-token')?.value;
-
-  // Protected paths - redirect to signin if no token
-  if (
-    !sessionToken &&
-    (pathname.startsWith('/dashboard') || pathname.startsWith('/calendar'))
-  ) {
-    const url = request.nextUrl.clone();
+  if (isProtectedPath && !isLoggedIn) {
+    const url = req.nextUrl.clone();
     url.pathname = '/auth/signin';
     url.searchParams.set('callbackUrl', pathname);
     return NextResponse.redirect(url);
   }
 
   return NextResponse.next();
-}
+});
 
 // Only run middleware on specific paths to reduce bundle size
 export const config = {
