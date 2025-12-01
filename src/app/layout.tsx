@@ -17,6 +17,31 @@ export const metadata: Metadata = {
   title: 'Doorly Advent - Create Your Magical Calendar',
   description:
     'Create and share personalized advent calendars with your loved ones. Open a new surprise each day in December!',
+  metadataBase: new URL('https://doorly-advent.vercel.app'),
+  openGraph: {
+    title: 'Doorly Advent - Create Your Magical Calendar',
+    description:
+      'Create and share personalized advent calendars with your loved ones. Open a new surprise each day in December!',
+    url: 'https://doorly-advent.vercel.app',
+    siteName: 'Doorly Advent',
+    images: [
+      {
+        url: '/og-image.png', // You'll need to create this image
+        width: 1200,
+        height: 630,
+        alt: 'Doorly Advent - Personalized Advent Calendars',
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Doorly Advent - Create Your Magical Calendar',
+    description:
+      'Create and share personalized advent calendars with your loved ones. Open a new surprise each day in December!',
+    images: ['/og-image.png'], // Same image as Open Graph
+  },
 };
 
 export default function RootLayout({
