@@ -44,9 +44,9 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     console.error('Registration error:', error);
     return NextResponse.json(
-      { 
-        error: 'Something went wrong', 
-        details: error instanceof Error ? error.message : 'Unknown error'
+      {
+        error: 'Something went wrong',
+        details: error instanceof Error ? error.message : 'Unknown error',
       },
       { status: 500 }
     );

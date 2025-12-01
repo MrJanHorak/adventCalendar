@@ -21,7 +21,7 @@ function SignInForm() {
 
     try {
       const callbackUrl = searchParams.get('callbackUrl') || '/dashboard';
-      
+
       const result = await signIn('credentials', {
         email,
         password,
@@ -134,13 +134,15 @@ function SignInForm() {
 
 export default function SignIn() {
   return (
-    <Suspense fallback={
-      <div className='min-h-screen flex items-center justify-center bg-gradient-to-br from-red-100 via-white to-green-100'>
-        <div className='bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md border-4 border-red-200'>
-          <div className='text-center'>Loading...</div>
+    <Suspense
+      fallback={
+        <div className='min-h-screen flex items-center justify-center bg-gradient-to-br from-red-100 via-white to-green-100'>
+          <div className='bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md border-4 border-red-200'>
+            <div className='text-center'>Loading...</div>
+          </div>
         </div>
-      </div>
-    }>
+      }
+    >
       <SignInForm />
     </Suspense>
   );

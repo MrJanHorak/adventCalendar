@@ -4,9 +4,9 @@ import type { NextRequest } from 'next/server';
 // Minimal middleware - only handle auth redirects
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  
+
   // Public paths that don't need auth
-  const isPublicPath = 
+  const isPublicPath =
     pathname === '/' ||
     pathname.startsWith('/auth/') ||
     pathname.startsWith('/share/') ||
@@ -22,12 +22,15 @@ export async function middleware(request: NextRequest) {
   }
 
   // Check for session token (simple check without full NextAuth import)
-  const sessionToken = 
+  const sessionToken =
     request.cookies.get('next-auth.session-token')?.value ||
     request.cookies.get('__Secure-next-auth.session-token')?.value;
 
   // Protected paths - redirect to signin if no token
-  if (!sessionToken && (pathname.startsWith('/dashboard') || pathname.startsWith('/calendar'))) {
+  if (
+    !sessionToken &&
+    (pathname.startsWith('/dashboard') || pathname.startsWith('/calendar'))
+  ) {
     const url = request.nextUrl.clone();
     url.pathname = '/auth/signin';
     url.searchParams.set('callbackUrl', pathname);
