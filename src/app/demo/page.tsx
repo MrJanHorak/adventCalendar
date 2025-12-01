@@ -195,7 +195,7 @@ const demoCalendar = {
       title: 'DIY Ornament Craft 🎨',
       content: 'Create your own beautiful ornaments with this easy tutorial!',
       linkUrl:
-        'https://www.hgtv.com/lifestyle/crafts/diy-christmas-ornaments-pictures',
+        'https://www.carandache.com/us/en/diy-craft-projects-for-your-christmas-decorations',
       linkText: 'View Tutorial',
       fontFamily: 'Inter',
       fontSize: '16px',
@@ -256,7 +256,7 @@ const demoCalendar = {
       title: 'Reindeer Games 🦌',
       content:
         "Enjoy a fun, short animated clip of Santa's helpers getting ready for the big night!",
-      videoUrl: 'https://www.youtube.com/embed/5T8_yC2oE0c',
+      videoUrl: 'https://www.youtube.com/watch?v=dflOyBPPuu0',
       fontFamily: 'Inter',
       fontSize: '14px',
       textColor: '#4a5568',
@@ -304,7 +304,7 @@ const demoCalendar = {
       title: 'Holiday Movie Guide 🎬',
       content:
         'Looking for something to watch? Here are the best films of the season!',
-      linkUrl: 'https://www.tcm.com/holiday/christmas-movies',
+      linkUrl: 'https://www.imdb.com/list/ls000096828/',
       linkText: 'See the List',
       fontFamily: 'Inter',
       fontSize: '16px',
@@ -351,7 +351,7 @@ const demoCalendar = {
       title: 'Last Minute Gift Idea 💡',
       content: 'A thoughtful and easy gift idea for anyone on your list.',
       linkUrl:
-        'https://www.thesprucecrafts.com/easy-diy-christmas-gifts-4148483',
+        'https://www.thesprucecrafts.com/search?q=easy-diy-christmas-gifts',
       linkText: 'Browse Quick Gifts',
       fontFamily: 'Inter',
       fontSize: '16px',
@@ -366,7 +366,7 @@ const demoCalendar = {
       day: 23,
       title: 'Silent Night Serenade 🕯️',
       content: 'Take a moment of peace with this beautiful, quiet carol.',
-      videoUrl: 'https://www.youtube.com/embed/UN82Fp6Qf10',
+      videoUrl: 'https://www.youtube.com/watch?v=JBJY3AxtoHM',
       fontFamily: 'Inter',
       fontSize: '14px',
       textColor: '#4a5568',
