@@ -10,6 +10,7 @@ export default function SignUp() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -17,6 +18,19 @@ export default function SignUp() {
     e.preventDefault();
     setError('');
     setLoading(true);
+
+    // Validate password confirmation
+    if (password !== confirmPassword) {
+      setError('Passwords do not match');
+      setLoading(false);
+      return;
+    }
+
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters');
+      setLoading(false);
+      return;
+    }
 
     try {
       const response = await fetch('/api/register', {
@@ -44,13 +58,13 @@ export default function SignUp() {
         setError(
           'Account created but sign in failed. Please try signing in manually.'
         );
-      } else {
-        router.push('/dashboard');
-        router.refresh();
+        setLoading(false);
+      } else if (result?.ok) {
+        // Force a hard navigation to ensure session is properly set
+        window.location.href = '/dashboard';
       }
     } catch {
       setError('Something went wrong');
-    } finally {
       setLoading(false);
     }
   };
@@ -122,6 +136,26 @@ export default function SignUp() {
               type='password'
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              required
+              minLength={6}
+              autoComplete='new-password'
+              className='w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-green-400 focus:outline-none transition'
+              placeholder='••••••••'
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor='confirmPassword'
+              className='block text-sm font-medium text-gray-700 mb-2'
+            >
+              Confirm Password
+            </label>
+            <input
+              id='confirmPassword'
+              type='password'
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
               required
               minLength={6}
               autoComplete='new-password'

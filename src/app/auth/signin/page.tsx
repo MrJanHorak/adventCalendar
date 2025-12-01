@@ -2,12 +2,13 @@
 
 import { signIn } from 'next-auth/react';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 
 export default function SignIn() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -19,21 +20,24 @@ export default function SignIn() {
     setLoading(true);
 
     try {
+      const callbackUrl = searchParams.get('callbackUrl') || '/dashboard';
+      
       const result = await signIn('credentials', {
         email,
         password,
         redirect: false,
+        callbackUrl,
       });
 
       if (result?.error) {
         setError('Invalid email or password');
-      } else {
-        router.push('/dashboard');
-        router.refresh();
+        setLoading(false);
+      } else if (result?.ok) {
+        // Force a hard navigation to ensure session is properly set
+        window.location.href = callbackUrl;
       }
     } catch {
       setError('Something went wrong');
-    } finally {
       setLoading(false);
     }
   };
