@@ -1,12 +1,12 @@
 'use client';
 
 import { signIn } from 'next-auth/react';
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 
-export default function SignIn() {
+function SignInForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [email, setEmail] = useState('');
@@ -129,5 +129,19 @@ export default function SignIn() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function SignIn() {
+  return (
+    <Suspense fallback={
+      <div className='min-h-screen flex items-center justify-center bg-gradient-to-br from-red-100 via-white to-green-100'>
+        <div className='bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md border-4 border-red-200'>
+          <div className='text-center'>Loading...</div>
+        </div>
+      </div>
+    }>
+      <SignInForm />
+    </Suspense>
   );
 }
