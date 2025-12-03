@@ -7,6 +7,7 @@
     "build": "prisma generate && next build",
     "postinstall": "prisma generate",
     "vercel-build": "prisma generate && prisma migrate deploy && next build",
+    "migrate:baseline": "prisma migrate resolve --applied 20241203000000_make_userid_optional",
     "start": "next start",
     "lint": "eslint"
   },
