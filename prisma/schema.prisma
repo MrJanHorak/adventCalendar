@@ -105,16 +105,16 @@ model CalendarEntry {
 model OpenedDoor {
   id         String   @id @default(cuid())
   day        Int      // 1-25
-  userId     String
+  userId     String?  // Optional to support anonymous users
   calendarId String
   openedAt   DateTime @default(now())
 
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user       User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
   calendar   Calendar @relation(fields: [calendarId], references: [id], onDelete: Cascade)
 
-  @@unique([userId, calendarId, day])
   @@index([userId])
   @@index([calendarId])
+  @@index([calendarId, day])
 }
 
 enum EntryType {

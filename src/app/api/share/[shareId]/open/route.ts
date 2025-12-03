@@ -10,8 +10,8 @@ export async function POST(
     const { shareId } = await params;
     const session = await auth();
 
-    // Allow anonymous users to open doors
-    const userId = session?.user?.id || 'anonymous';
+    // Allow anonymous users to open doors (null for anonymous)
+    const userId = session?.user?.id || null;
 
     const { day, force } = await req.json();
 
@@ -66,15 +66,22 @@ export async function POST(
     }
 
     // Check if already opened
-    const existing = await prisma.openedDoor.findUnique({
-      where: {
-        userId_calendarId_day: {
+    // For anonymous users, we check by calendar and day only
+    // For logged-in users, we check by userId, calendar, and day
+    let existing;
+    if (userId) {
+      existing = await prisma.openedDoor.findFirst({
+        where: {
           userId,
           calendarId: calendar.id,
           day,
         },
-      },
-    });
+      });
+    } else {
+      // For anonymous users, we'll still create a record but won't prevent duplicates
+      // since we can't track them uniquely. Could use session/cookies for better tracking.
+      existing = null;
+    }
 
     if (existing) {
       return NextResponse.json({
@@ -87,7 +94,7 @@ export async function POST(
     const openedDoor = await prisma.openedDoor.create({
       data: {
         day,
-        userId,
+        userId: userId || undefined, // Use undefined for Prisma to handle null
         calendarId: calendar.id,
       },
     });
@@ -113,7 +120,7 @@ export async function GET(
     const { shareId } = await params;
     const session = await auth();
 
-    const userId = session?.user?.id || 'anonymous';
+    const userId = session?.user?.id || null;
 
     const calendar = await prisma.calendar.findUnique({
       where: { shareId },
@@ -124,6 +131,11 @@ export async function GET(
         { error: 'Calendar not found' },
         { status: 404 }
       );
+    }
+
+    // Only fetch opened doors for logged-in users
+    if (!userId) {
+      return NextResponse.json([]);
     }
 
     const openedDoors = await prisma.openedDoor.findMany({
